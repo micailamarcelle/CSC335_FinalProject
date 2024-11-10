@@ -12,6 +12,8 @@ acting as the model within the system.
 May want to decompose this further? Unsure of exactly how we want to do this
  */
 
+import java.util.Optional;
+
 public class Board {
     private Tile[][] boardGrid;
     private int score;
@@ -19,10 +21,12 @@ public class Board {
     public Board(BoardSize size) {
         // 4 + 2*ordinal
         int sizeAsInt = 4 + 2*(size.ordinal());
-        this.boardGrid = Tile[sizeAsInt][sizeAsInt];
+        this.boardGrid = Tile[sizeAsInt];
         for (int i = 0; i < sizeAsInt; i ++) {
+            this.boardGrid[sizeAsInt] = new Tile[sizeAsInt];
             for (int j = 0; j < sizeAsInt; j++) {
-                boardGrid[i][j] = new Tile();
+                Optional<Tile> curTile = new Optional.empty();
+                boardGrid[i][j] = curTile;
             }
         }
         this.score = 0;
