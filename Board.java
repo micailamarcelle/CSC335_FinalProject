@@ -13,5 +13,4 @@ May want to decompose this further? Unsure of exactly how we want to do this
  */
 
 public class Board {
-    
 }
