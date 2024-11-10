@@ -13,5 +13,57 @@ May want to decompose this further? Unsure of exactly how we want to do this
  */
 
 public class Board {
+    private Tile[][] boardGrid;
+    private int score;
     
+    public Board(BoardSize size) {
+        // 4 + 2*ordinal
+        int sizeAsInt = 4 + 2*(size.ordinal());
+        this.boardGrid = Tile[sizeAsInt][sizeAsInt];
+        for (int i = 0; i < sizeAsInt; i ++) {
+            for (int j = 0; j < sizeAsInt; j++) {
+                boardGrid[i][j] = new Tile();
+            }
+        }
+        this.score = 0;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public getBoard() {
+        int size = boardGrid.length;
+        Tile[][] boardGridCopy = new Tile[size][size];
+        for (int i = 0; i < size; i ++) {
+            for (int j = 0; j < size; j++) {
+                //boardGridCopy[i][j] = boardGrid[i][j];
+            }
+        }
+        return boardGridCopy;
+    }
+
+    public void shiftLeft() {
+
+    }
+
+    public void shiftRight() {
+
+    }
+
+    public void shiftUp() {
+
+    }
+
+    public void shiftDown() {
+        
+    }
+
+    private void updateScore() {
+        
+    }
+
+    public boolean isGameOver() {
+
+    }
 }
