@@ -36,7 +36,7 @@ public class Board {
         return score;
     }
 
-    public getBoard() {
+    public Tile[][] getBoard() {
         int size = boardGrid.length;
         Tile[][] boardGridCopy = new Tile[size][size];
         for (int i = 0; i < size; i ++) {
