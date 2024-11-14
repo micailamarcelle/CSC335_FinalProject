@@ -65,6 +65,7 @@ public class Tile {
      */
     public void multiplyValByTwo() {
         this.value *= 2;
+        this.updateToNextColor();
     }
 
     /*
@@ -73,7 +74,7 @@ public class Tile {
         simply set the color to be the next ordinal value in the TileColor enumerated type,
         wrapping around if necessary.
      */
-    public void updateToNextColor() {
+    private void updateToNextColor() {
         if (this.color.equals(TileColor.PURPLE)) {
             this.color = TileColor.GRAY;
         } else {
