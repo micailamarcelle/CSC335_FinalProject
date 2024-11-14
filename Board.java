@@ -10,6 +10,12 @@ achieved. The board will also keep track of the user's current score, effectivel
 acting as the model within the system.
  */
 
+// NOTE: STILL NEED TO FIGURE OUT HOW TO IMPLEMENT RANDOMLY ADDING 1-2 TILES PER
+// MOVE WITHIN THE GAME!
+// Keep in mind that this only needs to be done for moves that actually do something
+// (i.e. moves in which something in the board actually goes somewhere- could keep
+// track of the number of shifts, and only add when greater than 0?)
+
 import java.util.Optional;
 
 public class Board {
@@ -90,7 +96,8 @@ public class Board {
         Method which updates the board in an appropriate manner in response to a right-arrow
         click within the 2048 game. This method looks at each row within boardGrid, and sees
         if there are any tiles that can be combined from left to right. These tiles, if they
-        exist, are then combined, and all tiles are shifted as far to the right as possible
+        exist, are then combined, and all tiles are shifted as far to the right as possible.
+        The score associated with the board is also then updated appropriately.
      */
     public void shiftRight() {
         // Iterates through all of the rows within the board
@@ -201,6 +208,10 @@ public class Board {
             secondTile.updateToNextColor();
             secondTile.multiplyValByTwo();
             row[firstTileIndex] = Optional.empty();
+
+            // We also add the value of the combined tile to the overall score associated with the
+            // board
+            this.score += secondTile.getValue();
         }
     }
 
@@ -252,19 +263,178 @@ public class Board {
         return false;
     }
 
+    /*
+        Method which can be used to update the Board in a manner appropriate for a left-arrow click
+        within the 2048 game. This method looks at each row within boardGrid, combines all tiles that
+        would be combined with a left shift, and moves all of the tiles as far to the left within the
+        board as they can go once this is done. The score associated with the board is then updated
+        appropriately according to the combinations made with these shifts.
+     */
     public void shiftLeft() {
+        // Iterates through all of the rows within boardGrid
+        for (int i = 0; i < boardGrid.length; i++) {
+            // Gets the current row
+            Optional<Tile>[] curRow = boardGrid[i];
 
+            // Combines everything horizontally that can be combined
+            combineAllHorizontal(curRow);
+
+            // Shifts everything in the row to the left once this is done
+            shiftAllLeft(curRow);
+        }
+    }
+
+    /*
+        Private helper method, which takes in an Optional<Tile> array representing a row within our 
+        board, and which shifts all of the Tile objects within the board as far to the left as they
+        can go
+     */
+    private void shiftAllLeft(Optional<Tile>[] row) {
+        // Iterates until we run out of indices
+        int i = 0;
+        while (i < row.length) {
+            // Finds the first Tile starting from the current index
+            while (i < row.length && row[i].isPresent() == false) {
+                i++;
+            }
+
+            // If there are no more Tiles left, then we simply return, since our job is done
+            if (i >= row.length) {
+                return;
+            }
+
+            // Otherwise, we've found a Tile, so we figure out the spot where it should go when shifted
+            // to the left
+            Tile curTile = row[i].get();
+            int curIndex = i;
+            while (i >= 0 && row[i].isPresent() == false) {
+                i--;
+            }
+            i++;
+
+            // We then add the current Tile into the appropriate spot, and fill its old spot with a null 
+            // value, assuming that its new spot isn't just its old spot once again
+            if (i != curIndex) {
+                row[curIndex] = Optional.empty();
+                row[i] = Optional.of(curTile);
+            }
+
+            // Increments i for the next iteration
+            i++;
+        }
     }
 
     public void shiftUp() {
 
     }
 
-    public void shiftDown() {
-        
+    /*
+        Private helper method which can be used to combine all adjacent tiles with the same value within
+        a particular column of boardGrid. Takes in an int representing the column of boardGrid that we're
+        interested in, and makes all of the necessary combinations, updating score as necessary
+     */
+    private void combineAllVertical(int col) {
+        // Iterates until there are no possible vertical combinations left 
+        while (areThereCombinationsVertical(col) == true) {
+            // Finds two adjacent Tiles with the same value, keeping track of the index of the first
+            Tile firstTile;
+            int firstTileIndex;
+            Tile secondTile;
+
+            // Iterates until we find the first non-null tile
+            int i = 0;
+            while (boardGrid[i][col].isPresent() == false) {
+                i++;
+            }
+
+            // Lets this be our first tile, capturing its value and index
+            firstTile = boardGrid[i][col].get();
+            firstTileIndex = i;
+            int firstTileVal = firstTile.getValue();
+
+            // Iterates until we find two adjacent tiles with the same value
+            secondTile = firstTile;
+            while (i < boardGrid.length) {
+                // Finds the next non-null tile
+                i++;
+                while (boardGrid[i][col].isPresent() == false) {
+                    i++;
+                }
+
+                // Checks to see whether this has the same value as our current tile
+                if (boardGrid[i][col].get().getValue() == firstTileVal) {
+                    // If it does, then we set secondTile equal to this tile, and break out of the 
+                    // loop
+                    secondTile = boardGrid[i][col].get();
+                    break;
+                } 
+
+                // Otherwise, we make this our first tile and continue iterating on
+                firstTile = boardGrid[i][col].get();
+                firstTileIndex = i;
+                firstTileVal = firstTile.getValue();
+            }
+
+            // Once we find our two adjacent Tiles with the same value, we combine them into a single
+            // tile, replace the first tile with null, and update the value and color of the second tile
+            secondTile.updateToNextColor();
+            secondTile.multiplyValByTwo();
+            boardGrid[firstTileIndex][col] = Optional.empty();
+
+            // We then update the score with the new value of this second tile
+            this.score += secondTile.getValue();
+        }
     }
 
-    private void updateScore() {
+    /*
+        Private helper method which can be used in order to determine whether there are any remaining
+        combinations to be made within a particular column of the board. Takes in an int representing the
+        index of the column we're interested in, and returns true if there are any combinations, and 
+        false otherwise
+     */
+    private boolean areThereCombinationsVertical(int col) {
+        // Initially, we find the first non-null Tile within this column
+        int i = 0;
+        while (i < boardGrid.length && boardGrid[i][col].isPresent() == false) {
+            i++;
+        }
+
+        // If we find no such Tile, then we return false, since there cannot be any combinations
+        if (i == boardGrid.length) {
+            return false;
+        }
+
+        // Otherwise, we continue iterating on until we reach the end of our column
+        while (i < boardGrid.length) {
+            // Gets the current Tile and its value
+            Tile curTile = boardGrid[i][col].get();
+            int curVal = curTile.getValue();
+
+            // Iterates until we find another Tile or we hit the end of our column
+            i++;
+            while (i < boardGrid.length && boardGrid[i][col].isPresent() == false) {
+                i++;
+            }
+
+            // If we find no such next tile, then we return false, since there cannot be any combinations
+            if (i == boardGrid.length) {
+                return false;
+            }
+
+            // Otherwise, we check to see whether these two Tiles have the same value
+            if (curVal == boardGrid[i][col].get().getValue()) {
+                // If so, then we return true, since there are still combinations left
+                return true;
+            }
+
+            // If not, then we simply continue on to the next iteration
+        }
+
+        // If we find no Tiles that can be combined, then we return false
+        return false;
+    }
+
+    public void shiftDown() {
         
     }
 
