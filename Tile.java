@@ -61,7 +61,8 @@ public class Tile {
         Method for updating the value of a Tile. This takes in no inputs, and produces no
         outputs. Considering the functionality of the 2048 game, this method simply multiplies
         the value associated with the Tile by two, since this is the only way in which we may
-        need to update the value of a Tile within the game.
+        need to update the value of a Tile within the game. We also automatically update the 
+        color of the tile when we multiply its value by two.
      */
     public void multiplyValByTwo() {
         this.value *= 2;

@@ -1,6 +1,6 @@
 /*
 File: Board.java
-Authors: N/A (for now)
+Authors: Micaila Marcelle (micailamarcelle)
 Course: CSC 335
 Purpose: Implements the actual board for the 2048 game, which will contain a
 4 x 4 grid of Tile objects, and which will provide methods to respond to the 
@@ -205,7 +205,6 @@ public class Board {
             // Once we find both our tiles with the same value, along with their associated
             // indices, we multiply the value in the second tile by two, update its color, and
             // remove the first tile from the board
-            secondTile.updateToNextColor();
             secondTile.multiplyValByTwo();
             row[firstTileIndex] = Optional.empty();
 
@@ -324,8 +323,71 @@ public class Board {
         }
     }
 
+    /*
+        Method which can be used to update the Board in a manner appropriate for an up-arrow click
+        within the 2048 game. This method looks at each column within boardGrid, combines all tiles that
+        would be combined with an up shift, and moves all of the tiles as far upwards within the
+        board as they can go once this is done. The score associated with the board is then updated
+        appropriately according to the combinations made with these shifts.
+     */
     public void shiftUp() {
+        // Iterates through all of the columns within boardGrid
+        int curCol = 0;
+        while (curCol < boardGrid.length) {
+            // Makes all of the necessary combinations for an up shift, combining Tiles as necessary
+            // within the current column
+            combineAllVertical(curCol);
 
+            // Shifts all Tiles as far up as they can go within the board after any potential combinations
+            shiftAllUp(curCol);
+
+            // Continues iterating on
+            curCol++;
+        }
+    }
+
+    /*
+        Private helper method which can be used to shift all of the Tile objects in a particular
+        column of the board as far up as they can go. This method takes in an int representing the
+        particular column that we're interested in, and it does the shifting on the desired column
+        within the boardGrid instance variable.
+     */
+    private void shiftAllUp(int col) {
+        // Iterates through the current column from top to bottom
+        int i = 0;
+        while (i < boardGrid.length) {
+            // Iterates until we find a Tile
+            while (i < boardGrid.length && boardGrid[i][col].isPresent() == false) {
+                i++;
+            }
+
+            // If we hit the end of the column without hitting any more Tiles, then we simply return,
+            // since the job of the method is done
+            if (i == boardGrid.length) {
+                return;
+            }
+
+            // Otherwise, we get the Tile at the current spot in the board, then iterate backwards
+            // through the column until we either hit another Tile object or we hit the top of the 
+            // column
+            int curIndex = i;
+            Tile curTile = boardGrid[i][col].get();
+            i--;
+            while (i >= 0 && boardGrid[i][col].isPresent() == false) {
+                i--;
+            }
+            i++;
+
+            // We then add this Tile into its new spot, and replace its previous spot with an empty
+            // Optional<Tile> object, assuming that its new spot is not the same as its current spot
+            if (i != curIndex) {
+                boardGrid[i][col] = Optional.of(curTile);
+                boardGrid[curIndex][col] = Optional.empty();
+            }
+
+            // Finally, we increment i and continue iterating on
+            i++;
+        }
     }
 
     /*
@@ -377,7 +439,6 @@ public class Board {
 
             // Once we find our two adjacent Tiles with the same value, we combine them into a single
             // tile, replace the first tile with null, and update the value and color of the second tile
-            secondTile.updateToNextColor();
             secondTile.multiplyValByTwo();
             boardGrid[firstTileIndex][col] = Optional.empty();
 
@@ -434,8 +495,71 @@ public class Board {
         return false;
     }
 
+    /*
+        Method which can be used to update the Board in a manner appropriate for a down-arrow click
+        within the 2048 game. This method looks at each column within boardGrid, combines all tiles that
+        would be combined with a down shift, and moves all of the tiles as far down within the
+        board as they can go once this is done. The score associated with the board is then updated
+        appropriately according to the combinations made with these shifts.
+     */
     public void shiftDown() {
-        
+        // Iterates through all of the columns in boardGrid
+        int curCol = 0;
+        while (curCol < boardGrid.length) {
+            // Makes all of the possible combinations within this column, updating the score according
+            // to any combinations made
+            combineAllVertical(curCol);
+
+            // Shifts everything in the current column as far down as possible, after any potential
+            // combinations are made
+            shiftAllDown(curCol);
+
+            // Increments curCol to continue iterating
+            curCol++;
+        }
+    }
+
+    /*
+        Private helper method which can be used to shift all of the Tile objects in a particular
+        column of the board as far down as they can go. This method takes in an int representing the
+        particular column that we're interested in, and it does the shifting on the desired column
+        within the boardGrid instance variable.
+     */
+    private void shiftAllDown(int col) {
+        // Iterates through the given column from the bottom up
+        int i = boardGrid.length - 1;
+        while (i >= 0) {
+            // Iterates until we either find a Tile from the current index or until we hit the top of
+            // the column
+            while (i >= 0 && boardGrid[i][col].isPresent() == false) {
+                i--;
+            }
+
+            // If we find no other Tiles, then we simply return, since the job of the method is done
+            if (i < 0) {
+                return;
+            }
+
+            // Otherwise, we get the Tile at the current spot in the board, and iterate backwards 
+            // through the column until we find where to put this Tile
+            int curIndex = i;
+            Tile curTile = boardGrid[i][col].get();
+            i--;
+            while (i >= 0 && boardGrid[i][col].isPresent() == false) {
+                i--;
+            }
+            i++;
+
+            // If this new spot is not the same as the current spot, then we put our Tile in this new 
+            // spot, and fill its previous spot with an empty Optional<Tile> object
+            if (curIndex != i) {
+                boardGrid[i][col] = Optional.of(curTile);
+                boardGrid[curIndex][col] = Optional.empty();
+            }
+
+            // We then decrement i and continue iterating on
+            i--;
+        }
     }
 
     public boolean isGameOver() {
