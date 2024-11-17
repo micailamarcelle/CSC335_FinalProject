@@ -21,7 +21,7 @@ import java.util.Optional;
 public class Board {
     // Declares the private instance variables for the Board class, which include
     // a nested array of Optional<Tile> objects (that will represent the board
-    // itself) and an int representing the current score associated with the board
+    // itself) and an int representing the current score associated with the board.
     private Optional<Tile>[][] boardGrid;
     private int score;
     
@@ -562,7 +562,104 @@ public class Board {
         }
     }
 
-    public boolean isGameOver() {
-        return false;
+    /*
+        Public method which can be used to check whether the game is over. Returns a value of the HasWon
+        enumerated type, which will be WON if the player has won, LOST if the player has lost, and NOT_DONE
+        if the game is not yet over
+     */
+    public HasWon isGameOver() {
+        // First, we check to see whether the player has obtained a tile with a value of 2048
+        if (findHighestValue() >= 2048) {
+            // If so, we return true, since the player has won
+            return HasWon.WON;
+        }
+
+        // Next, we check to see whether there are any empty tiles
+        if (countNumEmpty() != 0) {
+            // If so, then the game is not yet over, since the player still has moves left
+            return HasWon.NOT_DONE;
+        }
+
+        // In all other cases, we need to check to see whether there are any additional combinations that
+        // can be made. First, we iterate through all of the rows in the board, checking to see whether any
+        // of these contain potential moves
+        for (int i = 0; i < boardGrid.length; i++) {
+            // Gets the current row
+            Optional<Tile>[] curRow = boardGrid[i];
+
+            // Checks to see whether there are any possible combinations    
+            if (areThereCombinations(curRow) == true) {
+                // If so, we return false, since the player still has moves left
+                return HasWon.NOT_DONE;
+            }
+        }
+
+        // If there are no possible combinations within the rows, then we check the columns for possible
+        // combinations
+        for (int col = 0; col < boardGrid.length; col++) {
+            // Checks to see whether the current column contains any possible combinations
+            if (areThereCombinationsVertical(col) == true) {
+                // If so, we return false, since the player still has moves left
+                return HasWon.NOT_DONE;
+            }
+        }
+
+        // Otherwise, if there are no possible combinations in either the rows or cols, then we return 
+        // true, since the player has lost
+        return HasWon.LOST;
+    }
+
+    /*
+        Private helper method which can be used in order to find the highest score associated with a
+        Tile in the board. If there are no Tiles in the board, then this method returns 0, and otherwise,
+        the method returns an int representing the highest value associated with a Tile in the board
+     */
+    private int findHighestValue() {
+        // Initializes the current highest value to 0
+        int curHighest = 0;
+
+        // Iterates through all of the tiles in the board
+        for (int i = 0; i < boardGrid.length; i++) {
+            for (int j = 0; j < boardGrid.length; j++) {
+                // Checks to see whether this spot actually contains a Tile
+                if (boardGrid[i][j].isPresent() == true) {
+                    // If so, we get the value of this tile
+                    int curVal = boardGrid[i][j].get().getValue();
+
+                    // We check to see whether this is greater than curHighest
+                    if (curVal > curHighest) {
+                        // If so, we update curHighest
+                        curHighest = curVal;
+                    }
+                }
+            }
+        }
+
+        // Once we're done iterating, curHighest is then returned
+        return curHighest;
+    }
+
+    /*
+        Private helper method which can be utilized in order to count the number of non-empty tiles
+        currently present within the board. Takes in no parameters, and returns an int representing
+        this number.
+     */
+    private int countNumEmpty() {
+        // Initializes the return count to 0
+        int count = 0;
+
+        // Iterates through every tile in the board
+        for (int i = 0; i < boardGrid.length; i++) {
+            for (int j = 0; j < boardGrid.length; j++) {
+                // Checks to see whether the current tile is empty
+                if (boardGrid[i][j].isPresent() == false) {
+                    // If so, we increment count
+                    count++;
+                }
+            }
+        }
+
+        // We then return the final count
+        return count;
     }
 }
