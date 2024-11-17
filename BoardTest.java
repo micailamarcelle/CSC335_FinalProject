@@ -60,10 +60,9 @@ public class BoardTest {
         Board gameBoard = new Board(BoardSize.FOUR);
         assertTrue(gameBoard.getScore() == 0);
 
-        Optional<Tile>[][] boardGrid = (Optional<Tile>[][]) new Optional<?>[4][4];
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                boardGrid[i][j] = Optional.empty();
+                assertEquals(gameBoard[i][j], Optional.empty());
             }
         }
         assertEquals(boardGrid, gameBoard.getBoard());
