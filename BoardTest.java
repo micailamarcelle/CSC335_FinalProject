@@ -31,20 +31,40 @@ public class BoardTest {
 
         Tile b = new Tile(a);
         assertEquals(a, b);
+
+        Tile c = new Tile()
+        c.multiplyValByTwo();
+        c.multiplyValByTwo();
+        c.multiplyValByTwo();
+        c.multiplyValByTwo();
+        assertEquals(c, a);
     }
 
     @Test
     public void testEmptyBoard() {
         Board gameBoard = new Board(BoardSize.FOUR);
         assertTrue(gameBoard.getScore() == 0);
-        assertTrue(gameBoard.length == 4);
+        assertTrue(gameBoard.getBoard().length == 4);
 
         Board gameBoard2 = new Board(BoardSize.SIX);
         assertTrue(gameBoard2.getScore() == 0);
-        assertTrue(gameBoard2.length == 6);
+        assertTrue(gameBoard2.getBoard().length == 6);
 
         Board gameBoard3 = new Board(BoardSize.EIGHT);
         assertTrue(gameBoard3.getScore() == 0);
-        assertTrue(gameBoard3.length == 8);
+        assertTrue(gameBoard3.getBoard().length == 8);
+    }
+
+    @Test
+    public void testScore() {
+        Board gameBoard = new Board(BoardSize.FOUR);
+        assertTrue(gameBoard.getScore() == 0);
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                assertEquals(gameBoard[i][j], Optional.empty());
+            }
+        }
+        assertEquals(boardGrid, gameBoard.getBoard());
     }
 }
