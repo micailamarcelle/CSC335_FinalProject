@@ -67,4 +67,11 @@ public class BoardTest {
         }
         assertEquals(boardGrid, gameBoard.getBoard());
     }
+
+    // Test when board is intilized whether two tiles are present on the board with values of 
+    // either 2 or 4
+    @Test
+    public void testStartBoard() {
+        
+    }
 }

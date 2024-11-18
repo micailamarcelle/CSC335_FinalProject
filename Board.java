@@ -716,7 +716,27 @@ public class Board {
         // Generate a random seed
         // NOTE: We may need to omit this and only use a specific seed in the JUnit test 
         // since then it won't be random for each game of the same board size
+	    int tileVal1;
+        int tileVal2;
+
         Random random = new Random(50); 
+        int randInt1 = rand.nextInt(10);
+        int randInt2 = rand.nextInt(10);
+        // 70% probability that the tile value will be 2
+        // 30% probability that the tile value with be 4
+        if (randInt1 <= 7) {
+            tileVal1 = 2;
+        }
+        else {
+            tileVal1 = 4;
+        }
+
+        if (randInt2 <= 7) {
+            tileVal2 = 2;
+        }
+        else {
+            tileVal2 = 4;
+        }
 
         // Generate the first random space to insert a tile by first generating select random row
         // and a random column index in that row
@@ -744,8 +764,8 @@ public class Board {
         }
 
         // Place tiles of value 2 in the two randomly generated postions on the board
-        placeTile(randRow1, randCol1, 2);
-        placeTile(randRow2, randCol2, 2);
+        placeTile(randRow1, randCol1, tileVal);
+        placeTile(randRow2, randCol2, tileVal2);
    }
 
    /*
