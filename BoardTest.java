@@ -32,7 +32,7 @@ public class BoardTest {
         Tile b = new Tile(a);
         assertEquals(a, b);
 
-        Tile c = new Tile()
+        Tile c = new Tile();
         c.multiplyValByTwo();
         c.multiplyValByTwo();
         c.multiplyValByTwo();

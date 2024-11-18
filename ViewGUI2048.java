@@ -1,6 +1,6 @@
 /*
 File: ViewGUI2048.java
-Authors: N/A (list all names? just person who wrote it?)
+Authors: Lane Molsbee
 Course: CSC 335
 Purpose: Implements the GUI application, which will be used to provide a graphical 
 interface via which the user can interact with our 2048 game.
@@ -11,11 +11,17 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.DynamicContainer.dynamicContainer;
+
+import java.awt.*;
 import java.awt.event.*;
 
 public class ViewGUI2048 extends JFrame {
     private Board board;
     private JFrame frame;
+    
     private JLabel scoreLabel;
     private static final JLabel welcome = new JLabel("2048"); 
     private JPanel panel, dataPanel, gamePanel; //panel will be the main panel on which everything takes place
@@ -88,13 +94,75 @@ public class ViewGUI2048 extends JFrame {
             }
         }
     }
+    private class Grid extends JPanel{
+        private int size;
+        private final int TILE_SIZE = 10;
+        public Grid(BoardSize size){
+            this.size = 4 + 2 * size.ordinal();
+        }
+        /**
+         * @override
+         */
+        protected void paintComponent(Graphics g){
+            super.paintComponent(g);
+            Optional<Tile>[][] currBoard = board.getBoard();
+            for(int i = 0; i < currBoard.length; i++){
+                for(int j = 0; j < currBoard.length; j++){
+                    String tileValue;
+                    if(currBoard[i][j].isEmpty()){
+                        g.setColor(Color.GRAY);
+                        tileValue = "";
+                    }
+                    
+                    else{
+                        g.setColor(Color.RED);
+                        Integer val = currBoard[i][j].get().getValue();
+                        tileValue = val.toString();
+                    }
+                    g.fillRect(j * TILE_SIZE, i * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                    g.setColor(Color.BLACK);
+                    g.drawRect(j * TILE_SIZE, i * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                    FontMetrics metrics = g.getFontMetrics();
+                    int textWidth = metrics.stringWidth(tileValue);
+                    int textHeight = metrics.getHeight();
+                    int x = j * TILE_SIZE + (TILE_SIZE - textWidth) / 2;
+                    int y = i * TILE_SIZE + (TILE_SIZE + textHeight) / 2 - metrics.getDescent();
+                    g.setColor(Color.BLACK);
+                    g.drawString(tileValue, x, y);
+
+
+
+                        
+                }
+            }
+        }
+    }
+    
     private void clear(){
         frame.remove(gamePanel);
         frame.revalidate();
         frame.repaint();
     }
 
-    private static void runGame(){
+    private void runGame(){
+        do{
+        } while(board.isGameOver() != HasWon.LOST);
+    }
+    private void drawCurrGrid(Graphics g){
+        super.paintComponents(g);
+        int width = board.getBoard().length * 40;
+        int height  = board.getBoard().length * 40;
+        int cellWidth = width / 40;
+        int cellHeight = height / 40;
+        g.setColor(Color.GRAY);
+        for(int i  = 0; i <= board.getBoard().length; i++){
+            //Draw vertical lines
+            g.drawLine(i * cellWidth, 0, 9 * cellWidth, height);
+            //Draw horizontal lines
+            g.drawLine(0, i*cellHeight, width, i * cellHeight);
+
+        }
+
 
     }
     public static void main(String[] args){
