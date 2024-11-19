@@ -70,30 +70,30 @@ public class ViewGUI2048 extends JFrame {
     private class ButtonClickListener implements ActionListener{
         public void actionPerformed(ActionEvent e){
             String command = e.getActionCommand();
-            if(e.equals("four")){
-                clear();
+            if(command.equals("four")){
+                //clear();
                 board = new Board(BoardSize.FOUR);
+                //panel.add(dataPanel);
                 scoreLabel = new JLabel("Current score: " + board.getScore());
-                dataPanel.add(scoreLabel);
-                panel.add(dataPanel);
+                dataPanel.add(scoreLabel);                
                 panel.revalidate();
                 panel.repaint();
                 runGame();
-            }else if(e.equals("six")){
-                clear();
+            }else if(command.equals("six")){
+                //clear();
                 board = new Board(BoardSize.SIX);
-                scoreLabel = new JLabel("Current score: " + board.getScore());
-                panel.add(dataPanel); 
+                //panel.add(dataPanel); 
+                scoreLabel = new JLabel("Current score: " + board.getScore());                
                 dataPanel.add(scoreLabel); 
                 panel.revalidate();
                 panel.repaint(); 
                 runGame();
             }else{
-                clear();
+                //clear();
                 board = new Board(BoardSize.EIGHT);
-                scoreLabel = new JLabel("Current score: " + board.getScore());
-                dataPanel.add(scoreLabel);
-                panel.add(dataPanel);                
+                //panel.add(dataPanel);
+                scoreLabel = new JLabel("Current score: " + board.getScore());                
+                dataPanel.add(scoreLabel);                                
                 panel.revalidate();
                 panel.repaint();  
                 runGame();
@@ -142,13 +142,17 @@ public class ViewGUI2048 extends JFrame {
     
     private void clear(){
         panel.remove(gamePanel);   
-        gamePanel = new JPanel();     
+        gamePanel = new JPanel(); 
+        gamePanel.revalidate();
+        gamePanel.repaint();    
         panel.revalidate();
         panel.repaint();
     }
 
     private void runGame(){
+        clear();
         Grid gameBoard = new Grid(board.getBoard().length);
+        /*
         do{
             clear();            
             gameBoard.paintComponent(getGraphics());
@@ -157,9 +161,10 @@ public class ViewGUI2048 extends JFrame {
             gamePanel.revalidate();
             gamePanel.repaint();
             panel.revalidate();
-            panel.repaint();            
+            panel.repaint();          
             
         } while(board.isGameOver() != HasWon.LOST);
+         */
     }
     public static void main(String[] args){
         ViewGUI2048 game = new ViewGUI2048();
