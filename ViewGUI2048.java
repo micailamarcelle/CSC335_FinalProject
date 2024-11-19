@@ -13,8 +13,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.DynamicContainer.dynamicContainer;
-
 import java.awt.*;
 import java.awt.event.*;
 
@@ -31,15 +29,18 @@ public class ViewGUI2048 extends JFrame {
     }
 
     private void setUp(){
-        gamePanel = new JPanel();
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(8000, 8000);
-        dataPanel = new JPanel();
-        dataPanel.add(welcome);
+        frame.setSize(8000, 8000);      
         panel = new JPanel();
+        scoreLabel = new JLabel("");
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        gamePanel = new JPanel();
+        dataPanel = new JPanel();
         panel.add(dataPanel);
+        panel.add(gamePanel);          
+        dataPanel.add(welcome);   
+        dataPanel.add(scoreLabel);    
         this.add(panel);
 
         this.addWindowFocusListener(new WindowAdapter(){
@@ -63,46 +64,29 @@ public class ViewGUI2048 extends JFrame {
         gamePanel.add(fourGrid);
         gamePanel.add(sixGrid);
         gamePanel.add(eightGrid);
-        panel.add(gamePanel);
-
     }
 
     private class ButtonClickListener implements ActionListener{
         public void actionPerformed(ActionEvent e){
             String command = e.getActionCommand();
             if(command.equals("four")){
-                //clear();
+                clear();
                 board = new Board(BoardSize.FOUR);
-                //panel.add(dataPanel);
-                scoreLabel = new JLabel("Current score: " + board.getScore());
-                dataPanel.add(scoreLabel);                
-                panel.revalidate();
-                panel.repaint();
                 runGame();
             }else if(command.equals("six")){
-                //clear();
+                clear();
                 board = new Board(BoardSize.SIX);
-                //panel.add(dataPanel); 
-                scoreLabel = new JLabel("Current score: " + board.getScore());                
-                dataPanel.add(scoreLabel); 
-                panel.revalidate();
-                panel.repaint(); 
                 runGame();
             }else{
-                //clear();
+                clear();
                 board = new Board(BoardSize.EIGHT);
-                //panel.add(dataPanel);
-                scoreLabel = new JLabel("Current score: " + board.getScore());                
-                dataPanel.add(scoreLabel);                                
-                panel.revalidate();
-                panel.repaint();  
                 runGame();
             }
         }
     }
     private class Grid extends JPanel{
         private int size;
-        private final int TILE_SIZE = 40;
+        private final int TILE_SIZE = 60;
         public Grid(int size){
             this.size = size;
         }
@@ -112,8 +96,8 @@ public class ViewGUI2048 extends JFrame {
         protected void paintComponent(Graphics g){
             super.paintComponent(g);
             Optional<Tile>[][] currBoard = board.getBoard();
-            for(int i = 0; i < currBoard.length; i++){
-                for(int j = 0; j < currBoard.length; j++){
+            for(int i = 0; i < size; i++){
+                for(int j = 0; j < size; j++){
                     String tileValue;
                     if(currBoard[i][j].isEmpty()){
                         g.setColor(Color.GRAY);
@@ -143,28 +127,24 @@ public class ViewGUI2048 extends JFrame {
     private void clear(){
         panel.remove(gamePanel);   
         gamePanel = new JPanel(); 
-        gamePanel.revalidate();
-        gamePanel.repaint();    
         panel.revalidate();
         panel.repaint();
     }
 
     private void runGame(){
         clear();
-        Grid gameBoard = new Grid(board.getBoard().length);
-        /*
-        do{
-            clear();            
-            gameBoard.paintComponent(getGraphics());
+        Grid gameBoard = new Grid(board.getBoard().length);        
+        do{       
             panel.add(gamePanel);
+            scoreLabel.setText("Current score: " + board.getScore());  
+            gameBoard.paintComponent(getGraphics());
             gamePanel.add(gameBoard);
             gamePanel.revalidate();
             gamePanel.repaint();
             panel.revalidate();
             panel.repaint();          
             
-        } while(board.isGameOver() != HasWon.LOST);
-         */
+        } while(board.isGameOver() != HasWon.LOST);    
     }
     public static void main(String[] args){
         ViewGUI2048 game = new ViewGUI2048();
