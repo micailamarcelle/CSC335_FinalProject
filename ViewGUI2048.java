@@ -18,7 +18,6 @@ import java.awt.event.*;
 
 public class ViewGUI2048 extends JFrame {
     private Board board;
-    private JFrame frame;
     
     private JLabel scoreLabel;
     private static final JLabel welcome = new JLabel("2048"); 
@@ -28,15 +27,13 @@ public class ViewGUI2048 extends JFrame {
         setUp();        
     }
 
-    private void setUp(){
-        frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(8000, 8000);      
+    private void setUp(){  
+        this.setSize(800, 800);
         panel = new JPanel();
         scoreLabel = new JLabel("");
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        gamePanel = new JPanel();
         dataPanel = new JPanel();
+        gamePanel = new JPanel();
         panel.add(dataPanel);
         panel.add(gamePanel);          
         dataPanel.add(welcome);   
@@ -56,8 +53,8 @@ public class ViewGUI2048 extends JFrame {
         fourGrid.setActionCommand("four");
         fourGrid.addActionListener(new ButtonClickListener());
         JButton sixGrid = new JButton("Six by six");
-        fourGrid.setActionCommand("six");
-        fourGrid.addActionListener(new ButtonClickListener());
+        sixGrid.setActionCommand("six");
+        sixGrid.addActionListener(new ButtonClickListener());
         JButton eightGrid = new JButton("Eight by eight");
         eightGrid.setActionCommand("eight");
         eightGrid.addActionListener(new ButtonClickListener());
@@ -89,6 +86,8 @@ public class ViewGUI2048 extends JFrame {
         private final int TILE_SIZE = 60;
         public Grid(int size){
             this.size = size;
+            int gridSize = size * TILE_SIZE;
+            this.setPreferredSize(new Dimension(gridSize, gridSize));
         }
         /**
          * @override
@@ -125,26 +124,22 @@ public class ViewGUI2048 extends JFrame {
     }
     
     private void clear(){
-        panel.remove(gamePanel);   
-        gamePanel = new JPanel(); 
+        panel.remove(gamePanel);
+        gamePanel = new JPanel();                    
         panel.revalidate();
         panel.repaint();
     }
 
     private void runGame(){
-        clear();
-        Grid gameBoard = new Grid(board.getBoard().length);        
-        do{       
-            panel.add(gamePanel);
-            scoreLabel.setText("Current score: " + board.getScore());  
-            gameBoard.paintComponent(getGraphics());
-            gamePanel.add(gameBoard);
-            gamePanel.revalidate();
-            gamePanel.repaint();
-            panel.revalidate();
-            panel.repaint();          
-            
-        } while(board.isGameOver() != HasWon.LOST);    
+        clear();        
+        panel.add(gamePanel);
+        Grid gameBoard = new Grid(board.getBoard().length); 
+        gamePanel.add(gameBoard, BorderLayout.CENTER);
+        gamePanel.revalidate();
+        gamePanel.repaint();
+        scoreLabel.setText("Current score: " + board.getScore());
+        gameBoard.repaint();
+        
     }
     public static void main(String[] args){
         ViewGUI2048 game = new ViewGUI2048();
