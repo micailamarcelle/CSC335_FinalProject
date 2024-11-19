@@ -21,7 +21,9 @@ acting as the model within the system.
 // value 2. Maybe constructing a method to determine where to place the initial
 // tiles. We have not implemented placing the first two random tiles yes. 
 
+import java.util.Arrays;
 import java.util.Optional;
+import java.util.Random;
 
 public class Board {
     // Declares the private instance variables for the Board class, which include
@@ -37,6 +39,7 @@ public class Board {
 
         @pre size != null
         @post constructs a new, empty Board object
+        @param size -- BoardSize enumerated type representing the size of the game board
      */
     public Board(BoardSize size) {
         // Initializes the score to 0 when the Board is created
@@ -47,8 +50,6 @@ public class Board {
 
         // Constructs the actual board, filling it with empty Optional<Tile> objects,
         // since we want the board to be effectively empty at the beginning of the game
-        // CHECK TO SEE WHETHER THERE IS A BETTER WAY TO DO THIS!!
-
         this.boardGrid = (Optional<Tile>[][]) new Optional<?>[sizeAsInt][sizeAsInt];
         for (int i = 0; i < sizeAsInt; i++) {
             for (int j = 0; j < sizeAsInt; j++) {
@@ -72,6 +73,8 @@ public class Board {
         associated with the current Board object, copying each Tile within the board into
         a new nested array of Optional<Tile> objects via the Tile copy constructor. The
         copy of the nested array is then returned.
+
+        @return a nested array of Optional<Tile> objects representing the board for the game
      */
     public Optional<Tile>[][] getBoard() {
         // Gets the size of the board
@@ -103,27 +106,49 @@ public class Board {
         click within the 2048 game. This method looks at each row within boardGrid, and sees
         if there are any tiles that can be combined from left to right. These tiles, if they
         exist, are then combined, and all tiles are shifted as far to the right as possible.
-        The score associated with the board is also then updated appropriately.
+        The score associated with the board is also then updated appropriately. Note that this
+        method also returns an int representing the total number of shifts/combinations that
+        occurred during the run of the method, since this is used in order to determine whether
+        or not randomized tiles need to be added to the board after the shift.
+
+        @return an int representing the total number of shifts/combinations that occurred during
+                the run of this method
      */
-    public void shiftRight() {
+    public int shiftRight() {
+        // Initializes an int for keeping track of the total number of shifts/combinations
+        int numMoves = 0;
+
         // Iterates through all of the rows within the board
         for (int i = 0; i < boardGrid.length; i++) {
             // Gets the current row
             Optional<Tile>[] curRow = boardGrid[i];
 
             // Combines everything horizontally wihtin the row
-            combineAllHorizontal(curRow);
+            numMoves += combineAllHorizontal(curRow);
 
             // Shifts everything to the right after combination
-            shiftAllRight(curRow);
+            numMoves += shiftAllRight(curRow);
         }
+
+        // Returns the total number of shifts/combinations
+        return numMoves;
     }
 
     /*
         Private helper method, which takes in an Optional<Tile> array and which moves all
-        Tiles within the array as far to the right as they can go.
+        Tiles within the array as far to the right as they can go. Note that this method also
+        returns the number of shifts that were actually made, since this is used to help determine
+        when new, randomized Tiles actually need to be added to the board
+
+        @pre row != null
+        @post shifts all Tile objects in each row as far to the right as they can go
+        @param row -- Optional<Tile>[] object representing a row of the game board
+        @return an int representing the number of Tiles that were actually shifted
      */
-    private void shiftAllRight(Optional<Tile>[] row) {
+    private int shiftAllRight(Optional<Tile>[] row) {
+        // Initializes an int representing the number of Tiles that were actually shifted
+        int numShifted = 0;
+
         // Iterates through the array, but backwards
         int i = row.length - 1;
         while (i >= 0) {
@@ -152,19 +177,35 @@ public class Board {
             if (i != curIndex) {
                 row[curIndex] = Optional.empty();
                 row[i] = Optional.of(curTile);
+
+                // We also increment numShifted, since we actually shifted a Tile
+                numShifted++;
             }
 
             // Decrements i so we can continue iterating
             i--;
         }
+
+        // Returns the value representing the number of tiles that were shifted
+        return numShifted;
     }
 
     /*
         Private helper method, which takes in an Optional<Tile> array representing a row within
         our board, and which combines all tiles that are adjacent to one another with the same
-        value. 
+        value. Note that this method also counts the number of combinations that were actuall made,
+        and returns this value, since this will allow us to more easily determine when we need to
+        add new Tile objects to the board.
+
+        @pre row != null
+        @post makes all possible combinations of adjacent tiles in the given row of the board
+        @param row -- Optional<Tile>[] object that represents a particular row of the game board
+        @return an int representing the number of combinations that were actually made 
      */
-    private void combineAllHorizontal(Optional<Tile>[] row) {
+    private int combineAllHorizontal(Optional<Tile>[] row) {
+        // Initializes the int that counts the number of combinations that are actually made
+        int numCombined = 0;
+
         // Iterates until there are no more possible horizontal combinations
         while (areThereCombinations(row) == true) {
             // Finds two Tile objects with the same value, keeping track of their indices
@@ -214,17 +255,30 @@ public class Board {
             secondTile.multiplyValByTwo();
             row[firstTileIndex] = Optional.empty();
 
+            // The count for the number of combined tiles is also incremented to account for this
+            // combination
+            numCombined++;
+
             // We also add the value of the combined tile to the overall score associated with the
             // board
             this.score += secondTile.getValue();
         }
+
+        // Returns the int representing the number of tiles that were actually combined
+        return numCombined;
     }
 
     /*
         Private helper method, which takes in an Optional<Tile> array representing a row within
         our board, and which check to see whether there are any remaining Tile objects which
         have the same value and are next to one another in the grid, meaning that they should/
-        could be combined. Returns true if there are any combinations left, and false otherwise
+        could be combined. Returns true if there are any combinations left, and false otherwise.
+
+        @pre row != null
+        @post checks for any combinations in the given row, returning true if there are any, false
+                otherwise
+        @param row -- Optional<Tile>[] object representing a particular row in the board
+        @return true if there are any possible combinations in the given row, false otherwise
      */
     private boolean areThereCombinations(Optional<Tile>[] row) {
         // Initially, we find the first non-null Tile within this row of the board
@@ -273,28 +327,48 @@ public class Board {
         within the 2048 game. This method looks at each row within boardGrid, combines all tiles that
         would be combined with a left shift, and moves all of the tiles as far to the left within the
         board as they can go once this is done. The score associated with the board is then updated
-        appropriately according to the combinations made with these shifts.
+        appropriately according to the combinations made with these shifts. Note that this method also
+        returns an int representing the total number of shifts/combinations that occurred during the
+        run of the method, since this is used to determine whether we need to add in any randomized tiles
+
+        @return an int representing the total number of shifts and combinations that occurred
      */
-    public void shiftLeft() {
+    public int shiftLeft() {
+        // Initializes the count for the total number of shifts/combinations
+        int numMoves = 0;
+
         // Iterates through all of the rows within boardGrid
         for (int i = 0; i < boardGrid.length; i++) {
             // Gets the current row
             Optional<Tile>[] curRow = boardGrid[i];
 
             // Combines everything horizontally that can be combined
-            combineAllHorizontal(curRow);
+            numMoves += combineAllHorizontal(curRow);
 
             // Shifts everything in the row to the left once this is done
-            shiftAllLeft(curRow);
+            numMoves += shiftAllLeft(curRow);
         }
+
+        // Returns the total number of shifts/combinations
+        return numMoves;
     }
 
     /*
         Private helper method, which takes in an Optional<Tile> array representing a row within our 
         board, and which shifts all of the Tile objects within the board as far to the left as they
-        can go
+        can go. Note that this method also returns an int representing the number of shifts that were
+        actually made, since this will be used to determine when we actually need to place randomized
+        Tiles in the board
+
+        @pre row != null
+        @post shifts all of the Tiles in the board as far to the left as they can go
+        @param row -- Optional<Tile>[] object representing a particular row of the board
+        @return an int representing the number of shifts that were actually made
      */
-    private void shiftAllLeft(Optional<Tile>[] row) {
+    private int shiftAllLeft(Optional<Tile>[] row) {
+        // Initializes the count for the number of shifts that were made
+        int numShifts = 0;
+
         // Iterates until we run out of indices
         int i = 0;
         while (i < row.length) {
@@ -305,7 +379,7 @@ public class Board {
 
             // If there are no more Tiles left, then we simply return, since our job is done
             if (i >= row.length) {
-                return;
+                return numShifts;
             }
 
             // Otherwise, we've found a Tile, so we figure out the spot where it should go when shifted
@@ -322,11 +396,17 @@ public class Board {
             if (i != curIndex) {
                 row[curIndex] = Optional.empty();
                 row[i] = Optional.of(curTile);
+
+                // If we actually shift, then we increment numShifted
+                numShifts++;
             }
 
             // Increments i for the next iteration
             i++;
         }
+
+        // Returns the count for the number of shifted Tiles
+        return numShifts;
     }
 
     /*
@@ -334,31 +414,51 @@ public class Board {
         within the 2048 game. This method looks at each column within boardGrid, combines all tiles that
         would be combined with an up shift, and moves all of the tiles as far upwards within the
         board as they can go once this is done. The score associated with the board is then updated
-        appropriately according to the combinations made with these shifts.
+        appropriately according to the combinations made with these shifts. Note that this method also
+        returns an int representing the total number of shifts/combinations that were made, since this
+        will be used to determine whether or not we need to add in randomized tiles after this move
+
+        @return an int representing the total number of shifts and combinations that occurred
      */
-    public void shiftUp() {
+    public int shiftUp() {
+        // Initializes an int keeping track of the total number of shifts/combinations that occur
+        int numMoves = 0;
+
         // Iterates through all of the columns within boardGrid
         int curCol = 0;
         while (curCol < boardGrid.length) {
             // Makes all of the necessary combinations for an up shift, combining Tiles as necessary
             // within the current column
-            combineAllVertical(curCol);
+            numMoves += combineAllVertical(curCol);
 
             // Shifts all Tiles as far up as they can go within the board after any potential combinations
-            shiftAllUp(curCol);
+            numMoves += shiftAllUp(curCol);
 
             // Continues iterating on
             curCol++;
         }
+
+        // Returns the total number of shifts/combinations
+        return numMoves;
     }
 
     /*
         Private helper method which can be used to shift all of the Tile objects in a particular
         column of the board as far up as they can go. This method takes in an int representing the
         particular column that we're interested in, and it does the shifting on the desired column
-        within the boardGrid instance variable.
+        within the boardGrid instance variable. Furthermore, this method returns an int representing
+        the number of shifts that were actually made, since this will be used to determine whether or 
+        not we actually need to add in new randomized Tiles to the board
+
+        @pre col >= 0 && col < boardGrid.length
+        @post shifts all of the Tiles in the current column as far up as possible
+        @param col -- int representing the index of the column that we want to do the shifting in
+        @return an int representing the number of shifts that were actually made
      */
-    private void shiftAllUp(int col) {
+    private int shiftAllUp(int col) {
+        // Initializes the int representing the number of actual shifts that were made
+        int numShifts = 0;
+
         // Iterates through the current column from top to bottom
         int i = 0;
         while (i < boardGrid.length) {
@@ -370,7 +470,7 @@ public class Board {
             // If we hit the end of the column without hitting any more Tiles, then we simply return,
             // since the job of the method is done
             if (i == boardGrid.length) {
-                return;
+                return numShifts;
             }
 
             // Otherwise, we get the Tile at the current spot in the board, then iterate backwards
@@ -389,19 +489,35 @@ public class Board {
             if (i != curIndex) {
                 boardGrid[i][col] = Optional.of(curTile);
                 boardGrid[curIndex][col] = Optional.empty();
+
+                // Since we actually shifted something, we increment numShifts
+                numShifts++;
             }
 
             // Finally, we increment i and continue iterating on
             i++;
         }
+
+        // Returns the number of shifts that were actually made
+        return numShifts;
     }
 
     /*
         Private helper method which can be used to combine all adjacent tiles with the same value within
         a particular column of boardGrid. Takes in an int representing the column of boardGrid that we're
-        interested in, and makes all of the necessary combinations, updating score as necessary
+        interested in, and makes all of the necessary combinations, updating score as necessary. Note that
+        this method also returns an int representing the number of combinations that were actually made, since
+        this will help us to determine when to actually add in randomized tiles
+
+        @pre col >= 0 && col < boardGrid.length
+        @post makes all possible vertical combinations of adjacent tiles in the given column
+        @param col -- int representing the column in which we're making combinations
+        @return an int representing the number of combinations that were actually made
      */
-    private void combineAllVertical(int col) {
+    private int combineAllVertical(int col) {
+        // Initializes the int representing the number of combinations that were actually made
+        int numCombined = 0;
+
         // Iterates until there are no possible vertical combinations left 
         while (areThereCombinationsVertical(col) == true) {
             // Finds two adjacent Tiles with the same value, keeping track of the index of the first
@@ -448,9 +564,15 @@ public class Board {
             secondTile.multiplyValByTwo();
             boardGrid[firstTileIndex][col] = Optional.empty();
 
+            // Increments the count for the number of combined tiles
+            numCombined++;
+
             // We then update the score with the new value of this second tile
             this.score += secondTile.getValue();
         }
+
+        // Returns the number of combinations that were made
+        return numCombined;
     }
 
     /*
@@ -458,6 +580,12 @@ public class Board {
         combinations to be made within a particular column of the board. Takes in an int representing the
         index of the column we're interested in, and returns true if there are any combinations, and 
         false otherwise
+
+        @pre col >= 0 && col < boardGrid.length
+        @post checks to see if there are any combinations in the current column
+        @param col -- int representing the index of the column of interest in which we want to check for
+                    combinations
+        @return true if there are vertical combinations in the current column, false otherwise
      */
     private boolean areThereCombinationsVertical(int col) {
         // Initially, we find the first non-null Tile within this column
@@ -506,9 +634,16 @@ public class Board {
         within the 2048 game. This method looks at each column within boardGrid, combines all tiles that
         would be combined with a down shift, and moves all of the tiles as far down within the
         board as they can go once this is done. The score associated with the board is then updated
-        appropriately according to the combinations made with these shifts.
+        appropriately according to the combinations made with these shifts. Note that this method also
+        returns an int representing the total number of shifts and combinations that occurred, since this
+        information will be used to determine whether or not any new randomized tiles need to be added in
+
+        @return an int representing the total number of shifts and combinations that occurred
      */
-    public void shiftDown() {
+    public int shiftDown() {
+        // Initializes an int that will count the total number of shifts/combinations that occur
+        int numMoves = 0;
+
         // Iterates through all of the columns in boardGrid
         int curCol = 0;
         while (curCol < boardGrid.length) {
@@ -523,15 +658,28 @@ public class Board {
             // Increments curCol to continue iterating
             curCol++;
         }
+
+        // Returns the total number of moves/combinations
+        return numMoves;
     }
 
     /*
         Private helper method which can be used to shift all of the Tile objects in a particular
         column of the board as far down as they can go. This method takes in an int representing the
         particular column that we're interested in, and it does the shifting on the desired column
-        within the boardGrid instance variable.
+        within the boardGrid instance variable. Note that this method also returns an int representing
+        the number of shifts that were actually made, since this will be used to determine when we 
+        actually need to add in randomized tiles to the board
+
+        @pre col >= 0 && col < boardGrid.length
+        @post shifts all of the Tiles in the given column as far down as possible
+        @param col -- int representing the column in which we want to do our shifting
+        @return an int representing the number of shifts that were actually made
      */
-    private void shiftAllDown(int col) {
+    private int shiftAllDown(int col) {
+        // Initializes the counter for the number of shifts made
+        int numShifts = 0;
+
         // Iterates through the given column from the bottom up
         int i = boardGrid.length - 1;
         while (i >= 0) {
@@ -543,7 +691,7 @@ public class Board {
 
             // If we find no other Tiles, then we simply return, since the job of the method is done
             if (i < 0) {
-                return;
+                return numShifts;
             }
 
             // Otherwise, we get the Tile at the current spot in the board, and iterate backwards 
@@ -561,17 +709,25 @@ public class Board {
             if (curIndex != i) {
                 boardGrid[i][col] = Optional.of(curTile);
                 boardGrid[curIndex][col] = Optional.empty();
+
+                // We also increment the number of shifts, since a shift actually occurred
+                numShifts++;
             }
 
             // We then decrement i and continue iterating on
             i--;
         }
+
+        // Finally, the number of shifts is returned
+        return numShifts;
     }
 
     /*
         Public method which can be used to check whether the game is over. Returns a value of the HasWon
         enumerated type, which will be WON if the player has won, LOST if the player has lost, and NOT_DONE
         if the game is not yet over
+
+        @return a HasWon enumerated type to indicate the win/lose/not done status of the game
      */
     public HasWon isGameOver() {
         // First, we check to see whether the player has obtained a tile with a value of 2048
@@ -619,6 +775,9 @@ public class Board {
         Private helper method which can be used in order to find the highest score associated with a
         Tile in the board. If there are no Tiles in the board, then this method returns 0, and otherwise,
         the method returns an int representing the highest value associated with a Tile in the board
+
+        @return 0 if there are no Tiles in the board; otherwise, returns an int representing the highest
+            value associated with a Tile in the board
      */
     private int findHighestValue() {
         // Initializes the current highest value to 0
@@ -646,9 +805,11 @@ public class Board {
     }
 
     /*
-        Private helper method which can be utilized in order to count the number of non-empty tiles
+        Private helper method which can be utilized in order to count the number of empty tiles
         currently present within the board. Takes in no parameters, and returns an int representing
         this number.
+
+        @return an int representing the number of empty tiles current present within the board
      */
     private int countNumEmpty() {
         // Initializes the return count to 0
@@ -670,114 +831,72 @@ public class Board {
     }
 
     /*
-        Private helper method to place a Tile object of a specified integer value on the board  
-        at a given index
-        
-        //NOTE: The color of the tile is determined by a helper method.
+        Private helper method which can be used to place a Tile object with a specified value in
+        a particular spot on the board. Note that, based on the constructor for the Tile class, it
+        is a precondition that value is equal to either 2 or 4. 
+
+        @pre row >= 0 && row < boardGrid.length && col >= 0 && col < boardGrid.length && (value == 2 
+            || value == 4)
+        @post a new Tile object with the specified value is placed at the specified location within the
+            board.
     */
-   private void placeTile(int row, int col, int value) {
-	   TileColor color = determineTileColor(value);
-	   Tile tileToPlace = new Tile(value, color);
-	   Optional<Tile> optionalTileToPlace = Optional.of(tileToPlace);
+   public void setTile(int row, int col, int value) {
+	    Tile tileToPlace = new Tile(value);
+	    Optional<Tile> optionalTileToPlace = Optional.of(tileToPlace);
         boardGrid[row][col] = optionalTileToPlace;
    }
 
-   
-   /*
-    * 	Private helper method to determine the tile color that should be assigned for a given
-    * 	value
+    /*
+        Private helper method to generate a random value for a tile. The returned value will either be 2
+        or 4, with a 70% probability that the tile value will be 2, and a 30% probability that it will be
+        4, based on the probabilities associated with tile generation in the 2048 game.
+
+        @return an int which is either 2 or 4, randomly selected with the probabilities described above
     */
-    private TileColor determineTileColor(int value) {
-    	// Initialize a default color to the variable
-    	TileColor color = TileColor.GRAY;
-    	// Get the last digit of value using modulus operator
-		int lastDigit = value % 10;
-		if (lastDigit == 2) {
-			color = TileColor.GRAY;
-		}
-		else if (lastDigit == 4) {
-			color = TileColor.LIGHT_BLUE;
-		}
-		else if (lastDigit == 8) {
-			color = TileColor.DARK_BLUE;
-		}
-		else if (lastDigit == 6) {
-			color = TileColor.PURPLE;
-		}
-		
-		return color;
-	}
-
-	/*
-        Private helper method which place 2 randomized tiles of value 2 onto the board
-        when the board is initialized
-    */
-   private void placeTilesAtStart() {
-        // Generate a random seed
-        // NOTE: We may need to omit this and only use a specific seed in the JUnit test 
-        // since then it won't be random for each game of the same board size
-        Random random = new Random(50); 
-
-        // Generate the first random space to insert a tile by first generating select random row
-        // and a random column index in that row
-        int randRow1 = random.nextInt(boardGrid.length);
-        int randCol1 = random.nextInt(boardGrid.length);
-
-        int [] randPos1 = {randRow1, randCol1};
-
-        // Initialize the second tile positional arguments (row and column indices on the board)
-        // NOTE: If I don't assign values to randRow2 and randCol2, there is an error in 
-        //       placeTile(randRow2, randCol2, 2). I'm not sure why since the values should get
-        //       initialized upon entering the while loop
-        int randRow2 = 0;
-        int randCol2 = 0;
-        
-        int[] randPos2 = {randRow1, randCol1};
-        // Generate the second random space to insert a tile by generating a random row and random
-        // column index that does not match the first tile location that was randomly generated
-        while (Arrays.equals(randPos1, randPos2)) {
-            randRow2 = random.nextInt(boardGrid.length);
-            randCol2 = random.nextInt(boardGrid.length);
-
-            randPos2[0] = randRow2;
-            randPos2[1] = randCol2;
-        }
-
-        // Place tiles of value 2 in the two randomly generated postions on the board
-        placeTile(randRow1, randCol1, 2);
-        placeTile(randRow2, randCol2, 2);
+   private int getRandValue() {
+        int tileVal;
+	  
+            // Determine what value the new tile will be using random
+            Random rand = new Random();
+            int randInt = rand.nextInt(10);
+            // 70% probability that the tile value will be 2
+            // 30% probability that the tile value with be 4
+            if (randInt <= 7) {
+                tileVal = 2;
+            }
+            else {
+                tileVal = 4;
+            }
+            return tileVal;
    }
 
-   /*
-        Private helper method to place a random tile of either value 2 or 4 at a random empty position
-        on the board 
-   */
-  private void placeRandTile() {
-	  int tileVal;
-	  
-	  // Determine what value the new tile will be using random
-	  Random rand = new Random();
-	  int randInt = rand.nextInt(10);
-	  // 70% probability that the tile value will be 2
-	  // 30% probability that the tile value with be 4
-	  if (randInt <= 7) {
-		  tileVal = 2;
-	  }
-	  else {
-		  tileVal = 4;
-	  }
-	  // Determine the position to place the Tile by randomly generating positions on the board until
-	  // finding one that is empty
-	  
-	  // Generate a random position on the board
-	  int row = rand.nextInt(boardGrid.length);
-      int col = rand.nextInt(boardGrid.length);
-	  // If the board position is not empty, generate a new random position
-      while (boardGrid[row][col].isPresent() == true) {
-    	  row = rand.nextInt(boardGrid.length);
-          col = rand.nextInt(boardGrid.length);
-      }
-      // Place a new Tile at the first random position that is empty
-      placeTile(row, col, tileVal);
-  }
+    /*
+        Private method which can be used to generate a random, empty position on the board in which a
+        Tile can be placed. Note that this method assumes that there is at least one empty spot currently
+        present within the board, and that the method will generate randomized positions until it finds
+        an empty one, which will then be returned.
+
+        @pre this.countNumEmpty() != 0
+        @post generates a random, empty position on the board in which a new Tile object can be placed
+        @return an int[] array of size two containing the [row, col] of the generated randomized position
+    */
+   private int[] getRandLocation() {
+        // Determine the position to place the Tile by randomly generating positions on the board until
+        // finding one that is empty
+        Random rand = new Random();
+            
+        // Generate intial random location
+        int row = rand.nextInt(boardGrid.length);
+        int col = rand.nextInt(boardGrid.length);
+        // If the board position is not empty, generate a new random position
+        while (boardGrid[row][col].isPresent() == true) {
+            row = rand.nextInt(boardGrid.length);
+            col = rand.nextInt(boardGrid.length);
+        }
+
+        int[] pos = {row, col};
+
+        return pos;
+   }
+
 }
