@@ -18,7 +18,7 @@ public class Tile {
         tile, and a TileColor enumerated type representing the color of the tile, and it
         constructs a new Tile object with these values
 
-        @pre value % 2 == 0 && value > 0 && color != null
+        @pre (value == 2 || value == 4) && color != null
         @post constructs a new Tile object with the given values
      */
     public Tile(int value, TileColor color) {
