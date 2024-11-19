@@ -1,6 +1,6 @@
 /*
 File: TileTest.java
-Authors: N/A (for now)
+Authors: Elise Bushra (ebushra)
 Course: CSC 335
 Purpose: Provides JUnit tests for the functionalities of the Tile class
  */

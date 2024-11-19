@@ -39,6 +39,7 @@ public class Board {
 
         @pre size != null
         @post constructs a new, empty Board object
+        @param size -- BoardSize enumerated type representing the size of the game board
      */
     public Board(BoardSize size) {
         // Initializes the score to 0 when the Board is created
@@ -74,6 +75,8 @@ public class Board {
         associated with the current Board object, copying each Tile within the board into
         a new nested array of Optional<Tile> objects via the Tile copy constructor. The
         copy of the nested array is then returned.
+
+        @return a nested array of Optional<Tile> objects representing the board for the game
      */
     public Optional<Tile>[][] getBoard() {
         // Gets the size of the board
@@ -123,9 +126,19 @@ public class Board {
 
     /*
         Private helper method, which takes in an Optional<Tile> array and which moves all
-        Tiles within the array as far to the right as they can go.
+        Tiles within the array as far to the right as they can go. Note that this method also
+        returns the number of shifts that were actually made, since this is used to help determine
+        when new, randomized Tiles actually need to be added to the board
+
+        @pre row != null
+        @post shifts all Tile objects in each row as far to the right as they can go
+        @param row -- Optional<Tile>[] object representing a row of the game board
+        @return an int representing the number of Tiles that were actually shifted
      */
-    private void shiftAllRight(Optional<Tile>[] row) {
+    private int shiftAllRight(Optional<Tile>[] row) {
+        // Initializes an int representing the number of Tiles that were actually shifted
+        int numShifted = 0;
+
         // Iterates through the array, but backwards
         int i = row.length - 1;
         while (i >= 0) {
@@ -154,19 +167,35 @@ public class Board {
             if (i != curIndex) {
                 row[curIndex] = Optional.empty();
                 row[i] = Optional.of(curTile);
+
+                // We also increment numShifted, since we actually shifted a Tile
+                numShifted++;
             }
 
             // Decrements i so we can continue iterating
             i--;
         }
+
+        // Returns the value representing the number of tiles that were shifted
+        return numShifted;
     }
 
     /*
         Private helper method, which takes in an Optional<Tile> array representing a row within
         our board, and which combines all tiles that are adjacent to one another with the same
-        value. 
+        value. Note that this method also counts the number of combinations that were actuall made,
+        and returns this value, since this will allow us to more easily determine when we need to
+        add new Tile objects to the board.
+
+        @pre row != null
+        @post makes all possible combinations of adjacent tiles in the given row of the board
+        @param row -- Optional<Tile>[] object that represents a particular row of the game board
+        @return an int representing the number of combinations that were actually made 
      */
-    private void combineAllHorizontal(Optional<Tile>[] row) {
+    private int combineAllHorizontal(Optional<Tile>[] row) {
+        // Initializes the int that counts the number of combinations that are actually made
+        int numCombined = 0;
+
         // Iterates until there are no more possible horizontal combinations
         while (areThereCombinations(row) == true) {
             // Finds two Tile objects with the same value, keeping track of their indices
@@ -216,17 +245,30 @@ public class Board {
             secondTile.multiplyValByTwo();
             row[firstTileIndex] = Optional.empty();
 
+            // The count for the number of combined tiles is also incremented to account for this
+            // combination
+            numCombined++;
+
             // We also add the value of the combined tile to the overall score associated with the
             // board
             this.score += secondTile.getValue();
         }
+
+        // Returns the int representing the number of tiles that were actually combined
+        return numCombined;
     }
 
     /*
         Private helper method, which takes in an Optional<Tile> array representing a row within
         our board, and which check to see whether there are any remaining Tile objects which
         have the same value and are next to one another in the grid, meaning that they should/
-        could be combined. Returns true if there are any combinations left, and false otherwise
+        could be combined. Returns true if there are any combinations left, and false otherwise.
+
+        @pre row != null
+        @post checks for any combinations in the given row, returning true if there are any, false
+                otherwise
+        @param row -- Optional<Tile>[] object representing a particular row in the board
+        @return true if there are any possible combinations in the given row, false otherwise
      */
     private boolean areThereCombinations(Optional<Tile>[] row) {
         // Initially, we find the first non-null Tile within this row of the board
@@ -294,9 +336,19 @@ public class Board {
     /*
         Private helper method, which takes in an Optional<Tile> array representing a row within our 
         board, and which shifts all of the Tile objects within the board as far to the left as they
-        can go
+        can go. Note that this method also returns an int representing the number of shifts that were
+        actually made, since this will be used to determine when we actually need to place randomized
+        Tiles in the board
+
+        @pre row != null
+        @post shifts all of the Tiles in the board as far to the left as they can go
+        @param row -- Optional<Tile>[] object representing a particular row of the board
+        @return an int representing the number of shifts that were actually made
      */
-    private void shiftAllLeft(Optional<Tile>[] row) {
+    private int shiftAllLeft(Optional<Tile>[] row) {
+        // Initializes the count for the number of shifts that were made
+        int numShifts = 0;
+
         // Iterates until we run out of indices
         int i = 0;
         while (i < row.length) {
@@ -307,7 +359,7 @@ public class Board {
 
             // If there are no more Tiles left, then we simply return, since our job is done
             if (i >= row.length) {
-                return;
+                return numShifts;
             }
 
             // Otherwise, we've found a Tile, so we figure out the spot where it should go when shifted
@@ -324,11 +376,17 @@ public class Board {
             if (i != curIndex) {
                 row[curIndex] = Optional.empty();
                 row[i] = Optional.of(curTile);
+
+                // If we actually shift, then we increment numShifted
+                numShifts++;
             }
 
             // Increments i for the next iteration
             i++;
         }
+
+        // Returns the count for the number of shifted Tiles
+        return numShifts;
     }
 
     /*
@@ -358,9 +416,19 @@ public class Board {
         Private helper method which can be used to shift all of the Tile objects in a particular
         column of the board as far up as they can go. This method takes in an int representing the
         particular column that we're interested in, and it does the shifting on the desired column
-        within the boardGrid instance variable.
+        within the boardGrid instance variable. Furthermore, this method returns an int representing
+        the number of shifts that were actually made, since this will be used to determine whether or 
+        not we actually need to add in new randomized Tiles to the board
+
+        @pre col >= 0 && col < boardGrid.length
+        @post shifts all of the Tiles in the current column as far up as possible
+        @param col -- int representing the index of the column that we want to do the shifting in
+        @return an int representing the number of shifts that were actually made
      */
-    private void shiftAllUp(int col) {
+    private int shiftAllUp(int col) {
+        // Initializes the int representing the number of actual shifts that were made
+        int numShifts = 0;
+
         // Iterates through the current column from top to bottom
         int i = 0;
         while (i < boardGrid.length) {
@@ -372,7 +440,7 @@ public class Board {
             // If we hit the end of the column without hitting any more Tiles, then we simply return,
             // since the job of the method is done
             if (i == boardGrid.length) {
-                return;
+                return numShifts;
             }
 
             // Otherwise, we get the Tile at the current spot in the board, then iterate backwards
@@ -391,19 +459,35 @@ public class Board {
             if (i != curIndex) {
                 boardGrid[i][col] = Optional.of(curTile);
                 boardGrid[curIndex][col] = Optional.empty();
+
+                // Since we actually shifted something, we increment numShifts
+                numShifts++;
             }
 
             // Finally, we increment i and continue iterating on
             i++;
         }
+
+        // Returns the number of shifts that were actually made
+        return numShifts;
     }
 
     /*
         Private helper method which can be used to combine all adjacent tiles with the same value within
         a particular column of boardGrid. Takes in an int representing the column of boardGrid that we're
-        interested in, and makes all of the necessary combinations, updating score as necessary
+        interested in, and makes all of the necessary combinations, updating score as necessary. Note that
+        this method also returns an int representing the number of combinations that were actually made, since
+        this will help us to determine when to actually add in randomized tiles
+
+        @pre col >= 0 && col < boardGrid.length
+        @post makes all possible vertical combinations of adjacent tiles in the given column
+        @param col -- int representing the column in which we're making combinations
+        @return an int representing the number of combinations that were actually made
      */
-    private void combineAllVertical(int col) {
+    private int combineAllVertical(int col) {
+        // Initializes the int representing the number of combinations that were actually made
+        int numCombined = 0;
+
         // Iterates until there are no possible vertical combinations left 
         while (areThereCombinationsVertical(col) == true) {
             // Finds two adjacent Tiles with the same value, keeping track of the index of the first
@@ -450,9 +534,15 @@ public class Board {
             secondTile.multiplyValByTwo();
             boardGrid[firstTileIndex][col] = Optional.empty();
 
+            // Increments the count for the number of combined tiles
+            numCombined++;
+
             // We then update the score with the new value of this second tile
             this.score += secondTile.getValue();
         }
+
+        // Returns the number of combinations that were made
+        return numCombined;
     }
 
     /*
@@ -460,6 +550,12 @@ public class Board {
         combinations to be made within a particular column of the board. Takes in an int representing the
         index of the column we're interested in, and returns true if there are any combinations, and 
         false otherwise
+
+        @pre col >= 0 && col < boardGrid.length
+        @post checks to see if there are any combinations in the current column
+        @param col -- int representing the index of the column of interest in which we want to check for
+                    combinations
+        @return true if there are vertical combinations in the current column, false otherwise
      */
     private boolean areThereCombinationsVertical(int col) {
         // Initially, we find the first non-null Tile within this column
@@ -531,9 +627,19 @@ public class Board {
         Private helper method which can be used to shift all of the Tile objects in a particular
         column of the board as far down as they can go. This method takes in an int representing the
         particular column that we're interested in, and it does the shifting on the desired column
-        within the boardGrid instance variable.
+        within the boardGrid instance variable. Note that this method also returns an int representing
+        the number of shifts that were actually made, since this will be used to determine when we 
+        actually need to add in randomized tiles to the board
+
+        @pre col >= 0 && col < boardGrid.length
+        @post shifts all of the Tiles in the given column as far down as possible
+        @param col -- int representing the column in which we want to do our shifting
+        @return an int representing the number of shifts that were actually made
      */
-    private void shiftAllDown(int col) {
+    private int shiftAllDown(int col) {
+        // Initializes the counter for the number of shifts made
+        int numShifts = 0;
+
         // Iterates through the given column from the bottom up
         int i = boardGrid.length - 1;
         while (i >= 0) {
@@ -545,7 +651,7 @@ public class Board {
 
             // If we find no other Tiles, then we simply return, since the job of the method is done
             if (i < 0) {
-                return;
+                return numShifts;
             }
 
             // Otherwise, we get the Tile at the current spot in the board, and iterate backwards 
@@ -563,11 +669,17 @@ public class Board {
             if (curIndex != i) {
                 boardGrid[i][col] = Optional.of(curTile);
                 boardGrid[curIndex][col] = Optional.empty();
+
+                // We also increment the number of shifts, since a shift actually occurred
+                numShifts++;
             }
 
             // We then decrement i and continue iterating on
             i--;
         }
+
+        // Finally, the number of shifts is returned
+        return numShifts;
     }
 
     /*
