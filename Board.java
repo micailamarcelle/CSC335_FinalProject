@@ -789,129 +789,52 @@ public class Board {
         
         //NOTE: The color of the tile is determined by a helper method.
     */
-   private void placeTile(int row, int col, int value) {
-	   TileColor color = determineTileColor(value);
-	   Tile tileToPlace = new Tile(value, color);
+   public void setTile(int row, int col, int value) {
+	   Tile tileToPlace = new Tile(value);
 	   Optional<Tile> optionalTileToPlace = Optional.of(tileToPlace);
         boardGrid[row][col] = optionalTileToPlace;
    }
 
-   
-   /*
-    * 	Private helper method to determine the tile color that should be assigned for a given
-    * 	value
+    /*
+        Private helper method to generate a random value for a tile.
+            // 70% probability that the tile value will be 2
+            // 30% probability that the tile value with be 4
     */
-    private TileColor determineTileColor(int value) {
-    	// Initialize a default color to the variable
-    	TileColor color = TileColor.GRAY;
-    	// Get the last digit of value using modulus operator
-		int lastDigit = value % 10;
-		if (lastDigit == 2) {
-			color = TileColor.GRAY;
-		}
-		else if (lastDigit == 4) {
-			color = TileColor.LIGHT_BLUE;
-		}
-		else if (lastDigit == 8) {
-			color = TileColor.DARK_BLUE;
-		}
-		else if (lastDigit == 6) {
-			color = TileColor.PURPLE;
-		}
-		
-		return color;
-	}
-
-	/*
-        Private helper method which place 2 randomized tiles of value 2 onto the board
-        when the board is initialized
-    */
-   private void placeTilesAtStart() {
-        // Generate a random seed
-        // NOTE: We may need to omit this and only use a specific seed in the JUnit test 
-        // since then it won't be random for each game of the same board size
-	    int tileVal1;
-        int tileVal2;
-
-        Random rand = new Random(50); 
-        int randInt1 = rand.nextInt(10);
-        int randInt2 = rand.nextInt(10);
-        // 70% probability that the tile value will be 2
-        // 30% probability that the tile value with be 4
-        if (randInt1 <= 7) {
-            tileVal1 = 2;
-        }
-        else {
-            tileVal1 = 4;
-        }
-
-        if (randInt2 <= 7) {
-            tileVal2 = 2;
-        }
-        else {
-            tileVal2 = 4;
-        }
-
-        // Generate the first random space to insert a tile by first generating select random row
-        // and a random column index in that row
-        int randRow1 = rand.nextInt(boardGrid.length);
-        int randCol1 = rand.nextInt(boardGrid.length);
-
-        int [] randPos1 = {randRow1, randCol1};
-
-        // Initialize the second tile positional arguments (row and column indices on the board)
-        // NOTE: If I don't assign values to randRow2 and randCol2, there is an error in 
-        //       placeTile(randRow2, randCol2, 2). I'm not sure why since the values should get
-        //       initialized upon entering the while loop
-        int randRow2 = 0;
-        int randCol2 = 0;
-        
-        int[] randPos2 = {randRow1, randCol1};
-        // Generate the second random space to insert a tile by generating a random row and random
-        // column index that does not match the first tile location that was randomly generated
-        while (Arrays.equals(randPos1, randPos2)) {
-            randRow2 = rand.nextInt(boardGrid.length);
-            randCol2 = rand.nextInt(boardGrid.length);
-
-            randPos2[0] = randRow2;
-            randPos2[1] = randCol2;
-        }
-
-        // Place tiles of value 2 in the two randomly generated postions on the board
-        placeTile(randRow1, randCol1, tileVal1);
-        placeTile(randRow2, randCol2, tileVal2);
+   private int getRandValue() {
+        int tileVal;
+	  
+            // Determine what value the new tile will be using random
+            Random rand = new Random();
+            int randInt = rand.nextInt(10);
+            // 70% probability that the tile value will be 2
+            // 30% probability that the tile value with be 4
+            if (randInt <= 7) {
+                tileVal = 2;
+            }
+            else {
+                tileVal = 4;
+            }
+            return tileVal;
    }
 
-   /*
-        Private helper method to place a random tile of either value 2 or 4 at a random empty position
-        on the board 
-   */
-  private void placeRandTile() {
-	  int tileVal;
-	  
-	  // Determine what value the new tile will be using random
-	  Random rand = new Random();
-	  int randInt = rand.nextInt(10);
-	  // 70% probability that the tile value will be 2
-	  // 30% probability that the tile value with be 4
-	  if (randInt <= 7) {
-		  tileVal = 2;
-	  }
-	  else {
-		  tileVal = 4;
-	  }
-	  // Determine the position to place the Tile by randomly generating positions on the board until
-	  // finding one that is empty
-	  
-	  // Generate a random position on the board
-	  int row = rand.nextInt(boardGrid.length);
-      int col = rand.nextInt(boardGrid.length);
-	  // If the board position is not empty, generate a new random position
-      while (boardGrid[row][col].isPresent() == true) {
-    	  row = rand.nextInt(boardGrid.length);
-          col = rand.nextInt(boardGrid.length);
-      }
-      // Place a new Tile at the first random position that is empty
-      placeTile(row, col, tileVal);
-  }
+    /*
+        Private method to generate a random location on the board that is empty to set a tile
+    */
+   private [] getRandLocation() {
+        if (countNumEmpty > 0) {
+            // Determine the position to place the Tile by randomly generating positions on the board until
+            // finding one that is empty
+            
+            // Generate intial random location
+            int row = rand.nextInt(boardGrid.length);
+            int col = rand.nextInt(boardGrid.length);
+            // If the board position is not empty, generate a new random position
+            while (boardGrid[row][col].isPresent() == true) {
+                row = rand.nextInt(boardGrid.length);
+                col = rand.nextInt(boardGrid.length);
+            }
+        }
+        int [] pos = {row, col};
+   }
+
 }

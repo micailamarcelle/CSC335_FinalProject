@@ -18,12 +18,13 @@ public class Tile {
         tile, and a TileColor enumerated type representing the color of the tile, and it
         constructs a new Tile object with these values
 
-        @pre value % 2 == 0 && value > 0 && color != null
+        @pre (value == 2 || value == 4) && color != null
         @post constructs a new Tile object with the given values
      */
-    public Tile(int value, TileColor color) {
+    public Tile(int value) {
         this.value = value;
-        this.color = color;
+        this.color = tileColor(value);
+
     }
 
     /*
@@ -90,4 +91,22 @@ public class Tile {
     boolean equals(Tile other) {
         return this.value == other.value;
     }
+
+    /*
+    * 	Private helper method to determine the tile color that should be assigned for a given
+    * 	value
+    *   NOTE: Based on the game, only tiles of value 2 or 4 will ever be placed. So we only need to 
+    *         check if the value of the tile is a 2 or a 4.
+    */
+    private TileColor tileColor(int value) {
+    	// Initialize a default color to the variable
+    	TileColor color;
+        if (value == 2) {
+            color = TileColor.GRAY;
+        }
+        else {
+            color = TileColor.LIGHT_BLUE;
+        }
+		return color;
+	}
 }

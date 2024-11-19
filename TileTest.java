@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 public class TileTest {
     @Test
     public void testTile() {
-        Tile a = new Tile(2, TileColor.GRAY);
+        Tile a = new Tile(2);
         assertTrue(a.getTileColor() == TileColor.GRAY);
         assertTrue(a.getValue() == 2);
         a.multiplyValByTwo();
@@ -29,15 +29,31 @@ public class TileTest {
         a.multiplyValByTwo();
         assertTrue(a.getValue() == 32);
         assertTrue(a.getTileColor() == TileColor.GRAY);
+    }
 
+    @Test
+    public void testEqualsTile() {
+        Tile a = new Tile(4);
+        a.multiplyValByTwo();
+        a.multiplyValByTwo();
+        a.multiplyValByTwo();
         Tile b = new Tile(a);
         assertEquals(a, b);
 
-        Tile c = new Tile(2, TileColor.GRAY);
+        Tile c = new Tile(2);
         c.multiplyValByTwo();
         c.multiplyValByTwo();
         c.multiplyValByTwo();
         c.multiplyValByTwo();
         assertEquals(c, a);
+    }
+
+    @Test
+    public void testTileColor() {
+        Tile a = new Tile(2);
+        Tile b = new Tile(4);
+        assertEquals(a.getTileColor, TileColor.GRAY);
+        assertEquals(b.getTileColor, TileColor.LIGHT_BLUE);
+        
     }
 }
