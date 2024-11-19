@@ -52,6 +52,51 @@ public class BoardTest {
     }
 
     @Test
+    public void testSetTile() {
+        Board gameBoard = new Board(BoardSize.FOUR);
+        gameBoard.setTile(0, 0, 2);
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (gameBoard[i][j].isPresent()) {
+                    assertEquals(i, 0);
+                    assertEquals(j, 0);
+                    assertEquals(gameBoard[i][j].getValue(), 2);
+                } else {
+                    assertEquals(gameBoard[i][j], Optional.empty());
+                }
+            }
+        }
+
+        Board gameBoardSize6 = new Board(BoardSize.SIX);
+        gameBoardSize6.setTile(4, 1, 4);
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 6; j++) {
+                if (gameBoardSize6[i][j].isPresent()) {
+                    assertEquals(i, 4);
+                    assertEquals(j, 1);
+                    assertEquals(gameBoardSize6[i][j].getValue(), 4);
+                } else {
+                    assertEquals(gameBoardSize6[i][j], Optional.empty());
+                }
+            }
+        }
+
+        Board gameBoardSize8 = new Board(BoardSize.SIX);
+        gameBoardSize8.setTile(7, 7, 2);
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (gameBoardSize8[i][j].isPresent()) {
+                    assertEquals(i, 7);
+                    assertEquals(j, 7);
+                    assertEquals(gameBoardSize8[i][j].getValue(), 4);
+                } else {
+                    assertEquals(gameBoardSize8[i][j], Optional.empty());
+                }
+            }
+        }
+    }
+
+    @Test
     public void testIsGameOver() {
 
     }
@@ -73,6 +118,6 @@ public class BoardTest {
 
     @Test
     public void testShiftLeft() {
-        
+
     }
 }
