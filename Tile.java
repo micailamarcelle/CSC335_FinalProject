@@ -1,6 +1,6 @@
 /*
 File: Tile.java
-Authors: N/A (for now)
+Authors: Micaila Marcelle (micailamarcelle), Elise Bushra (ebushra), Cate Yip (cyip);
 Course: CSC 335
 Purpose: Implements the actual tiles within the 2048 board. These will have an 
 associated value, and methods for more easily combining tiles together.
@@ -18,8 +18,9 @@ public class Tile {
         tile, and a TileColor enumerated type representing the color of the tile, and it
         constructs a new Tile object with these values
 
-        @pre (value == 2 || value == 4) && color != null
+        @pre value == 2 || value == 4
         @post constructs a new Tile object with the given values
+        @param value -- an int representing the desired value of the new Tile
      */
     public Tile(int value) {
         this.value = value;
@@ -34,6 +35,7 @@ public class Tile {
         
         @pre givenTile != null
         @post constructs a new Tile object that represents a copy of the given Tile object
+        @param givenTile -- a Tile object whose value and color will be copied into a new Tile
      */
     public Tile(Tile givenTile) {
         this.value = givenTile.value;
@@ -87,6 +89,11 @@ public class Tile {
     /*
         Method for comparing one Tile object to another in the context of the 2048 game. Returns
         true if both Tile objects have the same associated value, and false otherwise
+
+        @pre other != null
+        @post determines whether the current Tile object has the same value as other
+        @param other -- a Tile object representing the Tile we want to compare the current Tile to
+        @return true if this Tile has the same value as other, false otherwise
      */
     boolean equals(Tile other) {
         return this.value == other.value;
@@ -97,6 +104,11 @@ public class Tile {
     * 	value
     *   NOTE: Based on the game, only tiles of value 2 or 4 will ever be placed. So we only need to 
     *         check if the value of the tile is a 2 or a 4.
+    *
+    *   @pre value == 2 || value == 4
+    *   @post returns a TileColor enumerated type representing the color associated with the given value
+    *   @param value -- an int representing the value of the Tile whose color we're determining
+    *   @return a TileColor enumerated type representing the color associated with the given value
     */
     private TileColor tileColor(int value) {
     	// Initialize a default color to the variable

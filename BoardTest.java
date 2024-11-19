@@ -1,6 +1,6 @@
 /*
 File: BoardTest.java
-Authors: N/A (for now)
+Authors: Elise Bushra (ebushra)
 Course: CSC 335
 Purpose: Provides JUnit tests for the functionalities of the Board class
  */
@@ -8,6 +8,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 
 public class BoardTest {
@@ -32,16 +35,17 @@ public class BoardTest {
     // either 2 or 4
     @Test
     public void testStartBoard() {
-        Board gameBoard = new Board(BoardSize.FOUR);
+        Board boardObject = new Board(BoardSize.FOUR);
+        Optional<Tile>[][] gameBoard = boardObject.getBoard();
 
         int tileCount = 0;
-        Optional<Tile>[] presentTiles = new Optional<?>[2];
+        Tile[] presentTiles = new Tile[2];
         int presentTilesIndex = 0;
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (gameBoard[i][j].isPresent()) {
                     tileCount ++;
-                    presentTiles[presentTilesIndex] = Optional.of(new Tile(gameBoard[i][j].get()));
+                    presentTiles[presentTilesIndex] = gameBoard[i][j].get();
                     presentTilesIndex ++;
                 }
             }
@@ -53,44 +57,50 @@ public class BoardTest {
 
     @Test
     public void testSetTile() {
-        Board gameBoard = new Board(BoardSize.FOUR);
-        gameBoard.setTile(0, 0, 2);
+        Board boardObjectSizeFour = new Board(BoardSize.FOUR);
+        boardObjectSizeFour.setTile(0, 0, 2);
+
+        Optional<Tile>[][] gameBoardFour = boardObjectSizeFour.getBoard();
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                if (gameBoard[i][j].isPresent()) {
+                if (gameBoardFour[i][j].isPresent()) {
                     assertEquals(i, 0);
                     assertEquals(j, 0);
-                    assertEquals(gameBoard[i][j].getValue(), 2);
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 2);
                 } else {
-                    assertEquals(gameBoard[i][j], Optional.empty());
+                    assertEquals(gameBoardFour[i][j], Optional.empty());
                 }
             }
         }
 
-        Board gameBoardSize6 = new Board(BoardSize.SIX);
-        gameBoardSize6.setTile(4, 1, 4);
+        Board boardObjectSizeSix = new Board(BoardSize.SIX);
+        boardObjectSizeSix.setTile(4, 1, 4);
+        
+        Optional<Tile>[][] gameBoardSix = boardObjectSizeSix.getBoard();
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
-                if (gameBoardSize6[i][j].isPresent()) {
+                if (gameBoardSix[i][j].isPresent()) {
                     assertEquals(i, 4);
                     assertEquals(j, 1);
-                    assertEquals(gameBoardSize6[i][j].getValue(), 4);
+                    assertEquals(gameBoardSix[i][j].get().getValue(), 4);
                 } else {
-                    assertEquals(gameBoardSize6[i][j], Optional.empty());
+                    assertEquals(gameBoardSix[i][j], Optional.empty());
                 }
             }
         }
 
-        Board gameBoardSize8 = new Board(BoardSize.SIX);
-        gameBoardSize8.setTile(7, 7, 2);
+        Board boardObjectSizeEight = new Board(BoardSize.EIGHT);
+        boardObjectSizeEight.setTile(7, 7, 2);
+
+        Optional<Tile>[][] gameBoardEight = boardObjectSizeEight.getBoard();
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if (gameBoardSize8[i][j].isPresent()) {
+                if (gameBoardEight[i][j].isPresent()) {
                     assertEquals(i, 7);
                     assertEquals(j, 7);
-                    assertEquals(gameBoardSize8[i][j].getValue(), 4);
+                    assertEquals(gameBoardEight[i][j].get().getValue(), 4);
                 } else {
-                    assertEquals(gameBoardSize8[i][j], Optional.empty());
+                    assertEquals(gameBoardEight[i][j], Optional.empty());
                 }
             }
         }

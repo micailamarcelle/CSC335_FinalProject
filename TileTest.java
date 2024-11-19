@@ -52,8 +52,8 @@ public class TileTest {
     public void testTileColor() {
         Tile a = new Tile(2);
         Tile b = new Tile(4);
-        assertEquals(a.getTileColor, TileColor.GRAY);
-        assertEquals(b.getTileColor, TileColor.LIGHT_BLUE);
+        assertEquals(a.getTileColor(), TileColor.GRAY);
+        assertEquals(b.getTileColor(), TileColor.LIGHT_BLUE);
         
     }
 }
