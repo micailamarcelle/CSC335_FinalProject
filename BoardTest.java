@@ -50,4 +50,6 @@ public class BoardTest {
         assertTrue(presentTiles[0].getValue() == 2 || presentTiles[0].getValue() == 4);
         assertTrue(presentTiles[1].getValue() == 2 || presentTiles[1].getValue() == 4);
     }
+
+    
 }
