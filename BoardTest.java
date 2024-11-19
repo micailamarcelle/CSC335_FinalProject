@@ -51,5 +51,28 @@ public class BoardTest {
         assertTrue(presentTiles[1].getValue() == 2 || presentTiles[1].getValue() == 4);
     }
 
-    
+    @Test
+    public void testIsGameOver() {
+
+    }
+
+    @Test
+    public void testShiftDown() {
+
+    }
+
+    @Test
+    public void testShiftUp() {
+
+    }
+
+    @Test
+    public void testShiftRight() {
+
+    }
+
+    @Test
+    public void testShiftLeft() {
+        
+    }
 }
