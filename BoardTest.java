@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 public class BoardTest {
+    // Test board size and score
     @Test
     public void testEmptyBoard() {
         Board gameBoard = new Board(BoardSize.FOUR);
@@ -26,10 +27,10 @@ public class BoardTest {
         assertTrue(gameBoard3.getBoard().length == 8);
     }
 
+    // Test that all tiles are of the optional empty type at creation
     @Test
-    public void testScore() {
+    public void testOptionalTiles() {
         Board gameBoard = new Board(BoardSize.FOUR);
-        assertTrue(gameBoard.getScore() == 0);
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
