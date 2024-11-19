@@ -27,23 +27,27 @@ public class BoardTest {
         assertTrue(gameBoard3.getBoard().length == 8);
     }
 
-    // Test that all tiles are of the optional empty type at creation
-    @Test
-    public void testOptionalTiles() {
-        Board gameBoard = new Board(BoardSize.FOUR);
-
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                assertEquals(gameBoard[i][j], Optional.empty());
-            }
-        }
-        assertEquals(boardGrid, gameBoard.getBoard());
-    }
 
     // Test when board is intilized whether two tiles are present on the board with values of 
     // either 2 or 4
     @Test
     public void testStartBoard() {
-        
+        Board gameBoard = new Board(BoardSize.FOUR);
+
+        int tileCount = 0;
+        Optional<Tile>[] presentTiles = new Optional<?>[2];
+        int presentTilesIndex = 0;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (gameBoard[i][j].isPresent()) {
+                    tileCount ++;
+                    presentTiles[presentTilesIndex] = Optional.of(new Tile(gameBoard[i][j].get()));
+                    presentTilesIndex ++;
+                }
+            }
+        }
+        assertEquals(tileCount, 2);
+        assertTrue(presentTiles[0].getValue() == 2 || presentTiles[0].getValue() == 4);
+        assertTrue(presentTiles[1].getValue() == 2 || presentTiles[1].getValue() == 4);
     }
 }

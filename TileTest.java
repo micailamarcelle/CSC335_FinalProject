@@ -29,7 +29,11 @@ public class TileTest {
         a.multiplyValByTwo();
         assertTrue(a.getValue() == 32);
         assertTrue(a.getTileColor() == TileColor.GRAY);
+    }
 
+    @Test
+    public void testEqualsTile() {
+        Tile a = new Tile(32, TileColor.GRAY);
         Tile b = new Tile(a);
         assertEquals(a, b);
 
