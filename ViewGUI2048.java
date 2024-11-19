@@ -75,30 +75,36 @@ public class ViewGUI2048 extends JFrame {
                 board = new Board(BoardSize.FOUR);
                 scoreLabel = new JLabel("Current score: " + board.getScore());
                 dataPanel.add(scoreLabel);
-                frame.add(dataPanel);   
+                panel.add(dataPanel);
+                panel.revalidate();
+                panel.repaint();
                 runGame();
             }else if(e.equals("six")){
                 clear();
                 board = new Board(BoardSize.SIX);
                 scoreLabel = new JLabel("Current score: " + board.getScore());
-                dataPanel.add(scoreLabel);
-                frame.add(dataPanel);   
+                panel.add(dataPanel); 
+                dataPanel.add(scoreLabel); 
+                panel.revalidate();
+                panel.repaint(); 
                 runGame();
             }else{
                 clear();
                 board = new Board(BoardSize.EIGHT);
                 scoreLabel = new JLabel("Current score: " + board.getScore());
                 dataPanel.add(scoreLabel);
-                frame.add(dataPanel);  
+                panel.add(dataPanel);                
+                panel.revalidate();
+                panel.repaint();  
                 runGame();
             }
         }
     }
     private class Grid extends JPanel{
         private int size;
-        private final int TILE_SIZE = 10;
-        public Grid(BoardSize size){
-            this.size = 4 + 2 * size.ordinal();
+        private final int TILE_SIZE = 40;
+        public Grid(int size){
+            this.size = size;
         }
         /**
          * @override
@@ -128,42 +134,32 @@ public class ViewGUI2048 extends JFrame {
                     int x = j * TILE_SIZE + (TILE_SIZE - textWidth) / 2;
                     int y = i * TILE_SIZE + (TILE_SIZE + textHeight) / 2 - metrics.getDescent();
                     g.setColor(Color.BLACK);
-                    g.drawString(tileValue, x, y);
-
-
-
-                        
+                    g.drawString(tileValue, x, y);                        
                 }
             }
         }
     }
     
     private void clear(){
-        frame.remove(gamePanel);
-        frame.revalidate();
-        frame.repaint();
+        panel.remove(gamePanel);   
+        gamePanel = new JPanel();     
+        panel.revalidate();
+        panel.repaint();
     }
 
     private void runGame(){
+        Grid gameBoard = new Grid(board.getBoard().length);
         do{
+            clear();            
+            gameBoard.paintComponent(getGraphics());
+            panel.add(gamePanel);
+            gamePanel.add(gameBoard);
+            gamePanel.revalidate();
+            gamePanel.repaint();
+            panel.revalidate();
+            panel.repaint();            
+            
         } while(board.isGameOver() != HasWon.LOST);
-    }
-    private void drawCurrGrid(Graphics g){
-        super.paintComponents(g);
-        int width = board.getBoard().length * 40;
-        int height  = board.getBoard().length * 40;
-        int cellWidth = width / 40;
-        int cellHeight = height / 40;
-        g.setColor(Color.GRAY);
-        for(int i  = 0; i <= board.getBoard().length; i++){
-            //Draw vertical lines
-            g.drawLine(i * cellWidth, 0, 9 * cellWidth, height);
-            //Draw horizontal lines
-            g.drawLine(0, i*cellHeight, width, i * cellHeight);
-
-        }
-
-
     }
     public static void main(String[] args){
         ViewGUI2048 game = new ViewGUI2048();
