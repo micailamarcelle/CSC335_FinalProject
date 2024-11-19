@@ -21,7 +21,9 @@ acting as the model within the system.
 // value 2. Maybe constructing a method to determine where to place the initial
 // tiles. We have not implemented placing the first two random tiles yes. 
 
+import java.util.Arrays;
 import java.util.Optional;
+import java.util.Random;
 
 public class Board {
     // Declares the private instance variables for the Board class, which include
@@ -719,7 +721,7 @@ public class Board {
 	    int tileVal1;
         int tileVal2;
 
-        Random random = new Random(50); 
+        Random rand = new Random(50); 
         int randInt1 = rand.nextInt(10);
         int randInt2 = rand.nextInt(10);
         // 70% probability that the tile value will be 2
@@ -740,8 +742,8 @@ public class Board {
 
         // Generate the first random space to insert a tile by first generating select random row
         // and a random column index in that row
-        int randRow1 = random.nextInt(boardGrid.length);
-        int randCol1 = random.nextInt(boardGrid.length);
+        int randRow1 = rand.nextInt(boardGrid.length);
+        int randCol1 = rand.nextInt(boardGrid.length);
 
         int [] randPos1 = {randRow1, randCol1};
 
@@ -756,15 +758,15 @@ public class Board {
         // Generate the second random space to insert a tile by generating a random row and random
         // column index that does not match the first tile location that was randomly generated
         while (Arrays.equals(randPos1, randPos2)) {
-            randRow2 = random.nextInt(boardGrid.length);
-            randCol2 = random.nextInt(boardGrid.length);
+            randRow2 = rand.nextInt(boardGrid.length);
+            randCol2 = rand.nextInt(boardGrid.length);
 
             randPos2[0] = randRow2;
             randPos2[1] = randCol2;
         }
 
         // Place tiles of value 2 in the two randomly generated postions on the board
-        placeTile(randRow1, randCol1, tileVal);
+        placeTile(randRow1, randCol1, tileVal1);
         placeTile(randRow2, randCol2, tileVal2);
    }
 
