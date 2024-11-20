@@ -899,4 +899,29 @@ public class Board {
         return pos;
    }
 
+    /*
+        Public method which can be used to, at the start of the game, place two Tile objects
+        in random spots on the board. Note that it is assumed that this method will be used by
+        the GUI directly after the initialization of the board, so it is assumed that all spots 
+        in the board are empty when this method is called. This method is also public and separate
+        from the constructor itself in order to better allow for functionalities within the game
+        to be tested via JUnit.
+
+        @pre the board contains only empty Tiles
+        @post two new Tiles, with a value of either 2 or 4, are placed into random, different
+            positions on the board
+     */
+    public void placeTilesStartGame() {
+
+    }
+
+    /*
+        Public method which can be used after a shift is made, and which places a Tile, with
+        a value of either 2 or 4, in a random (empty) position on the board. If the board contains
+        no empty tiles when this method is called, then the method will not do anything. 
+     */
+    public void placeRandomTile() {
+
+    }
+
 }
