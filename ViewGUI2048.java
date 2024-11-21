@@ -133,6 +133,7 @@ public class ViewGUI2048 extends JFrame {
     private void runGame(){
         clear();        
         panel.add(gamePanel);
+        board.placeTilesStartGame();
         Grid gameBoard = new Grid(board.getBoard().length); 
         gamePanel.add(gameBoard, BorderLayout.CENTER);
         gamePanel.revalidate();
