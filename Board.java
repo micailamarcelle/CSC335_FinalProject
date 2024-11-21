@@ -1044,7 +1044,17 @@ public class Board {
             positions on the board
      */
     public void placeTilesStartGame() {
+        // Find pos and val of first tile
+        int [] pos1 = getRandLocation();
+        int val1 = getRandValue();
+        // Place first tile
+        setTile(pos1[0], pos1[1], val1);
 
+        // Find pos and val of second tile
+        int [] pos2 = getRandLocation();
+        int val2 = getRandValue();
+        // Place second tile
+        setTile(pos2[0], pos[1], val2);
     }
 
     /*
@@ -1052,8 +1062,12 @@ public class Board {
         a value of either 2 or 4, in a random (empty) position on the board. If the board contains
         no empty tiles when this method is called, then the method will not do anything. 
      */
-    public void placeRandomTile() {
-
+    public void placeRandomTile(int numShiftCombos) {
+        if (countNumEmpty() > 0 && numShiftsCombos > 0) { 
+            int [] pos = getRandLocation();
+            int val = getRandValue();
+            setTile(pos[0], pos[1], val);
+        }
     }
 
 }
