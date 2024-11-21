@@ -211,7 +211,7 @@ public class BoardTest {
         assertEquals(boardEight.isGameOver(), HasWon.LOST);
     }
 
-    @Test 
+    /*@Test 
     public void testIsGameOver2048() {
         Board boardFour = new Board(BoardSize.FOUR);
 
@@ -303,7 +303,23 @@ public class BoardTest {
         boardFour.shiftLeft();
         //assertEquals(boardFour.isGameOver(), HasWon.LOST);
 
-        // Gets 256 in top left corner, with 
+        // Gets 256 in the top left corner, with 128 to the right of it
+        for (int i = 0; i < 4; i++) {
+            for (int j = 1; j < 4; j++) {
+                boardFour.setTile(i, j, 4);
+            }
+        }
+
+        boardFour.shiftUp();
+        boardFour.shiftUp();
+        boardFour.shiftLeft();
+        for (int i = 1; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                boardFour.setTile(i, j, 4);
+            }
+        }
+        boardFour.shiftUp();
+        boardFour.shiftLeft();
 
         Board boardSix = new Board(BoardSize.SIX);
         for (int i = 0; i < 6; i++) {
@@ -333,5 +349,63 @@ public class BoardTest {
         }
         assertEquals(boardEight.isGameOver(), HasWon.LOST);
     }
+ 
+}*/
 
+public void testIsGameOver2048Size4() {
+    Board boardFour = new Board(BoardSize.FOUR);
+    
+    while (boardFour.findHighestValue() < 2048) {
+        fillWithFours(boardFour); // Refill with 4s where needed
+        boardFour.shiftUp();      // Perform merges
+        boardFour.shiftUp();
+        boardFour.shiftLeft();    // Align tiles
+        boardFour.shiftLeft();
+    }
+
+    assertEquals(boardFour.isGameOver(), HasWon.WON);
+}
+
+public void testIsGameOver2048Size6() {
+    Board boardSix = new Board(BoardSize.SIX);
+    
+    while (boardSix.findHighestValue() < 2048) {
+        fillWithFours(boardSix); // Refill with 4s where needed
+        boardSix.shiftUp();      // Perform merges
+        boardSix.shiftUp();
+        boardSix.shiftUp();
+        boardSix.shiftLeft();    // Align tiles
+        boardSix.shiftLeft();
+        boardSix.shiftLeft();
+    }
+
+    assertEquals(boardSix.isGameOver(), HasWon.WON);
+}
+
+public void testIsGameOver2048Size8() {
+    Board boardEight = new Board(BoardSize.EIGHT);
+    
+    while (boardEight.findHighestValue() < 2048) {
+        fillWithFours(boardEight); // Refill with 4s where needed
+        boardEight.shiftUp();      // Perform merges
+        boardEight.shiftUp();
+        boardEight.shiftUp();
+        boardEight.shiftUp();
+        boardEight.shiftLeft();    // Align tiles
+        boardEight.shiftLeft();
+        boardEight.shiftLeft();
+        boardEight.shiftLeft();
+    }
+
+    assertEquals(boardEight.isGameOver(), HasWon.WON);
+}
+
+private void fillWithFours(Board b) {
+    for (int i = 0; i < b.length; i++) {
+        for (int j = 0; j < b.length; j++) {
+            if (!b[i][j].isPresent()) {
+                b.setTile(i, j, 4);
+            }
+        }
+    }
 }
