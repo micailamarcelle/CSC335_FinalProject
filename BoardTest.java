@@ -333,5 +333,5 @@ public class BoardTest {
         }
         assertEquals(boardEight.isGameOver(), HasWon.LOST);
     }
- 
+
 }
