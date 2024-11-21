@@ -1054,7 +1054,7 @@ public class Board {
         int [] pos2 = getRandLocation();
         int val2 = getRandValue();
         // Place second tile
-        setTile(pos2[0], pos[1], val2);
+        setTile(pos2[0], pos2[1], val2);
     }
 
     /*
@@ -1065,7 +1065,7 @@ public class Board {
         an argument.
      */
     public void placeRandomTile(int numShiftCombos) {
-        if (countNumEmpty() > 0 && numShiftsCombos > 0) { 
+        if (countNumEmpty() > 0 && numShiftCombos > 0) { 
             int [] pos = getRandLocation();
             int val = getRandValue();
             setTile(pos[0], pos[1], val);
