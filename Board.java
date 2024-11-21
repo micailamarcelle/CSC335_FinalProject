@@ -1061,6 +1061,8 @@ public class Board {
         Public method which can be used after a shift is made, and which places a Tile, with
         a value of either 2 or 4, in a random (empty) position on the board. If the board contains
         no empty tiles when this method is called, then the method will not do anything. 
+        The number of shifts/combinations that took place from the previous move is passed in as
+        an argument.
      */
     public void placeRandomTile(int numShiftCombos) {
         if (countNumEmpty() > 0 && numShiftsCombos > 0) { 
