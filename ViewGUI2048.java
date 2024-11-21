@@ -104,8 +104,20 @@ public class ViewGUI2048 extends JFrame {
                     }
                     
                     else{
-                        g.setColor(Color.RED);
-                        Integer val = currBoard[i][j].get().getValue();
+                        Tile currTile = currBoard[i][j].get();
+                        if(currTile.getTileColor() == TileColor.LIGHT_BLUE){
+                            g.setColor(Color.LIGHT_BLUE);
+                        }
+                        else if(currTile..getTileColor() == TileColor.DARK_BLUE){
+                            g.setColor(Color.DARK_BLUE);
+                        }
+                        else if(currTile.getTileColor() == TileColor.PURPLE){
+                            g.setColor(Color.PURPLE);
+                        }
+                        else{
+                            g.setColor(Color.GRAY);
+                        }
+                        Integer val = currTile.getValue();
                         tileValue = val.toString();
                     }
                     g.fillRect(j * TILE_SIZE, i * TILE_SIZE, TILE_SIZE, TILE_SIZE);
