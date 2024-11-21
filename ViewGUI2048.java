@@ -69,14 +69,17 @@ public class ViewGUI2048 extends JFrame {
             if(command.equals("four")){
                 clear();
                 board = new Board(BoardSize.FOUR);
+                board.placeTilesStartGame();
                 runGame();
             }else if(command.equals("six")){
                 clear();
                 board = new Board(BoardSize.SIX);
+                board.placeTilesStartGame();
                 runGame();
             }else{
                 clear();
                 board = new Board(BoardSize.EIGHT);
+                board.placeTilesStartGame();
                 runGame();
             }
         }
@@ -105,6 +108,7 @@ public class ViewGUI2048 extends JFrame {
                     
                     else{
                         Tile currTile = currBoard[i][j].get();
+                        /*
                         if(currTile.getTileColor() == TileColor.LIGHT_BLUE){
                             g.setColor(Color.LIGHT_BLUE);
                         }
@@ -117,6 +121,8 @@ public class ViewGUI2048 extends JFrame {
                         else{
                             g.setColor(Color.GRAY);
                         }
+                            */
+                        g.setColor(Color.RED);
                         Integer val = currTile.getValue();
                         tileValue = val.toString();
                     }
@@ -144,14 +150,38 @@ public class ViewGUI2048 extends JFrame {
 
     private void runGame(){
         clear();        
-        panel.add(gamePanel);
-        board.placeTilesStartGame();
+        panel.add(gamePanel);        
         Grid gameBoard = new Grid(board.getBoard().length); 
         gamePanel.add(gameBoard, BorderLayout.CENTER);
         gamePanel.revalidate();
         gamePanel.repaint();
         scoreLabel.setText("Current score: " + board.getScore());
         gameBoard.repaint();
+        this.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent e){
+                int keyCode = e.getKeyCode();
+                switch (keyCode){
+                    case KeyEvent.VK_UP:
+                        board.shiftUp();
+                        gameBoard.repaint();
+                        break;
+                    case KeyEvent.VK_DOWN:
+                        board.shiftDown();
+                        gameBoard.repaint();
+                        break;
+                    case KeyEvent.VK_LEFT:
+                        board.shiftLeft();
+                        gameBoard.repaint();
+                        break;
+                    case KeyEvent.VK_RIGHT:
+                        board.shiftRight();
+                        gameBoard.repaint();
+                        break;
+                }
+                gamePanel.repaint();
+                panel.repaint();
+            }
+        });
         
     }
     public static void main(String[] args){
