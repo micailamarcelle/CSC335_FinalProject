@@ -105,7 +105,7 @@ public class Tile {
     *   NOTE: Based on the game, only tiles of value 2 or 4 will ever be placed. So we only need to 
     *         check if the value of the tile is a 2 or a 4.
     *
-    *   @pre value == 2 || value == 4
+    *   @pre value = 2^x for some integer x > 0
     *   @post returns a TileColor enumerated type representing the color associated with the given value
     *   @param value -- an int representing the value of the Tile whose color we're determining
     *   @return a TileColor enumerated type representing the color associated with the given value
@@ -113,11 +113,14 @@ public class Tile {
     private TileColor tileColor(int value) {
     	// Initialize a default color to the variable
     	TileColor color;
-        if (value == 2) {
-            color = TileColor.GRAY;
-        }
-        else {
+        if (value % 16 == 0) {
+            color = TileColor.PURPLE;
+        } else if (value % 8 == 0){
+            color = TileColor.DARK_BLUE;
+        } else if (value % 4 == 0){
             color = TileColor.LIGHT_BLUE;
+        } else {
+            color = TileColor.GRAY;
         }
 		return color;
 	}
