@@ -48,7 +48,7 @@ public class ViewGUI2048 extends JFrame {
           
     }
     private void start(){
-        gamePanel.add(new JLabel("Pick a gride size:"));
+        gamePanel.add(new JLabel("Pick a grid size:"));
         JButton fourGrid = new JButton("Four by four");
         fourGrid.setActionCommand("four");
         fourGrid.addActionListener(new ButtonClickListener());

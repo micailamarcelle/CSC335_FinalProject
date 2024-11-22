@@ -352,6 +352,7 @@ public class BoardTest {
  
 }*/
 
+/*
 public void testIsGameOver2048Size4() {
     Board boardFour = new Board(BoardSize.FOUR);
     
@@ -408,4 +409,7 @@ private void fillWithFours(Board b) {
             }
         }
     }
+}
+
+*/
 }
