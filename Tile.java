@@ -102,8 +102,6 @@ public class Tile {
     /*
     * 	Private helper method to determine the tile color that should be assigned for a given
     * 	value
-    *   NOTE: Based on the game, only tiles of value 2 or 4 will ever be placed. So we only need to 
-    *         check if the value of the tile is a 2 or a 4.
     *
     *   @pre value = 2^x for some integer x > 0
     *   @post returns a TileColor enumerated type representing the color associated with the given value

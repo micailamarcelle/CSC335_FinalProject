@@ -1,3 +1,4 @@
+
 /*
 File: BoardTest.java
 Authors: Elise Bushra (ebushra)
@@ -30,12 +31,13 @@ public class BoardTest {
         assertTrue(gameBoard3.getBoard().length == 8);
     }
 
-
-    // Test when board is initilized whether two tiles are present on the board with values of 
+    // Test when board is initialized whether two tiles are present on the board with
+    // values of
     // either 2 or 4
     @Test
     public void testStartBoard() {
         Board boardObject = new Board(BoardSize.FOUR);
+        boardObject.placeTilesStartGame();
         Optional<Tile>[][] gameBoard = boardObject.getBoard();
 
         int tileCount = 0;
@@ -44,9 +46,9 @@ public class BoardTest {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (gameBoard[i][j].isPresent()) {
-                    tileCount ++;
+                    tileCount++;
                     presentTiles[presentTilesIndex] = gameBoard[i][j].get();
-                    presentTilesIndex ++;
+                    presentTilesIndex++;
                 }
             }
         }
@@ -75,7 +77,7 @@ public class BoardTest {
 
         Board boardObjectSizeSix = new Board(BoardSize.SIX);
         boardObjectSizeSix.setTile(4, 1, 4);
-        
+
         Optional<Tile>[][] gameBoardSix = boardObjectSizeSix.getBoard();
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
@@ -211,251 +213,210 @@ public class BoardTest {
         assertEquals(boardEight.isGameOver(), HasWon.LOST);
     }
 
-    /*@Test 
-    public void testIsGameOver2048() {
+    public void testIsGameOver2048Size4() {
         Board boardFour = new Board(BoardSize.FOUR);
 
-        // Gets 64 in top left corner
+        // get an 8 in top left corner
+        boardFour.setTile(0, 0, 4);
+        boardFour.setTile(0, 1, 4);
+        boardFour.shiftLeft();
+        Optional<Tile>[][] gameBoardFour = boardFour.getBoard();
+        assertTrue(gameBoardFour[0][0].isPresent());
+        assertEquals(gameBoardFour[0][0].get().getValue(), 8);
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                boardFour.setTile(i, j, 4);
+                if (!(i == 0 && j == 0)) {
+                    assertFalse(gameBoardFour[i][j].isPresent());
+                }
             }
         }
-        boardFour.shiftUp();
-        boardFour.shiftLeft();
-        boardFour.shiftUp();
-        boardFour.shiftLeft();
 
-
-        // Gets 64 in top left corner, with 32 to the right of it, 16 to the right of that
+        // get 16 in top left corner
+        boardFour.setTile(1, 0, 8);
+        boardFour.shiftUp();
+        gameBoardFour = boardFour.getBoard();
+        assertTrue(gameBoardFour[0][0].isPresent());
+        assertEquals(gameBoardFour[0][0].get().getValue(), 16);
         for (int i = 0; i < 4; i++) {
-            for (int j = 1; j < 4; j++) {
-                boardFour.setTile(i, j, 4);
+            for (int j = 0; j < 4; j++) {
+                if (!(i == 0 && j == 0)) {
+                    assertFalse(gameBoardFour[i][j].isPresent());
+                }
             }
         }
-        boardFour.shiftUp();
+
+        // get 32 in top left corner
+        boardFour.setTile(3, 3, 16);
         boardFour.shiftUp();
         boardFour.shiftLeft();
+        gameBoardFour = boardFour.getBoard();
+        assertTrue(gameBoardFour[0][0].isPresent());
+        assertEquals(gameBoardFour[0][0].get().getValue(), 32);
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (!(i == 0 && j == 0)) {
+                    assertFalse(gameBoardFour[i][j].isPresent());
+                }
+            }
+        }
+
+        // Gets 64 in the top left corner
+        boardFour.setTile(3, 0, 32);
+        boardFour.shiftUp();
+        gameBoardFour = boardFour.getBoard();
+        assertTrue(gameBoardFour[0][0].isPresent());
+        assertEquals(gameBoardFour[0][0].get().getValue(), 64);
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (!(i == 0 && j == 0)) {
+                    assertFalse(gameBoardFour[i][j].isPresent());
+                }
+            }
+        }
 
         // Gets 128 in the top left corner
-        for (int i = 0; i < 4; i++) {
-            for (int j = 3; j < 4; j++) {
-                boardFour.setTile(i, j, 4);
-            }
-        }
-        boardFour.shiftUp();
-        boardFour.shiftUp();
-        boardFour.shiftLeft();
-        boardFour.shiftLeft();
-        boardFour.shiftLeft();
-
-        // Gets 128 in the top left corner, with 64 next to it
-        for (int i = 0; i < 4; i++) {
-            for (int j = 1; j < 4; j++) {
-                boardFour.setTile(i, j, 4);
-            }
-        }
-        boardFour.shiftUp();
-        boardFour.shiftLeft();
-        for (int i = 0; i < 4; i++) {
-            for (int j = 2; j < 4; j++) {
-                boardFour.setTile(i, j, 4);
-            }
-        }
-        boardFour.shiftUp();
-        boardFour.shiftUp();
-        boardFour.shiftLeft();
-
-        for (int i = 0; i < 4; i++) {
-            for (int j = 3; j < 4; j++) {
-                boardFour.setTile(i, j, 4);
-            }
-        }
-        boardFour.shiftUp();
-        boardFour.shiftUp();
-        boardFour.shiftLeft();
-        boardFour.shiftLeft();
-
-        // Gets 128 in top left corner, with 64 to the right of it, and 64 below it
-        for (int i = 1; i < 3; i++) {
-            for (int j = 0; j < 4; j++) {
-                boardFour.setTile(i, j, 4);
-            }
-        }
-        boardFour.shiftLeft();
-        boardFour.shiftLeft();
-        boardFour.shiftUp();
-
-
-        for (int i = 3; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                boardFour.setTile(i, j, 4);
-            }
-        }
-        boardFour.shiftLeft();
-        boardFour.shiftLeft();
-        boardFour.shiftUp();
-        boardFour.shiftUp();
-
-        // Gets 256 in top left corner
+        boardFour.setTile(0, 1, 32);
+        boardFour.setTile(1, 0, 32);
         boardFour.shiftRight();
         boardFour.shiftUp();
         boardFour.shiftLeft();
-        //assertEquals(boardFour.isGameOver(), HasWon.LOST);
-
-        // Gets 256 in the top left corner, with 128 to the right of it
+        gameBoardFour = boardFour.getBoard();
+        assertTrue(gameBoardFour[0][0].isPresent());
+        assertEquals(gameBoardFour[0][0].get().getValue(), 128);
         for (int i = 0; i < 4; i++) {
-            for (int j = 1; j < 4; j++) {
-                boardFour.setTile(i, j, 4);
-            }
-        }
-
-        boardFour.shiftUp();
-        boardFour.shiftUp();
-        boardFour.shiftLeft();
-        for (int i = 1; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                boardFour.setTile(i, j, 4);
+                if (!(i == 0 && j == 0)) {
+                    assertFalse(gameBoardFour[i][j].isPresent());
+                }
             }
         }
+
+        // Gets 256 in the top left corner
+        boardFour.setTile(0, 3, 64);
+        boardFour.setTile(3, 0, 64);
+        boardFour.shiftRight();
         boardFour.shiftUp();
         boardFour.shiftLeft();
+        gameBoardFour = boardFour.getBoard();
+        assertTrue(gameBoardFour[0][0].isPresent());
+        assertEquals(gameBoardFour[0][0].get().getValue(), 256);
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (!(i == 0 && j == 0)) {
+                    assertFalse(gameBoardFour[i][j].isPresent());
+                }
+            }
+        }
 
+        // Gets 512 in the top left corner
+        boardFour.setTile(0, 3, 256);
+        boardFour.shiftLeft();
+        gameBoardFour = boardFour.getBoard();
+        assertTrue(gameBoardFour[0][0].isPresent());
+        assertEquals(gameBoardFour[0][0].get().getValue(), 512);
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (!(i == 0 && j == 0)) {
+                    assertFalse(gameBoardFour[i][j].isPresent());
+                }
+            }
+        }
+
+        // Gets 1024 in the top left corner
+        boardFour.setTile(3, 0, 512);
+        boardFour.shiftUp();
+        gameBoardFour = boardFour.getBoard();
+        assertTrue(gameBoardFour[0][0].isPresent());
+        assertEquals(gameBoardFour[0][0].get().getValue(), 1024);
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (!(i == 0 && j == 0)) {
+                    assertFalse(gameBoardFour[i][j].isPresent());
+                }
+            }
+        }
+
+        // Gets 2048 in the top left corner
+        boardFour.setTile(2, 2, 1024);
+        boardFour.shiftUp();
+        boardFour.shiftLeft();
+        gameBoardFour = boardFour.getBoard();
+        assertTrue(gameBoardFour[0][0].isPresent());
+        assertEquals(gameBoardFour[0][0].get().getValue(), 2048);
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (!(i == 0 && j == 0)) {
+                    assertFalse(gameBoardFour[i][j].isPresent());
+                }
+            }
+        }
+
+        // Checks to make sure that the method indicates that the user actually won
+        assertEquals(boardFour.isGameOver(), HasWon.WON);
+    }
+
+    public void testIsGameOver2048Size6() {
         Board boardSix = new Board(BoardSize.SIX);
+
+        // fill boards with 64s
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
-                if (i % 2 == 0 && j % 2 == 0) {
-                    boardSix.setTile(i, j, 2);
-                } else if (i % 2 == 1 && j % 2 == 1) {
-                    boardSix.setTile(i, j, 2);
-                } else {
-                    boardSix.setTile(i, j, 4);
+                boardSix.setTile(i, j, 64);
+            }
+        }
+
+        boardSix.shiftUp();
+        // 128 128 128 128 128 128
+        // 128 128 128 128 128 128
+        // 128 128 128 128 128 128
+        boardSix.shiftLeft();
+        // 256 256 256
+        // 256 256 256
+        // 256 256 256
+        boardSix.shiftUp();
+        // 512 512 512
+        // 256 256 256
+        boardSix.shiftLeft();
+        // cur state
+        // 1024 512 . . . .
+        // 512 256 . . . .
+        // . . . . . .
+
+        boardSix.setTile(0, 2, 512);
+        boardSix.shiftLeft();
+        boardSix.shiftLeft();
+        // 2048 . . . . .
+        // 512 256 . . . .
+        // . . . . . .
+
+        // Ensures that there is a 2048 in the top left corner, where we expect there to
+        // be a Tile of this value
+        Optional<Tile>[][] gameBoardSix = boardSix.getBoard();
+        assertTrue(gameBoardSix[0][0].isPresent());
+        assertEquals(gameBoardSix[0][0].get().getValue(), 2048);
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (i == 1 && j == 0) {
+                    assertTrue(gameBoardSix[i][j].isPresent());
+                    assertEquals(gameBoardSix[i][j].get().getValue(), 512);
+                } else if (i == 1 && j == 1) {
+                    assertTrue(gameBoardSix[i][j].isPresent());
+                    assertEquals(gameBoardSix[i][j].get().getValue(), 256);
+                } else if (!(i == 0 && j == 0)) {
+                    assertFalse(gameBoardSix[i][j].isPresent());
                 }
             }
         }
-        assertEquals(boardSix.isGameOver(), HasWon.LOST);
 
+        // Checks to make sure that the game indicates that the user has actually won
+        assertEquals(boardSix.isGameOver(), HasWon.WON);
+    }
+
+    public void testIsGameOver2048Size8() {
         Board boardEight = new Board(BoardSize.EIGHT);
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (i % 2 == 0 && j % 2 == 0) {
-                    boardEight.setTile(i, j, 2);
-                } else if (i % 2 == 1 && j % 2 == 1) {
-                    boardEight.setTile(i, j, 2);
-                } else {
-                    boardEight.setTile(i, j, 4);
-                }
-            }
-        }
-        assertEquals(boardEight.isGameOver(), HasWon.LOST);
-    }
- 
-}*/
 
-
-public void testIsGameOver2048Size4() {
-    Board boardFour = new Board(BoardSize.FOUR);
-    
-    // get an 8 in top left corner
-    boardFour.setTile(0, 0, 4);
-    boardFour.setTile(0, 1, 4);
-    boardFour.shiftLeft();
-    assertTrue(boardFour.findHighestValue() == 8);
-
-    // get 16 in top left corner
-    boardFour.setTile(1, 0, 8);
-    boardFour.shiftUp();
-    assertTrue(boardFour.findHighestValue() == 16);
-
-    // get 32 in top left corner
-    boardFour.setTile(3, 3, 16);
-    boardFour.shiftUp();
-    boardFour.shiftLeft();
-    assertTrue(boardFour.findHighestValue() == 32);
-
-    // 64
-    boardFour.setTile(3, 0, 32);
-    boardFour.shiftUp();
-    assertTrue(boardFour.findHighestValue() == 64);
-
-    // 128
-    boardFour.setTile(0, 1, 32);
-    boardFour.setTile(1, 0, 32);
-    boardFour.shiftRight();
-    boardFour.shiftUp();
-    boardFour.shiftLeft();
-    assertTrue(boardFour.findHighestValue() == 128);
-
-    // 256
-    boardFour.setTile(0, 3, 64);
-    boardFour.setTile(3, 0, 64);
-    boardFour.shiftRight();
-    boardFour.shiftUp();
-    boardFour.shiftLeft();
-    assertTrue(boardFour.findHighestValue() == 256);
-
-    // 512
-    boardFour.setTile(0, 3, 256);
-    boardFour.shiftLeft();
-    assertTrue(boardFour.findHighestValue() == 512);
-
-    // 1024
-    boardFour.setTile(3, 0, 512);
-    boardFour.shiftUp();
-    assertTrue(boardFour.findHighestValue() == 1024);
-
-    boardFour.setTile(2, 2, 1024);
-    boardFour.shiftUp();
-    boardFour.shiftLeft();
-    assertTrue(boardFour.findHighestValue() == 2048);
-
-    assertEquals(boardFour.isGameOver(), HasWon.WON);
-}
-
-public void testIsGameOver2048Size6() {
-    Board boardSix = new Board(BoardSize.SIX);
-    
-    // fill boards with 64s
-    for (int i = 0; i < 6; i ++) {
-        for (int j = 0; j < 6; j ++) {
-            boardSix.setTile(i, j, 64);
-        }
+        boardEight.setTile(0, 0, 2048);
+        assertEquals(boardEight.isGameOver(), HasWon.WON);
     }
 
-    boardSix.shiftUp();
-    // 128 128 128 128 128 128
-    // 128 128 128 128 128 128
-    // 128 128 128 128 128 128
-    boardSix.shiftLeft();
-    // 256 256 256
-    // 256 256 256
-    // 256 256 256
-    boardSix.shiftUp();
-    // 512 512 512
-    // 256 256 256
-    boardSix.shiftLeft();
-    // cur state 
-    // 1024 512 . . . . 
-    // 512  256 . . . . 
-    //  .    .  . . . .
-
-    boardSix.setTile(0, 2, 512);
-    boardSix.shiftLeft();
-    boardSix.shiftLeft();
-    // 2048   . . . . . 
-    // 512  256 . . . . 
-    //  .    .  . . . .
-
-    assertTrue(boardSix.findHighestValue() == 2048);
-    assertEquals(boardSix.isGameOver(), HasWon.WON);
-    assertEquals(boardSix.getBoard()[1][0], new Tile(512));
-    assertEquals(boardSix.getBoard()[1][1], new Tile(256));
 }
-
-public void testIsGameOver2048Size8() {
-    Board boardEight = new Board(BoardSize.EIGHT);
-    
-    boardEight.setTile(0, 0, 2048);
-    assertEquals(boardEight.isGameOver(), HasWon.WON);
-}
-
