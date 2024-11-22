@@ -355,13 +355,58 @@ public class BoardTest {
 public void testIsGameOver2048Size4() {
     Board boardFour = new Board(BoardSize.FOUR);
     
-    while (boardFour.findHighestValue() < 2048) {
-        fillWithFours(boardFour); // Refill with 4s where needed
-        boardFour.shiftUp();      // Perform merges
-        boardFour.shiftUp();
-        boardFour.shiftLeft();    // Align tiles
-        boardFour.shiftLeft();
-    }
+    // get an 8 in top left corner
+    boardFour.setTile(0, 0, 4);
+    boardFour.setTile(0, 1, 4);
+    boardFour.shiftLeft();
+    assertTrue(boardFour.findHighestValue() == 8);
+
+    // get 16 in top left corner
+    boardFour.setTile(1, 0, 8);
+    boardFour.shiftUp();
+    assertTrue(boardFour.findHighestValue() == 16);
+
+    // get 32 in top left corner
+    boardFour.setTile(3, 3, 16);
+    boardFour.shiftUp();
+    boardFour.shiftLeft();
+    assertTrue(boardFour.findHighestValue() == 32);
+
+    // 64
+    boardFour.setTile(3, 0, 32);
+    boardFour.shiftUp();
+    assertTrue(boardFour.findHighestValue() == 64);
+
+    // 128
+    boardFour.setTile(0, 1, 32);
+    boardFour.setTile(1, 0, 32);
+    boardFour.shiftRight();
+    boardFour.shiftUp();
+    boardFour.shiftLeft();
+    assertTrue(boardFour.findHighestValue() == 128);
+
+    // 256
+    boardFour.setTile(0, 3, 64);
+    boardFour.setTile(3, 0, 64);
+    boardFour.shiftRight();
+    boardFour.shiftUp();
+    boardFour.shiftLeft();
+    assertTrue(boardFour.findHighestValue() == 256);
+
+    // 512
+    boardFour.setTile(0, 3, 256);
+    boardFour.shiftLeft();
+    assertTrue(boardFour.findHighestValue() == 512);
+
+    // 1024
+    boardFour.setTile(3, 0, 512);
+    boardFour.shiftUp();
+    assertTrue(boardFour.findHighestValue() == 1024);
+
+    boardFour.setTile(2, 2, 1024);
+    boardFour.shiftUp();
+    boardFour.shiftLeft();
+    assertTrue(boardFour.findHighestValue() == 2048);
 
     assertEquals(boardFour.isGameOver(), HasWon.WON);
 }
@@ -369,43 +414,47 @@ public void testIsGameOver2048Size4() {
 public void testIsGameOver2048Size6() {
     Board boardSix = new Board(BoardSize.SIX);
     
-    while (boardSix.findHighestValue() < 2048) {
-        fillWithFours(boardSix); // Refill with 4s where needed
-        boardSix.shiftUp();      // Perform merges
-        boardSix.shiftUp();
-        boardSix.shiftUp();
-        boardSix.shiftLeft();    // Align tiles
-        boardSix.shiftLeft();
-        boardSix.shiftLeft();
+    // fill boards with 64s
+    for (int i = 0; i < 6; i ++) {
+        for (int j = 0; j < 6; j ++) {
+            boardSix.setTile(i, j, 64);
+        }
     }
 
+    boardSix.shiftUp();
+    // 128 128 128 128 128 128
+    // 128 128 128 128 128 128
+    // 128 128 128 128 128 128
+    boardSix.shiftLeft();
+    // 256 256 256
+    // 256 256 256
+    // 256 256 256
+    boardSix.shiftUp();
+    // 512 512 512
+    // 256 256 256
+    boardSix.shiftLeft();
+    // cur state 
+    // 1024 512 . . . . 
+    // 512  256 . . . . 
+    //  .    .  . . . .
+
+    boardSix.setTile(0, 2, 512);
+    boardSix.shiftLeft();
+    boardSix.shiftLeft();
+    // 2048   . . . . . 
+    // 512  256 . . . . 
+    //  .    .  . . . .
+
+    assertTrue(boardSix.findHighestValue() == 2048);
     assertEquals(boardSix.isGameOver(), HasWon.WON);
+    assertEquals(boardSix.getBoard()[1][0], new Tile(512));
+    assertEquals(boardSix.getBoard()[1][1], new Tile(256));
 }
 
 public void testIsGameOver2048Size8() {
     Board boardEight = new Board(BoardSize.EIGHT);
     
-    while (boardEight.findHighestValue() < 2048) {
-        fillWithFours(boardEight); // Refill with 4s where needed
-        boardEight.shiftUp();      // Perform merges
-        boardEight.shiftUp();
-        boardEight.shiftUp();
-        boardEight.shiftUp();
-        boardEight.shiftLeft();    // Align tiles
-        boardEight.shiftLeft();
-        boardEight.shiftLeft();
-        boardEight.shiftLeft();
-    }
-
+    boardEight.setTile(0, 0, 2048);
     assertEquals(boardEight.isGameOver(), HasWon.WON);
 }
 
-private void fillWithFours(Board b) {
-    for (int i = 0; i < b.length; i++) {
-        for (int j = 0; j < b.length; j++) {
-            if (!b[i][j].isPresent()) {
-                b.setTile(i, j, 4);
-            }
-        }
-    }
-}

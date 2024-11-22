@@ -967,8 +967,8 @@ public class Board {
         a particular spot on the board. Note that, based on the constructor for the Tile class, it
         is a precondition that value is equal to either 2 or 4. 
 
-        @pre row >= 0 && row < boardGrid.length && col >= 0 && col < boardGrid.length && (value == 2 
-            || value == 4)
+        @pre row >= 0 && row < boardGrid.length && col >= 0 && col < boardGrid.length && (value == 2^x, where x is an 
+            int with x>0)
         @post a new Tile object with the specified value is placed at the specified location within the
             board.
     */
