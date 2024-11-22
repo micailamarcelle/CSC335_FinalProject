@@ -213,6 +213,7 @@ public class BoardTest {
         assertEquals(boardEight.isGameOver(), HasWon.LOST);
     }
 
+    @Test
     public void testIsGameOver2048Size4() {
         Board boardFour = new Board(BoardSize.FOUR);
 
@@ -355,6 +356,7 @@ public class BoardTest {
         assertEquals(boardFour.isGameOver(), HasWon.WON);
     }
 
+    @Test
     public void testIsGameOver2048Size6() {
         Board boardSix = new Board(BoardSize.SIX);
 
@@ -412,6 +414,7 @@ public class BoardTest {
         assertEquals(boardSix.isGameOver(), HasWon.WON);
     }
 
+    @Test
     public void testIsGameOver2048Size8() {
         Board boardEight = new Board(BoardSize.EIGHT);
 
@@ -419,4 +422,131 @@ public class BoardTest {
         assertEquals(boardEight.isGameOver(), HasWon.WON);
     }
 
+    @Test
+    public void testIsGameOverWinFullBoardNoMovesSize4() {
+        // Creates the board and fills it with alternating 2's and 4's
+        Board board = new Board(BoardSize.FOUR);
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (i % 2 == 0 && j % 2 == 0) {
+                    board.setTile(i, j, 2);
+                } else if (i % 2 != 0 && j % 2 != 0) {
+                    board.setTile(i, j, 2);
+                } else {
+                    board.setTile(i, j, 4);
+                }
+            }
+        }
+
+        // Adds a single 2048 to the board
+        board.setTile(2, 3, 2048);
+        assertEquals(board.isGameOver(), HasWon.WON);
+    }
+
+    @Test
+    public void testIsGameOverWinFullBoardMovesSize4() {
+        // Creates the board and fills it with only 4's
+        Board board = new Board(BoardSize.FOUR);
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                board.setTile(i, j, 4);
+            }
+        }
+
+        // Adds a single 2048 to the board
+        board.setTile(2, 3, 2048);
+        assertEquals(board.isGameOver(), HasWon.WON);
+    }
+
+    @Test
+    public void testIsGameOverWinFullBoardNoMovesSize6() {
+        // Creates the board and fills it with alternating 2's and 4's
+        Board board = new Board(BoardSize.SIX);
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 6; j++) {
+                if (i % 2 == 0 && j % 2 == 0) {
+                    board.setTile(i, j, 2);
+                } else if (i % 2 != 0 && j % 2 != 0) {
+                    board.setTile(i, j, 2);
+                } else {
+                    board.setTile(i, j, 4);
+                }
+            }
+        }
+
+        // Adds a single 2048 to the board
+        board.setTile(5, 1, 2048);
+        assertEquals(board.isGameOver(), HasWon.WON);
+    }
+
+    @Test
+    public void testIsGameOverWinFullBoardMovesSize6() {
+        // Creates the board and fills it with only 2's
+        Board board = new Board(BoardSize.SIX);
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 6; j++) {
+                board.setTile(i, j, 2);
+            }
+        }
+
+        // Adds a single 2048 to the board
+        board.setTile(1, 5, 2048);
+        assertEquals(board.isGameOver(), HasWon.WON);
+    }
+
+    @Test
+    public void testIsGameOverWinFullBoardNoMovesSize8() {
+        // Creates the board and fills it with alternating 2's and 4's
+        Board board = new Board(BoardSize.EIGHT);
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (i % 2 == 0 && j % 2 == 0) {
+                    board.setTile(i, j, 2);
+                } else if (i % 2 != 0 && j % 2 != 0) {
+                    board.setTile(i, j, 2);
+                } else {
+                    board.setTile(i, j, 4);
+                }
+            }
+        }
+
+        // Adds a single 2048 to the board
+        board.setTile(2, 6, 2048);
+        assertEquals(board.isGameOver(), HasWon.WON);
+    }
+
+    @Test
+    public void testIsGameOverWinFullBoardMovesSize8() {
+        // Creates the board and fills it with only 2's
+        Board board = new Board(BoardSize.EIGHT);
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                board.setTile(i, j, 2);
+            }
+        }
+
+        // Adds a single 2048 to the board
+        board.setTile(6, 7, 2048);
+        assertEquals(board.isGameOver(), HasWon.WON);
+    }
+
+    @Test
+    public void testShiftUpTwoTiles() {
+        Board boardFour = new Board(BoardSize.FOUR);
+        boardFour.setTile(1, 1, 2);
+        boardFour.setTile(3, 1, 2);
+        boardFour.shiftUp();
+        Optional<Tile>[][] gameBoardFour = boardFour.getBoard();
+        assertEquals(boardFour.getScore(), 4);
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (i == 0 && j == 1) {
+                    assertTrue(gameBoardFour[i][j].isPresent());
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 4);
+                } else {
+                    assertFalse(gameBoardFour[i][j].isPresent());
+                }
+            }
+        }
+    }
 }

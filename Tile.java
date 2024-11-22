@@ -6,6 +6,8 @@ Purpose: Implements the actual tiles within the 2048 board. These will have an
 associated value, and methods for more easily combining tiles together.
  */
 
+import java.lang.Math;
+
 public class Tile {
     // Private instance variables for the Tile class, which include an int representing
     // the value associated with the tile, and a TileColor enumerated type representing 
@@ -109,13 +111,18 @@ public class Tile {
     *   @return a TileColor enumerated type representing the color associated with the given value
     */
     private TileColor tileColor(int value) {
-    	// Initialize a default color to the variable
+        // First, takes the log of the given value with a base of 2 in order to find the power of
+        // two that we're given
+        int powerOfTwo = (int) (Math.log(value) / Math.log(2));
+
+        // We then mod this power of 2 by 4, using this to determine the color of the Tile
+        int powerOfTwoDivFour = powerOfTwo % 4;
     	TileColor color;
-        if (value % 16 == 0) {
+        if (powerOfTwoDivFour == 0) {
             color = TileColor.PURPLE;
-        } else if (value % 8 == 0){
+        } else if (powerOfTwoDivFour == 3){
             color = TileColor.DARK_BLUE;
-        } else if (value % 4 == 0){
+        } else if (powerOfTwoDivFour == 2){
             color = TileColor.LIGHT_BLUE;
         } else {
             color = TileColor.GRAY;
