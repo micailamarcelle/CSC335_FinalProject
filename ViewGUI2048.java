@@ -12,14 +12,20 @@ import javax.swing.JPanel;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import java.util.Optional;
-
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import javax.swing.AbstractAction;
+import javax.swing.InputMap;
+import javax.swing.ActionMap;
+import javax.swing.KeyStroke;
 
 public class ViewGUI2048 extends JFrame {
     private Board board;
-    
     private JLabel scoreLabel;
+    private InputMap inputs;
+    private ActionMap actions;
+    private Grid gameBoard;
     private static final JLabel welcome = new JLabel("2048"); 
     private JPanel panel, dataPanel, gamePanel; //panel will be the main panel on which everything takes place
 
@@ -45,6 +51,51 @@ public class ViewGUI2048 extends JFrame {
                 System.exit(0);
             }
         });
+        inputs = new InputMap();
+        actions = new ActionMap();
+        inputs.put(KeyStroke.getKeyStroke("LEFT"), "shiftLeft");
+        inputs.put(KeyStroke.getKeyStroke("RIGHT"), "shiftRight");
+        inputs.put(KeyStroke.getKeyStroke("UP"), "shiftUp");
+        inputs.put(KeyStroke.getKeyStroke("DOWN"), "shiftDown");
+        actions.put("shiftLeft", new AbstractAction(){
+            public void actionPerformed(ActionEvent e){
+                board.shiftLeft();
+                gameBoard.repaint();
+                gamePanel.repaint();
+                panel.repaint();
+                repaint();
+            }
+        });
+        actions.put("shiftRight", new AbstractAction(){
+            public void actionPerformed(ActionEvent e){
+                board.shiftRight();
+                gameBoard.repaint();
+                gamePanel.repaint();
+                panel.repaint();
+                repaint();
+            }
+        });
+        actions.put("shiftUp", new AbstractAction(){
+            public void actionPerformed(ActionEvent e){
+                board.shiftUp();
+                gameBoard.repaint();
+                gamePanel.repaint();
+                panel.repaint();
+                repaint();
+            }
+        });
+        actions.put("shiftDown", new AbstractAction(){
+            public void actionPerformed(ActionEvent e){
+                board.shiftDown();
+                gameBoard.repaint();
+                gamePanel.repaint();
+                panel.repaint();
+                repaint();
+            }
+        });
+        setFocusable(true);
+        requestFocusInWindow();
+        
           
     }
     private void start(){
@@ -69,16 +120,19 @@ public class ViewGUI2048 extends JFrame {
             if(command.equals("four")){
                 clear();
                 board = new Board(BoardSize.FOUR);
+                gameBoard = new Grid(board.getBoard().length);
                 board.placeTilesStartGame();
                 runGame();
             }else if(command.equals("six")){
                 clear();
                 board = new Board(BoardSize.SIX);
+                gameBoard = new Grid(board.getBoard().length);
                 board.placeTilesStartGame();
                 runGame();
             }else{
                 clear();
                 board = new Board(BoardSize.EIGHT);
+                gameBoard = new Grid(board.getBoard().length);
                 board.placeTilesStartGame();
                 runGame();
             }
@@ -151,37 +205,12 @@ public class ViewGUI2048 extends JFrame {
     private void runGame(){
         clear();        
         panel.add(gamePanel);        
-        Grid gameBoard = new Grid(board.getBoard().length); 
         gamePanel.add(gameBoard, BorderLayout.CENTER);
         gamePanel.revalidate();
         gamePanel.repaint();
         scoreLabel.setText("Current score: " + board.getScore());
         gameBoard.repaint();
-        this.addKeyListener(new KeyAdapter() {
-            public void keyPressed(KeyEvent e){
-                int keyCode = e.getKeyCode();
-                switch (keyCode){
-                    case KeyEvent.VK_UP:
-                        board.shiftUp();
-                        gameBoard.repaint();
-                        break;
-                    case KeyEvent.VK_DOWN:
-                        board.shiftDown();
-                        gameBoard.repaint();
-                        break;
-                    case KeyEvent.VK_LEFT:
-                        board.shiftLeft();
-                        gameBoard.repaint();
-                        break;
-                    case KeyEvent.VK_RIGHT:
-                        board.shiftRight();
-                        gameBoard.repaint();
-                        break;
-                }
-                gamePanel.repaint();
-                panel.repaint();
-            }
-        });
+        
         
     }
     public static void main(String[] args){
