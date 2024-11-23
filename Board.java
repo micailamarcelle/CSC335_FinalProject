@@ -193,7 +193,7 @@ public class Board {
     /*
         Private helper method, which takes in an Optional<Tile> array representing a row within
         our board, and which combines all tiles that are adjacent to one another with the same
-        value. Note that this method also counts the number of combinations that were actuall made,
+        value. Note that this method also counts the number of combinations that were actually made,
         and returns this value, since this will allow us to more easily determine when we need to
         add new Tile objects to the board. Also, the method will combine Tiles from right to left,
         since it is assumed that this method will be called upon a right shift specifically, and since
