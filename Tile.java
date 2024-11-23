@@ -6,6 +6,8 @@ Purpose: Implements the actual tiles within the 2048 board. These will have an
 associated value, and methods for more easily combining tiles together.
  */
 
+import java.lang.Math;
+
 public class Tile {
     // Private instance variables for the Tile class, which include an int representing
     // the value associated with the tile, and a TileColor enumerated type representing 
@@ -102,22 +104,28 @@ public class Tile {
     /*
     * 	Private helper method to determine the tile color that should be assigned for a given
     * 	value
-    *   NOTE: Based on the game, only tiles of value 2 or 4 will ever be placed. So we only need to 
-    *         check if the value of the tile is a 2 or a 4.
     *
-    *   @pre value == 2 || value == 4
+    *   @pre value = 2^x for some integer x > 0
     *   @post returns a TileColor enumerated type representing the color associated with the given value
     *   @param value -- an int representing the value of the Tile whose color we're determining
     *   @return a TileColor enumerated type representing the color associated with the given value
     */
     private TileColor tileColor(int value) {
-    	// Initialize a default color to the variable
+        // First, takes the log of the given value with a base of 2 in order to find the power of
+        // two that we're given
+        int powerOfTwo = (int) (Math.log(value) / Math.log(2));
+
+        // We then mod this power of 2 by 4, using this to determine the color of the Tile
+        int powerOfTwoDivFour = powerOfTwo % 4;
     	TileColor color;
-        if (value == 2) {
-            color = TileColor.GRAY;
-        }
-        else {
+        if (powerOfTwoDivFour == 0) {
+            color = TileColor.PURPLE;
+        } else if (powerOfTwoDivFour == 3){
+            color = TileColor.DARK_BLUE;
+        } else if (powerOfTwoDivFour == 2){
             color = TileColor.LIGHT_BLUE;
+        } else {
+            color = TileColor.GRAY;
         }
 		return color;
 	}
