@@ -193,7 +193,7 @@ public class Board {
     /*
         Private helper method, which takes in an Optional<Tile> array representing a row within
         our board, and which combines all tiles that are adjacent to one another with the same
-        value. Note that this method also counts the number of combinations that were actuall made,
+        value. Note that this method also counts the number of combinations that were actually made,
         and returns this value, since this will allow us to more easily determine when we need to
         add new Tile objects to the board. Also, the method will combine Tiles from right to left,
         since it is assumed that this method will be called upon a right shift specifically, and since
@@ -245,6 +245,9 @@ public class Board {
                 row[i] = Optional.empty();
                 curTile.multiplyValByTwo();
 
+                // The score of the board is incremented by the new value of the merged Tile
+                score += curTile.getValue();
+
                 // The combination count is then incremented
                 numCombined++;
 
@@ -283,7 +286,7 @@ public class Board {
         }
 
         // If we found no non-null Tiles, then we return false, since there cannot be any combinations
-        if (i == row.length) {
+        if (i >= row.length) {
             return false;
         }
 
@@ -294,12 +297,13 @@ public class Board {
             int curVal = curTile.getValue();
 
             // Iterates until we find another tile
+            i++;
             while (i < row.length && row[i].isPresent() == false) {
                 i++;
             }
 
             // If we find no other Tiles, then we return false, since there are no combinations
-            if (i == row.length) {
+            if (i >= row.length) {
                 return false;
             }
 
@@ -402,6 +406,9 @@ public class Board {
                 row[i] = Optional.empty();
                 curTile.multiplyValByTwo();
 
+                // The score of the board is incremented by the new value of the merged Tile
+                score += curTile.getValue();
+
                 // We increment the number of combinations actually made by 1
                 numCombined++;
 
@@ -451,6 +458,7 @@ public class Board {
             // to the left
             Tile curTile = row[i].get();
             int curIndex = i;
+            i--;
             while (i >= 0 && row[i].isPresent() == false) {
                 i--;
             }
@@ -622,6 +630,9 @@ public class Board {
                 boardGrid[i][col] = Optional.empty();
                 curTile.multiplyValByTwo();
 
+                // The score is incremented by the new value of the merged Tile
+                score += curTile.getValue();
+
                 // The total number of combinations is incremented
                 numCombined++;
 
@@ -780,6 +791,9 @@ public class Board {
                 boardGrid[i][col] = Optional.empty();
                 curTile.multiplyValByTwo();
 
+                // The score associated with the Board is incremented by the new value of the merged Tile
+                score += curTile.getValue();
+
                 // The count for the number of combinations made is incremented
                 numCombined++;
 
@@ -826,18 +840,18 @@ public class Board {
                 return numShifts;
             }
 
-            // Otherwise, we get the Tile at the current spot in the board, and iterate backwards 
+            // Otherwise, we get the Tile at the current spot in the board, and iterate forwards 
             // through the column until we find where to put this Tile
             int curIndex = i;
             Tile curTile = boardGrid[i][col].get();
-            i--;
-            while (i >= 0 && boardGrid[i][col].isPresent() == false) {
-                i--;
-            }
             i++;
+            while (i < boardGrid.length && boardGrid[i][col].isPresent() == false) {
+                i++;
+            }
+            i--;
 
-            // If this new spot is not the same as the current spot, then we put our Tile in this new 
-            // spot, and fill its previous spot with an empty Optional<Tile> object
+            // If this new spot is not the same as the current spot, then we put our current Tile in this
+            // new spot, and fill its old spot with an empty Optional<Tile> object
             if (curIndex != i) {
                 boardGrid[i][col] = Optional.of(curTile);
                 boardGrid[curIndex][col] = Optional.empty();
