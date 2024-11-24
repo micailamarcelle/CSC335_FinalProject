@@ -100,7 +100,7 @@ public class BoardTest {
                 if (gameBoardEight[i][j].isPresent()) {
                     assertEquals(i, 7);
                     assertEquals(j, 7);
-                    assertEquals(gameBoardEight[i][j].get().getValue(), 4);
+                    assertEquals(gameBoardEight[i][j].get().getValue(), 2);
                 } else {
                     assertEquals(gameBoardEight[i][j], Optional.empty());
                 }
@@ -171,6 +171,10 @@ public class BoardTest {
     @Test
     public void testIsGameOverNoShifts() {
         Board boardFour = new Board(BoardSize.FOUR);
+        // 2  4  2  4
+        // 4  2  4  2
+        // 2  4  2  4
+        // 4  2  4  2 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (i % 2 == 0 && j % 2 == 0) {
@@ -785,8 +789,8 @@ public class BoardTest {
                     assertEquals(gameBoardSix[i][j].get().getValue(), 4);
                 }
                 else if (i == 4 && j == 3) {
-                    assertTrue(gameBoardFour[i][j].isPresent());
-                    assertEquals(gameBoardFour[i][j].get().getValue(), 8);
+                    assertTrue(gameBoardSix[i][j].isPresent());
+                    assertEquals(gameBoardSix[i][j].get().getValue(), 8);
                 }  
                 else {
                     assertFalse(gameBoardSix[i][j].isPresent());
@@ -799,6 +803,7 @@ public class BoardTest {
         boardEight.setTile(0, 7, 2);
         boardEight.setTile(7, 7, 4);
         boardEight.shiftDown();
+        boardEight.shiftDown();
         Optional<Tile>[][] gameBoardEight = boardEight.getBoard();
         assertEquals(boardEight.getScore(), 4);
         for (int i = 0; i < 8; i++) {
@@ -808,8 +813,8 @@ public class BoardTest {
                     assertEquals(gameBoardEight[i][j].get().getValue(), 4);
                 }
                 else if (i == 6 && j == 7) {
-                    assertTrue(gameBoardFour[i][j].isPresent());
-                    assertEquals(gameBoardFour[i][j].get().getValue(), 4);
+                    assertTrue(gameBoardEight[i][j].isPresent());
+                    assertEquals(gameBoardEight[i][j].get().getValue(), 4);
                 }  
                 else {
                     assertFalse(gameBoardEight[i][j].isPresent());
