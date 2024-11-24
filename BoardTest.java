@@ -31,7 +31,8 @@ public class BoardTest {
         assertTrue(gameBoard3.getBoard().length == 8);
     }
 
-    // Test when board is initialized whether two tiles are present on the board with
+    // Test when board is initialized whether two tiles are present on the board
+    // with
     // values of
     // either 2 or 4
     @Test
@@ -171,10 +172,10 @@ public class BoardTest {
     @Test
     public void testIsGameOverNoShifts() {
         Board boardFour = new Board(BoardSize.FOUR);
-        // 2  4  2  4
-        // 4  2  4  2
-        // 2  4  2  4
-        // 4  2  4  2 
+        // 2 4 2 4
+        // 4 2 4 2
+        // 2 4 2 4
+        // 4 2 4 2
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (i % 2 == 0 && j % 2 == 0) {
@@ -764,12 +765,10 @@ public class BoardTest {
                 if (i == 3 && j == 1) {
                     assertTrue(gameBoardFour[i][j].isPresent());
                     assertEquals(gameBoardFour[i][j].get().getValue(), 4);
-                }
-                else if (i == 2 && j == 1) {
+                } else if (i == 2 && j == 1) {
                     assertTrue(gameBoardFour[i][j].isPresent());
                     assertEquals(gameBoardFour[i][j].get().getValue(), 4);
-                } 
-                else {
+                } else {
                     assertFalse(gameBoardFour[i][j].isPresent());
                 }
             }
@@ -787,12 +786,10 @@ public class BoardTest {
                 if (i == 5 && j == 3) {
                     assertTrue(gameBoardSix[i][j].isPresent());
                     assertEquals(gameBoardSix[i][j].get().getValue(), 4);
-                }
-                else if (i == 4 && j == 3) {
+                } else if (i == 4 && j == 3) {
                     assertTrue(gameBoardSix[i][j].isPresent());
                     assertEquals(gameBoardSix[i][j].get().getValue(), 8);
-                }  
-                else {
+                } else {
                     assertFalse(gameBoardSix[i][j].isPresent());
                 }
             }
@@ -803,6 +800,7 @@ public class BoardTest {
         boardEight.setTile(0, 7, 2);
         boardEight.setTile(7, 7, 4);
         boardEight.shiftDown();
+        boardEight.shiftDown();
         Optional<Tile>[][] gameBoardEight = boardEight.getBoard();
         assertEquals(boardEight.getScore(), 4);
         for (int i = 0; i < 8; i++) {
@@ -810,12 +808,10 @@ public class BoardTest {
                 if (i == 7 && j == 7) {
                     assertTrue(gameBoardEight[i][j].isPresent());
                     assertEquals(gameBoardEight[i][j].get().getValue(), 4);
-                }
-                else if (i == 6 && j == 7) {
+                } else if (i == 6 && j == 7) {
                     assertTrue(gameBoardEight[i][j].isPresent());
                     assertEquals(gameBoardEight[i][j].get().getValue(), 4);
-                }  
-                else {
+                } else {
                     assertFalse(gameBoardEight[i][j].isPresent());
                 }
             }
@@ -823,77 +819,311 @@ public class BoardTest {
     }
 
     @Test
-        public void testShiftDownTwoTilesNoCombos() {
-            Board boardFour = new Board(BoardSize.FOUR);
-            boardFour.setTile(1, 1, 2);
-            boardFour.setTile(3, 1, 8);
-            boardFour.shiftDown();
-            Optional<Tile>[][] gameBoardFour = boardFour.getBoard();
-            assertEquals(boardFour.getScore(), 0);
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 4; j++) {
-                    if (i == 3 && j == 1) {
-                        assertTrue(gameBoardFour[i][j].isPresent());
-                        assertEquals(gameBoardFour[i][j].get().getValue(), 8);
-                    }
-                    else if (i == 2 && j == 1) {
-                        assertTrue(gameBoardFour[i][j].isPresent());
-                        assertEquals(gameBoardFour[i][j].get().getValue(), 2);
-                    } 
-                    else {
-                        assertFalse(gameBoardFour[i][j].isPresent());
-                    }
-                }
-            }
-
-            Board boardSix = new Board(BoardSize.SIX);
-            boardSix.setTile(1, 3, 8);
-            boardSix.setTile(3, 3, 2);
-            boardSix.setTile(5, 3, 4);
-            boardSix.shiftDown();
-            Optional<Tile>[][] gameBoardSix = boardSix.getBoard();
-            assertEquals(boardSix.getScore(), 0);
-            for (int i = 0; i < 6; i++) {
-                for (int j = 0; j < 6; j++) {
-                    if (i == 5 && j == 3) {
-                        assertTrue(gameBoardSix[i][j].isPresent());
-                        assertEquals(gameBoardSix[i][j].get().getValue(), 4);
-                    }
-                    else if (i == 4 && j == 3) {
-                        assertTrue(gameBoardSix[i][j].isPresent());
-                        assertEquals(gameBoardSix[i][j].get().getValue(), 2);
-                    }  
-                    else if (i == 3 && j == 3) {
-                        assertTrue(gameBoardSix[i][j].isPresent());
-                        assertEquals(gameBoardSix[i][j].get().getValue(), 8);
-                    }  
-                    else {
-                        assertFalse(gameBoardSix[i][j].isPresent());
-                    }
-                }
-            }
-
-            Board boardEight = new Board(BoardSize.EIGHT);
-            boardEight.setTile(0, 7, 2);
-            boardEight.setTile(7, 7, 4);
-            boardEight.shiftDown();
-            Optional<Tile>[][] gameBoardEight = boardEight.getBoard();
-            assertEquals(boardEight.getScore(), 0);
-            for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
-                    if (i == 7 && j == 7) {
-                        assertTrue(gameBoardEight[i][j].isPresent());
-                        assertEquals(gameBoardEight[i][j].get().getValue(), 4);
-                    }
-                    else if (i == 6 && j == 7) {
-                        assertTrue(gameBoardEight[i][j].isPresent());
-                        assertEquals(gameBoardEight[i][j].get().getValue(), 2);
-                    }  
-                    else {
-                        assertFalse(gameBoardEight[i][j].isPresent());
-                    }
+    public void testShiftUpNoCombos() {
+        Board boardFour = new Board(BoardSize.FOUR);
+        boardFour.setTile(1, 1, 2);
+        boardFour.setTile(3, 1, 32);
+        boardFour.setTile(2, 0, 8);
+        boardFour.shiftUp();
+        Optional<Tile>[][] gameBoardFour = boardFour.getBoard();
+        assertEquals(boardFour.getScore(), 0);
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (i == 0 && j == 0) {
+                    assertTrue(gameBoardFour[i][j].isPresent());
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 8);
+                } else if (i == 0 && j == 1) {
+                    assertTrue(gameBoardFour[i][j].isPresent());
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 2);
+                } else if (i == 1 && j == 1) {
+                    assertTrue(gameBoardFour[i][j].isPresent());
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 32);
+                } else {
+                    assertFalse(gameBoardFour[i][j].isPresent());
                 }
             }
         }
+
+        Board boardSix = new Board(BoardSize.SIX);
+        boardSix.setTile(1, 1, 64);
+        boardSix.setTile(3, 1, 32);
+        boardSix.setTile(1, 3, 64);
+        boardSix.setTile(3, 3, 32);
+        boardSix.shiftUp();
+        Optional<Tile>[][] gameBoardSix = boardSix.getBoard();
+        assertEquals(boardSix.getScore(), 0);
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 6; j++) {
+                if (i == 0 && j == 1) {
+                    assertTrue(gameBoardSix[i][j].isPresent());
+                    assertEquals(gameBoardSix[i][j].get().getValue(), 64);
+                } else if (i == 1 && j == 1) {
+                    assertTrue(gameBoardFour[i][j].isPresent());
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 32);
+                } else if (i == 0 && j == 3) {
+                    assertTrue(gameBoardFour[i][j].isPresent());
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 64);
+                } else if (i == 1 && j == 3) {
+                    assertTrue(gameBoardFour[i][j].isPresent());
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 32);
+                } else {
+                    assertFalse(gameBoardSix[i][j].isPresent());
+                }
+            }
+        }
+
+        Board boardEight = new Board(BoardSize.EIGHT);
+        boardEight.setTile(0, 7, 2);
+        boardEight.setTile(7, 7, 4);
+        boardEight.shiftUp();
+        Optional<Tile>[][] gameBoardEight = boardEight.getBoard();
+        assertEquals(boardEight.getScore(), 0);
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (i == 0 && j == 7) {
+                    assertTrue(gameBoardEight[i][j].isPresent());
+                    assertEquals(gameBoardEight[i][j].get().getValue(), 2);
+                } else if (i == 1 && j == 7) {
+                    assertTrue(gameBoardFour[i][j].isPresent());
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 4);
+                } else {
+                    assertFalse(gameBoardEight[i][j].isPresent());
+                }
+            }
+        }
+    }
+
+    @Test
+    public void testShiftDownNoCombos() {
+        Board boardFour = new Board(BoardSize.FOUR);
+        boardFour.setTile(1, 1, 2);
+        boardFour.setTile(3, 1, 32);
+        boardFour.setTile(2, 0, 8);
+        boardFour.shiftDown();
+        Optional<Tile>[][] gameBoardFour = boardFour.getBoard();
+        assertEquals(boardFour.getScore(), 0);
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (i == 3 && j == 0) {
+                    assertTrue(gameBoardFour[i][j].isPresent());
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 8);
+                } else if (i == 3 && j == 1) {
+                    assertTrue(gameBoardFour[i][j].isPresent());
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 32);
+                } else if (i == 2 && j == 1) {
+                    assertTrue(gameBoardFour[i][j].isPresent());
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 2);
+                } else {
+                    assertFalse(gameBoardFour[i][j].isPresent());
+                }
+            }
+        }
+
+        Board boardSix = new Board(BoardSize.SIX);
+        boardSix.setTile(1, 1, 64);
+        boardSix.setTile(3, 1, 32);
+        boardSix.setTile(1, 3, 64);
+        boardSix.setTile(3, 3, 32);
+        boardSix.shiftDown();
+        Optional<Tile>[][] gameBoardSix = boardSix.getBoard();
+        assertEquals(boardSix.getScore(), 0);
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 6; j++) {
+                if (i == 4 && j == 1) {
+                    assertTrue(gameBoardSix[i][j].isPresent());
+                    assertEquals(gameBoardSix[i][j].get().getValue(), 64);
+                } else if (i == 5 && j == 1) {
+                    assertTrue(gameBoardFour[i][j].isPresent());
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 32);
+                } else if (i == 4 && j == 3) {
+                    assertTrue(gameBoardFour[i][j].isPresent());
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 64);
+                } else if (i == 5 && j == 3) {
+                    assertTrue(gameBoardFour[i][j].isPresent());
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 32);
+                } else {
+                    assertFalse(gameBoardSix[i][j].isPresent());
+                }
+            }
+        }
+
+        Board boardEight = new Board(BoardSize.EIGHT);
+        boardEight.setTile(0, 7, 2);
+        boardEight.setTile(7, 7, 4);
+        boardEight.shiftDown();
+        Optional<Tile>[][] gameBoardEight = boardEight.getBoard();
+        assertEquals(boardEight.getScore(), 0);
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (i == 6 && j == 7) {
+                    assertTrue(gameBoardEight[i][j].isPresent());
+                    assertEquals(gameBoardEight[i][j].get().getValue(), 2);
+                } else if (i == 7 && j == 7) {
+                    assertTrue(gameBoardFour[i][j].isPresent());
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 4);
+                } else {
+                    assertFalse(gameBoardEight[i][j].isPresent());
+                }
+            }
+        }
+    }
+
+    @Test
+    public void testShiftRightNoCombos() {
+        Board boardFour = new Board(BoardSize.FOUR);
+        boardFour.setTile(0, 0, 2);
+        boardFour.setTile(0, 1, 128);
+        boardFour.shiftRight();
+        Optional<Tile>[][] gameBoardFour = boardFour.getBoard();
+        assertEquals(boardFour.getScore(), 0);
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (i == 0 && j == 3) {
+                    assertTrue(gameBoardFour[i][j].isPresent());
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 128);
+                } else if (i == 0 && j == 2) {
+                    assertTrue(gameBoardFour[i][j].isPresent());
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 2);
+                } else {
+                    assertFalse(gameBoardFour[i][j].isPresent());
+                }
+            }
+        }
+
+        Board boardSix = new Board(BoardSize.SIX);
+        boardSix.setTile(1, 1, 32);
+        boardSix.setTile(3, 1, 32);
+        boardSix.setTile(1, 3, 64);
+        boardSix.setTile(3, 3, 64);
+        boardSix.shiftRight();
+        Optional<Tile>[][] gameBoardSix = boardSix.getBoard();
+        assertEquals(boardSix.getScore(), 0);
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 6; j++) {
+                if (i == 1 && j == 5) {
+                    assertTrue(gameBoardSix[i][j].isPresent());
+                    assertEquals(gameBoardSix[i][j].get().getValue(), 64);
+                } else if (i == 1 && j == 4) {
+                    assertTrue(gameBoardFour[i][j].isPresent());
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 32);
+                } else if (i == 3 && j == 5) {
+                    assertTrue(gameBoardFour[i][j].isPresent());
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 64);
+                } else if (i == 3 && j == 4) {
+                    assertTrue(gameBoardFour[i][j].isPresent());
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 32);
+                } else {
+                    assertFalse(gameBoardSix[i][j].isPresent());
+                }
+            }
+        }
+
+        Board boardEight = new Board(BoardSize.EIGHT);
+        boardEight.setTile(0, 7, 2);
+        boardEight.setTile(0, 6, 4);
+        boardEight.setTile(1, 7, 64);
+        boardEight.setTile(1, 0, 128);
+        boardEight.shiftRight();
+        Optional<Tile>[][] gameBoardEight = boardEight.getBoard();
+        assertEquals(boardEight.getScore(), 0);
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (i == 0 && j == 7) {
+                    assertTrue(gameBoardEight[i][j].isPresent());
+                    assertEquals(gameBoardEight[i][j].get().getValue(), 2);
+                } else if (i == 0 && j == 6) {
+                    assertTrue(gameBoardFour[i][j].isPresent());
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 4);
+                } else if (i == 1 && j == 7) {
+                    assertTrue(gameBoardFour[i][j].isPresent());
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 64);
+                } else if (i == 1 && j == 6) {
+                    assertTrue(gameBoardFour[i][j].isPresent());
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 128);
+                } else {
+                    assertFalse(gameBoardEight[i][j].isPresent());
+                }
+            }
+        }
+    }
+
+    @Test
+    public void testShiftLeftNoCombos() {
+        Board boardFour = new Board(BoardSize.FOUR);
+        boardFour.setTile(0, 0, 2);
+        boardFour.setTile(0, 1, 128);
+        boardFour.shiftLeft();
+        Optional<Tile>[][] gameBoardFour = boardFour.getBoard();
+        assertEquals(boardFour.getScore(), 0);
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (i == 0 && j == 0) {
+                    assertTrue(gameBoardFour[i][j].isPresent());
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 2);
+                } else if (i == 0 && j == 1) {
+                    assertTrue(gameBoardFour[i][j].isPresent());
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 128);
+                } else {
+                    assertFalse(gameBoardFour[i][j].isPresent());
+                }
+            }
+        }
+
+        Board boardSix = new Board(BoardSize.SIX);
+        boardSix.setTile(1, 1, 32);
+        boardSix.setTile(3, 1, 32);
+        boardSix.setTile(1, 3, 64);
+        boardSix.setTile(3, 3, 64);
+        boardSix.shiftLeft();
+        Optional<Tile>[][] gameBoardSix = boardSix.getBoard();
+        assertEquals(boardSix.getScore(), 0);
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 6; j++) {
+                if (i == 1 && j == 1) {
+                    assertTrue(gameBoardSix[i][j].isPresent());
+                    assertEquals(gameBoardSix[i][j].get().getValue(), 64);
+                } else if (i == 0 && j == 1) {
+                    assertTrue(gameBoardFour[i][j].isPresent());
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 32);
+                } else if (i == 3 && j == 1) {
+                    assertTrue(gameBoardFour[i][j].isPresent());
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 64);
+                } else if (i == 3 && j == 0) {
+                    assertTrue(gameBoardFour[i][j].isPresent());
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 32);
+                } else {
+                    assertFalse(gameBoardSix[i][j].isPresent());
+                }
+            }
+        }
+
+        Board boardEight = new Board(BoardSize.EIGHT);
+        boardEight.setTile(0, 7, 2);
+        boardEight.setTile(0, 6, 4);
+        boardEight.setTile(1, 7, 64);
+        boardEight.setTile(1, 0, 128);
+        boardEight.shiftLeft();
+        Optional<Tile>[][] gameBoardEight = boardEight.getBoard();
+        assertEquals(boardEight.getScore(), 0);
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (i == 0 && j == 1) {
+                    assertTrue(gameBoardEight[i][j].isPresent());
+                    assertEquals(gameBoardEight[i][j].get().getValue(), 2);
+                } else if (i == 0 && j == 0) {
+                    assertTrue(gameBoardFour[i][j].isPresent());
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 4);
+                } else if (i == 1 && j == 1) {
+                    assertTrue(gameBoardFour[i][j].isPresent());
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 64);
+                } else if (i == 1 && j == 0) {
+                    assertTrue(gameBoardFour[i][j].isPresent());
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 128);
+                } else {
+                    assertFalse(gameBoardEight[i][j].isPresent());
+                }
+            }
+        }
+    }
 
 }
