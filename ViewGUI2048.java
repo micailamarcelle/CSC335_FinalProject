@@ -23,8 +23,6 @@ import javax.swing.KeyStroke;
 public class ViewGUI2048 extends JFrame {
     private Board board;
     private JLabel scoreLabel;
-    private InputMap inputs;
-    private ActionMap actions;
     private Grid gameBoard;
     private static final JLabel welcome = new JLabel("2048"); 
     private JPanel panel, dataPanel, gamePanel; //panel will be the main panel on which everything takes place
@@ -40,6 +38,50 @@ public class ViewGUI2048 extends JFrame {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         dataPanel = new JPanel();
         gamePanel = new JPanel();
+        gamePanel.addKeyListener(new KeyAdapter(){
+            public void keyPressed(KeyEvent e){
+                if(e.getKeyCode() == KeyEvent.VK_S){
+                    int moves = board.shiftDown();
+                    if(moves > 0){
+                        board.placeRandomTile(moves);
+                    }
+                    gameBoard.repaint();
+                    gamePanel.add(new JLabel("HI"));
+                    gamePanel.repaint();
+                    panel.repaint();
+                }
+                else if(e.getKeyCode() == KeyEvent.VK_W){
+                    int moves = board.shiftUp();
+                    if(moves > 0){
+                        board.placeRandomTile(moves);
+                    }
+                    gameBoard.repaint();
+                    gamePanel.add(new JLabel("HI"));
+                    gamePanel.repaint();
+                    panel.repaint();
+                }
+                else if(e.getKeyCode() == KeyEvent.VK_A){
+                    int moves = board.shiftLeft();
+                    if(moves > 0){
+                        board.placeRandomTile(moves);
+                    }
+                    gameBoard.repaint();
+                    gamePanel.add(new JLabel("HI"));
+                    gamePanel.repaint();
+                    panel.repaint();
+                }
+                else{
+                    int moves = board.shiftRight();
+                    if(moves > 0){
+                        board.placeRandomTile(moves);
+                    }
+                    gameBoard.repaint();
+                    gamePanel.add(new JLabel("HI"));
+                    gamePanel.repaint();
+                    panel.repaint();
+                }
+            }
+        });
         panel.add(dataPanel);
         panel.add(gamePanel);          
         dataPanel.add(welcome);   
@@ -51,52 +93,7 @@ public class ViewGUI2048 extends JFrame {
                 System.exit(0);
             }
         });
-        inputs = new InputMap();
-        actions = new ActionMap();
-        inputs.put(KeyStroke.getKeyStroke("LEFT"), "shiftLeft");
-        inputs.put(KeyStroke.getKeyStroke("RIGHT"), "shiftRight");
-        inputs.put(KeyStroke.getKeyStroke("UP"), "shiftUp");
-        inputs.put(KeyStroke.getKeyStroke("DOWN"), "shiftDown");
-        actions.put("shiftLeft", new AbstractAction(){
-            public void actionPerformed(ActionEvent e){
-                board.shiftLeft();
-                gameBoard.repaint();
-                gamePanel.repaint();
-                panel.repaint();
-                repaint();
-            }
-        });
-        actions.put("shiftRight", new AbstractAction(){
-            public void actionPerformed(ActionEvent e){
-                board.shiftRight();
-                gameBoard.repaint();
-                gamePanel.repaint();
-                panel.repaint();
-                repaint();
-            }
-        });
-        actions.put("shiftUp", new AbstractAction(){
-            public void actionPerformed(ActionEvent e){
-                board.shiftUp();
-                gameBoard.repaint();
-                gamePanel.repaint();
-                panel.repaint();
-                repaint();
-            }
-        });
-        actions.put("shiftDown", new AbstractAction(){
-            public void actionPerformed(ActionEvent e){
-                board.shiftDown();
-                gameBoard.repaint();
-                gamePanel.repaint();
-                panel.repaint();
-                repaint();
-            }
-        });
-        setFocusable(true);
-        requestFocusInWindow();
-        
-          
+                  
     }
     private void start(){
         gamePanel.add(new JLabel("Pick a grid size:"));
