@@ -14,12 +14,15 @@ import javax.swing.JButton;
 import java.util.Optional;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.event.ActionEvent;
+
+import javax.sound.sampled.*;
+import java.io.*;
 
 public class ViewGUI2048 extends JFrame {
     private Board board;
     private JLabel scoreLabel;
     private Grid gameBoard;
+    private Clip musicRunner;
     private static final JLabel WELCOME = new JLabel("2048"); 
     private static final JLabel GAMEOVER = new JLabel("Game Over");
     private JPanel panel, dataPanel, gamePanel; //panel will be the main panel on which everything takes place
@@ -48,6 +51,7 @@ public class ViewGUI2048 extends JFrame {
 
         this.addWindowFocusListener(new WindowAdapter(){
             public void windowClosing(WindowEvent windowEvent){
+                stopMusic();
                 System.exit(0);
             }
         });
@@ -105,12 +109,17 @@ public class ViewGUI2048 extends JFrame {
          * @param size is a BoardSize representing the size of the board to be used in the game
          */
         private void completeSetupAndRun(BoardSize size){
-            clear();
-            board = new Board(size);
-            gameBoard = new Grid(board.getBoard().length);
-            board.placeTilesStartGame();
-            runGame();
+            try{
+                clear();
+                board = new Board(size);
+                gameBoard = new Grid(board.getBoard().length);
+                board.placeTilesStartGame();
+                runGame();
+            }catch(Exception e){
+                gamePanel.add(new JLabel("Some kind of error occurred"));
+            }
         }
+            
     }
     /**
      * This class represents the game grid and will draw the grid as the board
@@ -252,12 +261,41 @@ public class ViewGUI2048 extends JFrame {
         panel.revalidate();
         panel.repaint();
     }
+    private void playMusic(String fileName) throws UnsupportedAudioFileException, IOException, LineUnavailableException{
+        try{
+            File audioFile = new File(fileName);
+            AudioInputStream stream = AudioSystem.getAudioInputStream(audioFile);
+            musicRunner = AudioSystem.getClip();
+            musicRunner.open(stream);
+            musicRunner.loop(Clip.LOOP_CONTINUOUSLY);
+            musicRunner.start();
+        }catch(UnsupportedAudioFileException e){
+            gamePanel.add(new JLabel("Doesn't support this audio file type"));
+        }catch(IOException e){
+            gamePanel.add(new JLabel("ERROR: FILE I/O"));
+        }catch(LineUnavailableException e){
+            gamePanel.add(new JLabel("Can't play this"));
+        }
+    }
+    private void stopMusic(){
+        if(musicRunner.isRunning()){
+            musicRunner.stop();
+        }
+        musicRunner.close();
+    }
     /**
      * This method is responsible for running the game. It clears the board, adds the game panel,
      * and sets up the buttons that handle the shifting of the board and the updating of the score. 
      */
-    private void runGame(){
-        clear();        
+    private void runGame() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
+        try{
+            clear(); 
+        File audioFile = new File("Midnight Blast - 68bpm.wav");     
+        AudioInputStream stream = AudioSystem.getAudioInputStream(audioFile);
+        musicRunner = AudioSystem.getClip();
+        musicRunner.open(stream);
+        musicRunner.loop(Clip.LOOP_CONTINUOUSLY);
+        musicRunner.start();
         panel.add(gamePanel);        
         gamePanel.add(gameBoard, BorderLayout.CENTER);
         //Set up the button to handle the up shifting
@@ -285,6 +323,9 @@ public class ViewGUI2048 extends JFrame {
         gamePanel.repaint();
         scoreLabel.setText("Current score: " + board.getScore());
         gameBoard.repaint();
+        }catch(UnsupportedAudioFileException | IOException | LineUnavailableException e){
+            gamePanel.add(new JLabel("There was some sort of error"));
+        }
         
         
     }
