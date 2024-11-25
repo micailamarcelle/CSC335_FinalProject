@@ -1,7 +1,7 @@
 
 /*
 File: BoardTest.java
-Authors: Elise Bushra (ebushra)
+Authors: Elise Bushra (ebushra), Cate Yip (cyip)
 Course: CSC 335
 Purpose: Provides JUnit tests for the functionalities of the Board class
  */
