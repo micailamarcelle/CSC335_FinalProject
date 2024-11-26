@@ -97,7 +97,7 @@ public class Tile {
         @param other -- a Tile object representing the Tile we want to compare the current Tile to
         @return true if this Tile has the same value as other, false otherwise
      */
-    boolean equals(Tile other) {
+    public boolean equals(Tile other) {
         return this.value == other.value;
     }
 
