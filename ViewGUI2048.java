@@ -211,7 +211,16 @@ public class ViewGUI2048 extends JFrame {
             if(command.equals("shiftUp")){
                 int moves = board.shiftUp();
                 if(moves > 0){
-                    board.placeRandomTile(moves);
+                    if (board.getBoard().length == 4) {
+                        board.placeRandomTile(moves);
+                    } else if (board.getBoard().length == 6) {
+                        board.placeRandomTile(moves);
+                        board.placeRandomTile(moves);
+                    } else {
+                        board.placeRandomTile(moves);
+                        board.placeRandomTile(moves);
+                        board.placeRandomTile(moves);
+                    }
                 }
                 scoreLabel.setText("Current Score: " + board.getScore());
                 gameBoard.repaint();
@@ -221,7 +230,16 @@ public class ViewGUI2048 extends JFrame {
             }else if(command.equals("shiftLeft")){
                 int moves = board.shiftLeft();
                 if(moves > 0){
-                    board.placeRandomTile(moves);
+                    if (board.getBoard().length == 4) {
+                        board.placeRandomTile(moves);
+                    } else if (board.getBoard().length == 6) {
+                        board.placeRandomTile(moves);
+                        board.placeRandomTile(moves);
+                    } else {
+                        board.placeRandomTile(moves);
+                        board.placeRandomTile(moves);
+                        board.placeRandomTile(moves);
+                    }
                 }
                 scoreLabel.setText("Current Score: " + board.getScore());
                 gameBoard.repaint();
@@ -231,7 +249,16 @@ public class ViewGUI2048 extends JFrame {
             }else if(command.equals("shiftRight")){
                 int moves = board.shiftRight();
                 if(moves > 0){
-                    board.placeRandomTile(moves);
+                    if (board.getBoard().length == 4) {
+                        board.placeRandomTile(moves);
+                    } else if (board.getBoard().length == 6) {
+                        board.placeRandomTile(moves);
+                        board.placeRandomTile(moves);
+                    } else {
+                        board.placeRandomTile(moves);
+                        board.placeRandomTile(moves);
+                        board.placeRandomTile(moves);
+                    }
                 }
                 scoreLabel.setText("Current Score: " + board.getScore());
                 gameBoard.repaint();
@@ -241,7 +268,16 @@ public class ViewGUI2048 extends JFrame {
             }else if(command.equals("shiftDown")){
                 int moves = board.shiftDown();
                 if(moves > 0){
-                    board.placeRandomTile(moves);
+                    if (board.getBoard().length == 4) {
+                        board.placeRandomTile(moves);
+                    } else if (board.getBoard().length == 6) {
+                        board.placeRandomTile(moves);
+                        board.placeRandomTile(moves);
+                    } else {
+                        board.placeRandomTile(moves);
+                        board.placeRandomTile(moves);
+                        board.placeRandomTile(moves);
+                    }
                 }
                 scoreLabel.setText("Current Score: " + board.getScore());
                 gameBoard.repaint();
