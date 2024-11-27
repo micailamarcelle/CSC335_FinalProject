@@ -21,15 +21,15 @@ public class TileTest {
 
         a.multiplyValByTwo();
         assertTrue(a.getValue() == 4);
-        assertTrue(a.getTileColor() == TileColor.LIGHT_BLUE);
+        assertTrue(a.getTileColor() == TileColor.CYAN);
 
         a.multiplyValByTwo();
         assertTrue(a.getValue() == 8);
-        assertTrue(a.getTileColor() == TileColor.DARK_BLUE);
+        assertTrue(a.getTileColor() == TileColor.GREEN);
 
         a.multiplyValByTwo();
         assertTrue(a.getValue() == 16);
-        assertTrue(a.getTileColor() == TileColor.PURPLE);
+        assertTrue(a.getTileColor() == TileColor.BLUE);
 
         a.multiplyValByTwo();
         assertTrue(a.getValue() == 32);
@@ -44,15 +44,15 @@ public class TileTest {
 
         a.multiplyValByTwo();
         assertEquals(a.getValue(), 64);
-        assertEquals(a.getTileColor(), TileColor.LIGHT_BLUE);
+        assertEquals(a.getTileColor(), TileColor.CYAN);
 
         a.multiplyValByTwo();
         assertEquals(a.getValue(), 128);
-        assertEquals(a.getTileColor(), TileColor.DARK_BLUE);
+        assertEquals(a.getTileColor(), TileColor.GREEN);
 
         a.multiplyValByTwo();
         assertEquals(a.getValue(), 256);
-        assertEquals(a.getTileColor(), TileColor.PURPLE);
+        assertEquals(a.getTileColor(), TileColor.BLUE);
 
         a.multiplyValByTwo();
         assertEquals(a.getValue(), 512);
@@ -60,15 +60,15 @@ public class TileTest {
 
         a.multiplyValByTwo();
         assertEquals(a.getValue(), 1024);
-        assertEquals(a.getTileColor(), TileColor.LIGHT_BLUE);
+        assertEquals(a.getTileColor(), TileColor.CYAN);
 
         a.multiplyValByTwo();
         assertEquals(a.getValue(), 2048);
-        assertEquals(a.getTileColor(), TileColor.DARK_BLUE);
+        assertEquals(a.getTileColor(), TileColor.GREEN);
 
         a.multiplyValByTwo();
         assertEquals(a.getValue(), 4096);
-        assertEquals(a.getTileColor(), TileColor.PURPLE);
+        assertEquals(a.getTileColor(), TileColor.BLUE);
 
         a.multiplyValByTwo();
         assertEquals(a.getValue(), 8192);
@@ -76,7 +76,7 @@ public class TileTest {
 
         a.multiplyValByTwo();
         assertEquals(a.getValue(), 16384);
-        assertEquals(a.getTileColor(), TileColor.LIGHT_BLUE);
+        assertEquals(a.getTileColor(), TileColor.CYAN);
     }
 
     @Test
@@ -125,9 +125,9 @@ public class TileTest {
         Tile c = new Tile(8);
         Tile d = new Tile(16);
         assertEquals(a.getTileColor(), TileColor.GRAY);
-        assertEquals(b.getTileColor(), TileColor.LIGHT_BLUE);
-        assertEquals(c.getTileColor(), TileColor.DARK_BLUE);
-        assertEquals(d.getTileColor(), TileColor.PURPLE);
+        assertEquals(b.getTileColor(), TileColor.CYAN);
+        assertEquals(c.getTileColor(), TileColor.GREEN);
+        assertEquals(d.getTileColor(), TileColor.BLUE);
     }
 
     @Test
@@ -136,40 +136,40 @@ public class TileTest {
         assertEquals(a.getTileColor(), TileColor.GRAY);
 
         Tile b = new Tile(64);
-        assertEquals(b.getTileColor(), TileColor.LIGHT_BLUE);
+        assertEquals(b.getTileColor(), TileColor.CYAN);
 
         Tile c = new Tile(128);
-        assertEquals(c.getTileColor(), TileColor.DARK_BLUE);
+        assertEquals(c.getTileColor(), TileColor.GREEN);
 
         Tile d = new Tile(256);
-        assertEquals(d.getTileColor(), TileColor.PURPLE);
+        assertEquals(d.getTileColor(), TileColor.BLUE);
 
         Tile e = new Tile(512);
         assertEquals(e.getTileColor(), TileColor.GRAY);
 
         Tile f = new Tile(1028);
-        assertEquals(f.getTileColor(), TileColor.LIGHT_BLUE);
+        assertEquals(f.getTileColor(), TileColor.CYAN);
 
         Tile g = new Tile(2048);
-        assertEquals(g.getTileColor(), TileColor.DARK_BLUE);
+        assertEquals(g.getTileColor(), TileColor.GREEN);
     }
 
     @Test
     public void testTileColorPast2048() {
         Tile a = new Tile(4096);
-        assertEquals(a.getTileColor(), TileColor.PURPLE);
+        assertEquals(a.getTileColor(), TileColor.BLUE);
 
         Tile b = new Tile(8192);
         assertEquals(b.getTileColor(), TileColor.GRAY);
 
         Tile c = new Tile(16384);
-        assertEquals(c.getTileColor(), TileColor.LIGHT_BLUE);
+        assertEquals(c.getTileColor(), TileColor.CYAN);
 
         Tile d = new Tile(32768);
-        assertEquals(d.getTileColor(), TileColor.DARK_BLUE);
+        assertEquals(d.getTileColor(), TileColor.GREEN);
 
         Tile e = new Tile(65536);
-        assertEquals(e.getTileColor(), TileColor.PURPLE);
+        assertEquals(e.getTileColor(), TileColor.BLUE);
     }
 
     @Test

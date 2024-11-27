@@ -81,7 +81,7 @@ public class Tile {
         wrapping around if necessary.
      */
     private void updateToNextColor() {
-        if (this.color.equals(TileColor.PURPLE)) {
+        if (this.color.equals(TileColor.BLUE)) {
             this.color = TileColor.GRAY;
         } else {
             this.color = TileColor.values()[this.color.ordinal() + 1];
@@ -119,11 +119,11 @@ public class Tile {
         int powerOfTwoDivFour = powerOfTwo % 4;
     	TileColor color;
         if (powerOfTwoDivFour == 0) {
-            color = TileColor.PURPLE;
+            color = TileColor.BLUE;
         } else if (powerOfTwoDivFour == 3){
-            color = TileColor.DARK_BLUE;
+            color = TileColor.GREEN;
         } else if (powerOfTwoDivFour == 2){
-            color = TileColor.LIGHT_BLUE;
+            color = TileColor.CYAN;
         } else {
             color = TileColor.GRAY;
         }
