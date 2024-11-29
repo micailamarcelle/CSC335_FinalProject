@@ -173,7 +173,7 @@ public class ViewGUI2048 extends JFrame {
                     //Set the tile color based on what is in a non-empty space in the board. 
                     else{
                         Tile currTile = currBoard[i][j].get();                        
-                        /*
+                        
                         if(currTile.getTileColor() == TileColor.CYAN){
                             g.setColor(Color.CYAN);
                         }
@@ -186,8 +186,6 @@ public class ViewGUI2048 extends JFrame {
                         else{
                             g.setColor(Color.GRAY);
                         }
-                            */
-                        g.setColor(Color.RED);
                         Integer val = currTile.getValue();
                         tileValue = val.toString();
                     }
@@ -301,7 +299,7 @@ public class ViewGUI2048 extends JFrame {
             }
         }
     }
-    /*
+    
     private class ContinueHandler implements ActionListener{
        
         public void actionPerformed(ActionEvent e) {
@@ -321,7 +319,6 @@ public class ViewGUI2048 extends JFrame {
         }
         
     }
-    */
     /**
      * This method gets rid of the grid choosing buttons to make way for the rest
      * of the game to run. It removes the game panel, makes a new one, and repaints the 
@@ -345,6 +342,7 @@ public class ViewGUI2048 extends JFrame {
             musicRunner.start();
             panel.add(gamePanel);        
             gamePanel.add(gameBoard, BorderLayout.CENTER);
+            
             //Set up the button to handle the up shifting
             JButton upButton = new JButton("↑");
             upButton.setActionCommand("shiftUp");
@@ -370,11 +368,13 @@ public class ViewGUI2048 extends JFrame {
             gamePanel.repaint();
             scoreLabel.setText("Current score: " + board.getScore());
             gameBoard.repaint();
-            /*
+            
             if(board.isGameOver() == HasWon.LOST){
                 panel.add(gameOverPanel);
                 gameOverPanel.add(GAMEOVER);
-                gameOverPanel.add(new JLabel("Final Score: " + board.getScore()));
+                gameOverPanel.add(new JLabel("Final Score:  " + board.getScore()));
+                gameOverPanel.repaint();
+                panel.add(gameOverPanel);
             }
             if(board.isGameOver() == HasWon.WON){
                 panel.add(gameOverPanel);
@@ -383,11 +383,19 @@ public class ViewGUI2048 extends JFrame {
                 JButton continueGame = new JButton("Yes");
                 continueGame.setActionCommand("continue");
                 continueGame.addActionListener(new ContinueHandler());
+                gameOverPanel.add(continueGame);
                 JButton endGame = new JButton("No");
                 endGame.setActionCommand("endGame");
                 endGame.addActionListener(new ContinueHandler());
+                gameOverPanel.add(endGame);
+                gameOverPanel.repaint();
+                panel.add(gameOverPanel);
             }
-            */
+            gamePanel.revalidate();
+            gamePanel.repaint();
+            panel.revalidate();
+            panel.repaint();
+            
         }catch(UnsupportedAudioFileException | IOException | LineUnavailableException e){
             gamePanel.add(new JLabel("There was some sort of error"));
         }
