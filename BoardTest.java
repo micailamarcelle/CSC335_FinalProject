@@ -1135,20 +1135,23 @@ public class BoardTest {
                 }
             }
             boardFour.shiftUp();
+            Optional<Tile>[][] gameBoardFour = boardFour.getBoard();
             for (int i = 0; i < 2; i ++) {
                 for (int j = 0; j < 4; j ++) {
-                    assertEquals(boardFour[i][j].get().getValue(), 8);
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 8);
                 }
             }
             boardFour.shiftDown();
+            Optional<Tile>[][] gameBoardFour = boardFour.getBoard();
             for (int i = 3; i < 4; i ++) {
                 for (int j = 0; j < 4; j ++) {
-                    assertEquals(boardFour[i][j].get().getValue(), 16);
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 16);
                 }
             }
             boardFour.shiftLeft();
-            assertEquals(boardFour[3][1].get().getValue(), 32);
-            assertEquals(boardFour[3][0].get().getValue(), 32);
+            Optional<Tile>[][] gameBoardFour = boardFour.getBoard();
+            assertEquals(gameBoardFour[3][1].get().getValue(), 32);
+            assertEquals(gameBoardFour[3][0].get().getValue(), 32);
 
             boardFour.shiftRight();
             assertEquals(boardFour[3][3].get().getValue(), 64);
@@ -1161,15 +1164,17 @@ public class BoardTest {
                 }
             }
             boardSix.shiftUp();
+            Optional<Tile>[][] gameBoardSix = boardSix.getBoard();
             for (int i = 0; i < 3; i ++) {
                 for (int j = 0; j < 6; j ++) {
-                    assertEquals(boardSix[i][j].get().getValue(), 8);
+                    assertEquals(gameBoardSix[i][j].get().getValue(), 8);
                 }
             }
             boardSix.shiftLeft();
+            Optional<Tile>[][] gameBoardSix = boardSix.getBoard();
             for (int i = 0; i < 3; i ++) {
                 for (int j = 0; j < 3; j ++) {
-                    assertEquals(boardSix[i][j].get().getValue(), 16);
+                    assertEquals(gameBoardSix[i][j].get().getValue(), 16);
                 }
             }
 
@@ -1181,34 +1186,39 @@ public class BoardTest {
                 }
             }
             boardEight.shiftUp();
+            Optional<Tile>[][] gameBoardEight = boardEight.getBoard();
             for (int i = 0; i < 4; i ++) {
                 for (int j = 0; j < 8; j ++) {
-                    assertEquals(boardEight[i][j].get().getValue(), 8);
+                    assertEquals(gameBoardEight[i][j].get().getValue(), 8);
                 }
             }
             boardEight.shiftDown();
+            Optional<Tile>[][] gameBoardEight = boardEight.getBoard();
             for (int i = 6; i < 8; i ++) {
                 for (int j = 0; j < 8; j ++) {
-                    assertEquals(boardEight[i][j].get().getValue(), 16);
+                    assertEquals(gameBoardEight[i][j].get().getValue(), 16);
                 }
             }
             boardEight.shiftLeft();
+            Optional<Tile>[][] gameBoardEight = boardEight.getBoard();
             for (int i = 6; i < 8; i ++) {
                 for (int j = 0; j < 4; j ++) {
-                    assertEquals(boardEight[i][j].get().getValue(), 32);
+                    assertEquals(gameBoardEight[i][j].get().getValue(), 32);
                 }
             }
 
             boardEight.shiftRight();
+            Optional<Tile>[][] gameBoardEight = boardEight.getBoard();
             for (int i = 6; i < 8; i ++) {
                 for (int j = 6; j < 8; j ++) {
-                    assertEquals(boardEight[i][j].get().getValue(), 64);
+                    assertEquals(gameBoardEight[i][j].get().getValue(), 64);
                 }
             }
 
             boardEight.shiftUp();
             boardEight.shiftRight();
-            assertEquals(boardEight[0][7].get().getValue(), 256);
+            Optional<Tile>[][] gameBoardEight = boardEight.getBoard();
+            assertEquals(gameBoardEight[0][7].get().getValue(), 256);
         }
 
         @Test
@@ -1220,21 +1230,23 @@ public class BoardTest {
                 }
             }
             boardFour.shiftUp();
+            Optional<Tile>[][] gameBoardFour = boardFour.getBoard();
             for (int i = 0; i < 1; i ++) {
                 for (int j = 0; j < 3; j ++) {
-                    assertEquals(boardFour[i][j].get().getValue(), 8);
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 8);
                 }
             }
             for (int i = 1; i < 2; i ++) {
                 for (int j = 0; j < 3; j ++) {
-                    assertEquals(boardFour[i][j].get().getValue(), 4);
+                    assertEquals(gameBoardFour[i][j].get().getValue(), 4);
                 }
             }
             boardFour.shiftLeft();
-            assertEquals(boardFour[0][0].get().getValue(), 16);
-            assertEquals(boardFour[1][0].get().getValue(), 8);
-            assertEquals(boardFour[0][1].get().getValue(), 8);
-            assertEquals(boardFour[1][1].get().getValue(), 4);
+            Optional<Tile>[][] gameBoardFour = boardFour.getBoard();
+            assertEquals(gameBoardFour[0][0].get().getValue(), 16);
+            assertEquals(gameBoardFour[1][0].get().getValue(), 8);
+            assertEquals(gameBoardFour[0][1].get().getValue(), 8);
+            assertEquals(gameBoardFour[1][1].get().getValue(), 4);
         }
 
 
