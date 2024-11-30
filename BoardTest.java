@@ -1375,5 +1375,34 @@ public class BoardTest {
         assertEquals(numTiles, 2);
     }
 
+    @Test
+    public void testCountCombosSizeFourBoard() {
+        Board boardFour = new Board(BoardSize.FOUR);
+        boardFour.setTile(0, 0, 2);
+        boardFour.setTile(0, 1, 2);
+        int moves = boardFour.shiftLeft();
+        assertEquals(moves, 1);
+    }
+
+    @Test
+    public void testCountCombosSizeSixBoard() {
+        Board boardSix = new Board(BoardSize.SIX);
+        boardSix.setTile(0, 0, 2);
+        boardSix.setTile(0, 1, 2);
+        boardSix.setTile(1, 1, 2);
+        int moves = boardSix.shiftLeft();
+        assertEquals(moves, 2);
+    }
+
+    @Test
+    public void testCountCombosSizeEightBoard() {
+        Board boardEight = new Board(BoardSize.EIGHT);
+        boardEight.setTile(7, 0, 2);
+        boardEight.setTile(6, 0, 2);
+        boardEight.setTile(7, 7, 32);
+        boardEight.setTile(6, 7, 32);
+        int moves = boardEight.shiftDown();
+        assertEquals(moves, 2);
+    }
 
 }
