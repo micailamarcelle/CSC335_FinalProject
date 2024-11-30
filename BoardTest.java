@@ -1142,19 +1142,19 @@ public class BoardTest {
                 }
             }
             boardFour.shiftDown();
-            Optional<Tile>[][] gameBoardFour = boardFour.getBoard();
+            gameBoardFour = boardFour.getBoard();
             for (int i = 3; i < 4; i ++) {
                 for (int j = 0; j < 4; j ++) {
                     assertEquals(gameBoardFour[i][j].get().getValue(), 16);
                 }
             }
             boardFour.shiftLeft();
-            Optional<Tile>[][] gameBoardFour = boardFour.getBoard();
+            gameBoardFour = boardFour.getBoard();
             assertEquals(gameBoardFour[3][1].get().getValue(), 32);
             assertEquals(gameBoardFour[3][0].get().getValue(), 32);
 
             boardFour.shiftRight();
-            assertEquals(boardFour[3][3].get().getValue(), 64);
+            assertEquals(gameBoardFour[3][3].get().getValue(), 64);
 
             // size six
             Board boardSix = new Board(BoardSize.SIX);
@@ -1171,7 +1171,7 @@ public class BoardTest {
                 }
             }
             boardSix.shiftLeft();
-            Optional<Tile>[][] gameBoardSix = boardSix.getBoard();
+            gameBoardSix = boardSix.getBoard();
             for (int i = 0; i < 3; i ++) {
                 for (int j = 0; j < 3; j ++) {
                     assertEquals(gameBoardSix[i][j].get().getValue(), 16);
@@ -1193,14 +1193,14 @@ public class BoardTest {
                 }
             }
             boardEight.shiftDown();
-            Optional<Tile>[][] gameBoardEight = boardEight.getBoard();
+            gameBoardEight = boardEight.getBoard();
             for (int i = 6; i < 8; i ++) {
                 for (int j = 0; j < 8; j ++) {
                     assertEquals(gameBoardEight[i][j].get().getValue(), 16);
                 }
             }
             boardEight.shiftLeft();
-            Optional<Tile>[][] gameBoardEight = boardEight.getBoard();
+            gameBoardEight = boardEight.getBoard();
             for (int i = 6; i < 8; i ++) {
                 for (int j = 0; j < 4; j ++) {
                     assertEquals(gameBoardEight[i][j].get().getValue(), 32);
@@ -1208,7 +1208,7 @@ public class BoardTest {
             }
 
             boardEight.shiftRight();
-            Optional<Tile>[][] gameBoardEight = boardEight.getBoard();
+            gameBoardEight = boardEight.getBoard();
             for (int i = 6; i < 8; i ++) {
                 for (int j = 6; j < 8; j ++) {
                     assertEquals(gameBoardEight[i][j].get().getValue(), 64);
@@ -1217,7 +1217,7 @@ public class BoardTest {
 
             boardEight.shiftUp();
             boardEight.shiftRight();
-            Optional<Tile>[][] gameBoardEight = boardEight.getBoard();
+            gameBoardEight = boardEight.getBoard();
             assertEquals(gameBoardEight[0][7].get().getValue(), 256);
         }
 
@@ -1242,12 +1242,138 @@ public class BoardTest {
                 }
             }
             boardFour.shiftLeft();
-            Optional<Tile>[][] gameBoardFour = boardFour.getBoard();
+            gameBoardFour = boardFour.getBoard();
             assertEquals(gameBoardFour[0][0].get().getValue(), 16);
             assertEquals(gameBoardFour[1][0].get().getValue(), 8);
             assertEquals(gameBoardFour[0][1].get().getValue(), 8);
             assertEquals(gameBoardFour[1][1].get().getValue(), 4);
         }
+
+    @Test
+    public void testPlaceRandomTileSizeFourBoard() {
+        Board boardFour = new Board(BoardSize.FOUR);
+        boardFour.setTile(1, 1, 2);
+        boardFour.setTile(2, 0, 8);
+        int moves = boardFour.shiftDown();
+        assertEquals(moves, 2); // one move for the 8 shifting down and the second for the 2 shifting down
+        boardFour.placeRandomTile(moves); // place one random tile
+        Optional<Tile>[][] gameBoardFour = boardFour.getBoard();
+        int numTiles = 0;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (gameBoardFour[i][j].isPresent()) {
+                    numTiles ++;
+                }
+            }
+        }
+        assertEquals(numTiles, 3);
+    }
+
+    @Test
+    public void testDoesNotPlaceRandomTileSizeFourBoard() {
+        Board boardFour = new Board(BoardSize.FOUR);
+        boardFour.setTile(3, 0, 2);
+        boardFour.setTile(3, 1, 8);
+        int moves = boardFour.shiftLeft();
+        assertEquals(moves, 0); // one move for the 8 shifting down and the second for the 2 shifting down
+        boardFour.placeRandomTile(moves); // Try placing a tile but there are no moves so it should not place a tile
+        Optional<Tile>[][] gameBoardFour = boardFour.getBoard();
+        int numTiles = 0;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (gameBoardFour[i][j].isPresent()) {
+                    numTiles ++;
+                }
+            }
+        }
+        assertEquals(numTiles, 2);
+    }
+
+    @Test
+    public void testPlaceRandomTilesSizeSixBoard() {
+        Board boardSix = new Board(BoardSize.SIX);
+        boardSix.setTile(1, 1, 2);
+        boardSix.setTile(2, 0, 8);
+        int moves = boardSix.shiftDown();
+        assertEquals(moves, 2); // one move for the 8 shifting down and the second for the 2 shifting down
+        boardSix.placeRandomTile(moves); // place two random tiles
+        boardSix.placeRandomTile(moves);
+        Optional<Tile>[][] gameBoardSix = boardSix.getBoard();
+        int numTiles = 0;
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 6; j++) {
+                if (gameBoardSix[i][j].isPresent()) {
+                    numTiles ++;
+                }
+            }
+        }
+        assertEquals(numTiles, 4);
+    }
+
+    @Test
+    public void testDoesNotPlaceRandomTilesSizeSixBoard() {
+        Board boardSix = new Board(BoardSize.SIX);
+        boardSix.setTile(0, 0, 2);
+        boardSix.setTile(0, 1, 8);
+        int moves = boardSix.shiftUp();
+        assertEquals(moves, 0); // one move for the 8 shifting down and the second for the 2 shifting down
+        boardSix.placeRandomTile(moves); // Try to place two random tiles
+        boardSix.placeRandomTile(moves);
+        Optional<Tile>[][] gameBoardSix = boardSix.getBoard();
+        int numTiles = 0;
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 6; j++) {
+                if (gameBoardSix[i][j].isPresent()) {
+                    numTiles ++;
+                }
+            }
+        }
+        assertEquals(numTiles, 2);
+    }
+
+    @Test
+    public void testPlaceRandomTileSizeEightBoard() {
+        Board boardEight = new Board(BoardSize.EIGHT);
+        boardEight.setTile(1, 1, 2);
+        boardEight.setTile(2, 0, 8);
+        int moves = boardEight.shiftDown();
+        assertEquals(moves, 2); // one move for the 8 shifting down and the second for the 2 shifting down
+        boardEight.placeRandomTile(moves); // place three random tiles
+        boardEight.placeRandomTile(moves);
+        boardEight.placeRandomTile(moves);
+        Optional<Tile>[][] gameBoardEight = boardEight.getBoard();
+        int numTiles = 0;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (gameBoardEight[i][j].isPresent()) {
+                    numTiles ++;
+                }
+            }
+        }
+        assertEquals(numTiles, 5);
+    }
+
+    @Test
+    public void testDoesNotPlaceRandomTileSizeEightBoard() {
+        Board boardEight = new Board(BoardSize.EIGHT);
+        boardEight.setTile(7, 7, 2);
+        boardEight.setTile(6, 7, 64);
+        int moves = boardEight.shiftRight();
+        assertEquals(moves, 0); // one move for the 8 shifting down and the second for the 2 shifting down
+        boardEight.placeRandomTile(moves); // Try to place three random tiles
+        boardEight.placeRandomTile(moves);
+        boardEight.placeRandomTile(moves);
+        Optional<Tile>[][] gameBoardEight = boardEight.getBoard();
+        int numTiles = 0;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (gameBoardEight[i][j].isPresent()) {
+                    numTiles ++;
+                }
+            }
+        }
+        assertEquals(numTiles, 2);
+    }
 
 
 }
