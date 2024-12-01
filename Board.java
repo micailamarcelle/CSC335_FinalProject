@@ -10,18 +10,6 @@ achieved. The board will also keep track of the user's current score, effectivel
 acting as the model within the system.
  */
 
-// NOTE: STILL NEED TO FIGURE OUT HOW TO IMPLEMENT RANDOMLY ADDING 1-2 TILES PER
-// MOVE WITHIN THE GAME!
-// Keep in mind that this only needs to be done for moves that actually do something
-// (i.e. moves in which something in the board actually goes somewhere- could keep
-// track of the number of shifts, and only add when greater than 0?)
-
-
-// NOTE: The game starts with 2 random tiles filled with Tile objects each of
-// value 2. Maybe constructing a method to determine where to place the initial
-// tiles. We have not implemented placing the first two random tiles yes. 
-
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.Random;
 

@@ -800,7 +800,6 @@ public class BoardTest {
         boardEight.setTile(0, 7, 2);
         boardEight.setTile(7, 7, 4);
         boardEight.shiftDown();
-        boardEight.shiftDown();
         Optional<Tile>[][] gameBoardEight = boardEight.getBoard();
         assertEquals(boardEight.getScore(), 4);
         for (int i = 0; i < 8; i++) {
@@ -858,14 +857,14 @@ public class BoardTest {
                     assertTrue(gameBoardSix[i][j].isPresent());
                     assertEquals(gameBoardSix[i][j].get().getValue(), 64);
                 } else if (i == 1 && j == 1) {
-                    assertTrue(gameBoardFour[i][j].isPresent());
-                    assertEquals(gameBoardFour[i][j].get().getValue(), 32);
+                    assertTrue(gameBoardSix[i][j].isPresent());
+                    assertEquals(gameBoardSix[i][j].get().getValue(), 32);
                 } else if (i == 0 && j == 3) {
-                    assertTrue(gameBoardFour[i][j].isPresent());
-                    assertEquals(gameBoardFour[i][j].get().getValue(), 64);
+                    assertTrue(gameBoardSix[i][j].isPresent());
+                    assertEquals(gameBoardSix[i][j].get().getValue(), 64);
                 } else if (i == 1 && j == 3) {
-                    assertTrue(gameBoardFour[i][j].isPresent());
-                    assertEquals(gameBoardFour[i][j].get().getValue(), 32);
+                    assertTrue(gameBoardSix[i][j].isPresent());
+                    assertEquals(gameBoardSix[i][j].get().getValue(), 32);
                 } else {
                     assertFalse(gameBoardSix[i][j].isPresent());
                 }
@@ -884,8 +883,8 @@ public class BoardTest {
                     assertTrue(gameBoardEight[i][j].isPresent());
                     assertEquals(gameBoardEight[i][j].get().getValue(), 2);
                 } else if (i == 1 && j == 7) {
-                    assertTrue(gameBoardFour[i][j].isPresent());
-                    assertEquals(gameBoardFour[i][j].get().getValue(), 4);
+                    assertTrue(gameBoardEight[i][j].isPresent());
+                    assertEquals(gameBoardEight[i][j].get().getValue(), 4);
                 } else {
                     assertFalse(gameBoardEight[i][j].isPresent());
                 }
@@ -933,14 +932,14 @@ public class BoardTest {
                     assertTrue(gameBoardSix[i][j].isPresent());
                     assertEquals(gameBoardSix[i][j].get().getValue(), 64);
                 } else if (i == 5 && j == 1) {
-                    assertTrue(gameBoardFour[i][j].isPresent());
-                    assertEquals(gameBoardFour[i][j].get().getValue(), 32);
+                    assertTrue(gameBoardSix[i][j].isPresent());
+                    assertEquals(gameBoardSix[i][j].get().getValue(), 32);
                 } else if (i == 4 && j == 3) {
-                    assertTrue(gameBoardFour[i][j].isPresent());
-                    assertEquals(gameBoardFour[i][j].get().getValue(), 64);
+                    assertTrue(gameBoardSix[i][j].isPresent());
+                    assertEquals(gameBoardSix[i][j].get().getValue(), 64);
                 } else if (i == 5 && j == 3) {
-                    assertTrue(gameBoardFour[i][j].isPresent());
-                    assertEquals(gameBoardFour[i][j].get().getValue(), 32);
+                    assertTrue(gameBoardSix[i][j].isPresent());
+                    assertEquals(gameBoardSix[i][j].get().getValue(), 32);
                 } else {
                     assertFalse(gameBoardSix[i][j].isPresent());
                 }
@@ -959,8 +958,8 @@ public class BoardTest {
                     assertTrue(gameBoardEight[i][j].isPresent());
                     assertEquals(gameBoardEight[i][j].get().getValue(), 2);
                 } else if (i == 7 && j == 7) {
-                    assertTrue(gameBoardFour[i][j].isPresent());
-                    assertEquals(gameBoardFour[i][j].get().getValue(), 4);
+                    assertTrue(gameBoardEight[i][j].isPresent());
+                    assertEquals(gameBoardEight[i][j].get().getValue(), 4);
                 } else {
                     assertFalse(gameBoardEight[i][j].isPresent());
                 }
@@ -1004,14 +1003,14 @@ public class BoardTest {
                     assertTrue(gameBoardSix[i][j].isPresent());
                     assertEquals(gameBoardSix[i][j].get().getValue(), 64);
                 } else if (i == 1 && j == 4) {
-                    assertTrue(gameBoardFour[i][j].isPresent());
-                    assertEquals(gameBoardFour[i][j].get().getValue(), 32);
+                    assertTrue(gameBoardSix[i][j].isPresent());
+                    assertEquals(gameBoardSix[i][j].get().getValue(), 32);
                 } else if (i == 3 && j == 5) {
-                    assertTrue(gameBoardFour[i][j].isPresent());
-                    assertEquals(gameBoardFour[i][j].get().getValue(), 64);
+                    assertTrue(gameBoardSix[i][j].isPresent());
+                    assertEquals(gameBoardSix[i][j].get().getValue(), 64);
                 } else if (i == 3 && j == 4) {
-                    assertTrue(gameBoardFour[i][j].isPresent());
-                    assertEquals(gameBoardFour[i][j].get().getValue(), 32);
+                    assertTrue(gameBoardSix[i][j].isPresent());
+                    assertEquals(gameBoardSix[i][j].get().getValue(), 32);
                 } else {
                     assertFalse(gameBoardSix[i][j].isPresent());
                 }
@@ -1032,14 +1031,14 @@ public class BoardTest {
                     assertTrue(gameBoardEight[i][j].isPresent());
                     assertEquals(gameBoardEight[i][j].get().getValue(), 2);
                 } else if (i == 0 && j == 6) {
-                    assertTrue(gameBoardFour[i][j].isPresent());
-                    assertEquals(gameBoardFour[i][j].get().getValue(), 4);
+                    assertTrue(gameBoardEight[i][j].isPresent());
+                    assertEquals(gameBoardEight[i][j].get().getValue(), 4);
                 } else if (i == 1 && j == 7) {
-                    assertTrue(gameBoardFour[i][j].isPresent());
-                    assertEquals(gameBoardFour[i][j].get().getValue(), 64);
+                    assertTrue(gameBoardEight[i][j].isPresent());
+                    assertEquals(gameBoardEight[i][j].get().getValue(), 64);
                 } else if (i == 1 && j == 6) {
-                    assertTrue(gameBoardFour[i][j].isPresent());
-                    assertEquals(gameBoardFour[i][j].get().getValue(), 128);
+                    assertTrue(gameBoardEight[i][j].isPresent());
+                    assertEquals(gameBoardEight[i][j].get().getValue(), 128);
                 } else {
                     assertFalse(gameBoardEight[i][j].isPresent());
                 }
@@ -1082,15 +1081,15 @@ public class BoardTest {
                 if (i == 1 && j == 1) {
                     assertTrue(gameBoardSix[i][j].isPresent());
                     assertEquals(gameBoardSix[i][j].get().getValue(), 64);
-                } else if (i == 0 && j == 1) {
-                    assertTrue(gameBoardFour[i][j].isPresent());
-                    assertEquals(gameBoardFour[i][j].get().getValue(), 32);
+                } else if (i == 1 && j == 0) {
+                    assertTrue(gameBoardSix[i][j].isPresent());
+                    assertEquals(gameBoardSix[i][j].get().getValue(), 32);
                 } else if (i == 3 && j == 1) {
-                    assertTrue(gameBoardFour[i][j].isPresent());
-                    assertEquals(gameBoardFour[i][j].get().getValue(), 64);
+                    assertTrue(gameBoardSix[i][j].isPresent());
+                    assertEquals(gameBoardSix[i][j].get().getValue(), 64);
                 } else if (i == 3 && j == 0) {
-                    assertTrue(gameBoardFour[i][j].isPresent());
-                    assertEquals(gameBoardFour[i][j].get().getValue(), 32);
+                    assertTrue(gameBoardSix[i][j].isPresent());
+                    assertEquals(gameBoardSix[i][j].get().getValue(), 32);
                 } else {
                     assertFalse(gameBoardSix[i][j].isPresent());
                 }
@@ -1111,14 +1110,14 @@ public class BoardTest {
                     assertTrue(gameBoardEight[i][j].isPresent());
                     assertEquals(gameBoardEight[i][j].get().getValue(), 2);
                 } else if (i == 0 && j == 0) {
-                    assertTrue(gameBoardFour[i][j].isPresent());
-                    assertEquals(gameBoardFour[i][j].get().getValue(), 4);
+                    assertTrue(gameBoardEight[i][j].isPresent());
+                    assertEquals(gameBoardEight[i][j].get().getValue(), 4);
                 } else if (i == 1 && j == 1) {
-                    assertTrue(gameBoardFour[i][j].isPresent());
-                    assertEquals(gameBoardFour[i][j].get().getValue(), 64);
+                    assertTrue(gameBoardEight[i][j].isPresent());
+                    assertEquals(gameBoardEight[i][j].get().getValue(), 64);
                 } else if (i == 1 && j == 0) {
-                    assertTrue(gameBoardFour[i][j].isPresent());
-                    assertEquals(gameBoardFour[i][j].get().getValue(), 128);
+                    assertTrue(gameBoardEight[i][j].isPresent());
+                    assertEquals(gameBoardEight[i][j].get().getValue(), 128);
                 } else {
                     assertFalse(gameBoardEight[i][j].isPresent());
                 }
@@ -1154,6 +1153,7 @@ public class BoardTest {
             assertEquals(gameBoardFour[3][0].get().getValue(), 32);
 
             boardFour.shiftRight();
+            gameBoardFour = boardFour.getBoard();
             assertEquals(gameBoardFour[3][3].get().getValue(), 64);
 
             // size six
