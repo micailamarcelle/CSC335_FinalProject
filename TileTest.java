@@ -8,7 +8,6 @@ Purpose: Provides JUnit tests for the functionalities of the Tile class
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +15,7 @@ public class TileTest {
     @Test
     public void testMultiplyByValSmall() {
         Tile a = new Tile(2);
-        assertTrue(a.getTileColor() == TileColor.GRAY);
+        assertTrue(a.getTileColor() == TileColor.YELLOW);
         assertTrue(a.getValue() == 2);
 
         a.multiplyValByTwo();
@@ -33,14 +32,14 @@ public class TileTest {
 
         a.multiplyValByTwo();
         assertTrue(a.getValue() == 32);
-        assertTrue(a.getTileColor() == TileColor.GRAY);
+        assertTrue(a.getTileColor() == TileColor.YELLOW);
     }
 
     @Test
     public void testMultiplyByValLarge() {
         Tile a = new Tile(32);
         assertEquals(a.getValue(), 32);
-        assertEquals(a.getTileColor(), TileColor.GRAY);
+        assertEquals(a.getTileColor(), TileColor.YELLOW);
 
         a.multiplyValByTwo();
         assertEquals(a.getValue(), 64);
@@ -56,7 +55,7 @@ public class TileTest {
 
         a.multiplyValByTwo();
         assertEquals(a.getValue(), 512);
-        assertEquals(a.getTileColor(), TileColor.GRAY);
+        assertEquals(a.getTileColor(), TileColor.YELLOW);
 
         a.multiplyValByTwo();
         assertEquals(a.getValue(), 1024);
@@ -72,7 +71,7 @@ public class TileTest {
 
         a.multiplyValByTwo();
         assertEquals(a.getValue(), 8192);
-        assertEquals(a.getTileColor(), TileColor.GRAY);
+        assertEquals(a.getTileColor(), TileColor.YELLOW);
 
         a.multiplyValByTwo();
         assertEquals(a.getValue(), 16384);
@@ -124,7 +123,7 @@ public class TileTest {
         Tile b = new Tile(4);
         Tile c = new Tile(8);
         Tile d = new Tile(16);
-        assertEquals(a.getTileColor(), TileColor.GRAY);
+        assertEquals(a.getTileColor(), TileColor.YELLOW);
         assertEquals(b.getTileColor(), TileColor.CYAN);
         assertEquals(c.getTileColor(), TileColor.GREEN);
         assertEquals(d.getTileColor(), TileColor.BLUE);
@@ -133,7 +132,7 @@ public class TileTest {
     @Test
     public void testTileColorUpTo2048() {
         Tile a = new Tile(32);
-        assertEquals(a.getTileColor(), TileColor.GRAY);
+        assertEquals(a.getTileColor(), TileColor.YELLOW);
 
         Tile b = new Tile(64);
         assertEquals(b.getTileColor(), TileColor.CYAN);
@@ -145,7 +144,7 @@ public class TileTest {
         assertEquals(d.getTileColor(), TileColor.BLUE);
 
         Tile e = new Tile(512);
-        assertEquals(e.getTileColor(), TileColor.GRAY);
+        assertEquals(e.getTileColor(), TileColor.YELLOW);
 
         Tile f = new Tile(1028);
         assertEquals(f.getTileColor(), TileColor.CYAN);
@@ -160,7 +159,7 @@ public class TileTest {
         assertEquals(a.getTileColor(), TileColor.BLUE);
 
         Tile b = new Tile(8192);
-        assertEquals(b.getTileColor(), TileColor.GRAY);
+        assertEquals(b.getTileColor(), TileColor.YELLOW);
 
         Tile c = new Tile(16384);
         assertEquals(c.getTileColor(), TileColor.CYAN);

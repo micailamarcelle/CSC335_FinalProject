@@ -82,7 +82,7 @@ public class Tile {
      */
     private void updateToNextColor() {
         if (this.color.equals(TileColor.BLUE)) {
-            this.color = TileColor.GRAY;
+            this.color = TileColor.YELLOW;
         } else {
             this.color = TileColor.values()[this.color.ordinal() + 1];
         }
@@ -125,7 +125,7 @@ public class Tile {
         } else if (powerOfTwoDivFour == 2){
             color = TileColor.CYAN;
         } else {
-            color = TileColor.GRAY;
+            color = TileColor.YELLOW;
         }
 		return color;
 	}

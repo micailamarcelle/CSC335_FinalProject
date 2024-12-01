@@ -7,5 +7,5 @@
  */
 
 public enum TileColor {
-    GRAY, CYAN, GREEN, BLUE;
+    YELLOW, CYAN, GREEN, BLUE;
 }
