@@ -36,6 +36,12 @@ public class ViewGUI2048 extends JFrame {
     private JPanel panel, dataPanel, gamePanel, gameOverPanel; // panel will be the main panel on which everything takes
                                                                // place
 
+    // Flag used to tell whether the player has already won (used to tell when win conditions should
+    // be checked)
+    private static boolean hasPlayerWon = false;
+
+    // Flag used to tell whether the game should wait before allowing further player moves
+    private static boolean waitForDecision = false;
     /**
      * This is the class constructor.
      */
@@ -50,7 +56,7 @@ public class ViewGUI2048 extends JFrame {
      * window.
      */
     private void setUp() {
-        this.setSize(800, 800);
+        this.setSize(1000, 800);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         panel = new JPanel();
         scoreLabel = new JLabel("");
@@ -248,7 +254,7 @@ public class ViewGUI2048 extends JFrame {
         public void actionPerformed(ActionEvent e) {
             String command = e.getActionCommand();
             // Handle the up shifting
-            if (command.equals("shiftUp")) {
+            if (command.equals("shiftUp") && waitForDecision == false) {
                 int moves = board.shiftUp();
                 if (moves > 0) {
                     if (board.getBoard().length == 4) {
@@ -267,7 +273,7 @@ public class ViewGUI2048 extends JFrame {
                 gamePanel.repaint();
                 panel.repaint();
                 // Handle the left shifting
-            } else if (command.equals("shiftLeft")) {
+            } else if (command.equals("shiftLeft") && waitForDecision == false) {
                 int moves = board.shiftLeft();
                 if (moves > 0) {
                     if (board.getBoard().length == 4) {
@@ -286,7 +292,7 @@ public class ViewGUI2048 extends JFrame {
                 gamePanel.repaint();
                 panel.repaint();
                 // Handle the right shifting
-            } else if (command.equals("shiftRight")) {
+            } else if (command.equals("shiftRight") && waitForDecision == false) {
                 int moves = board.shiftRight();
                 if (moves > 0) {
                     if (board.getBoard().length == 4) {
@@ -305,7 +311,7 @@ public class ViewGUI2048 extends JFrame {
                 gamePanel.repaint();
                 panel.repaint();
                 // Handle the down shifting
-            } else if (command.equals("shiftDown")) {
+            } else if (command.equals("shiftDown") && waitForDecision == false) {
                 int moves = board.shiftDown();
                 if (moves > 0) {
                     if (board.getBoard().length == 4) {
@@ -319,34 +325,36 @@ public class ViewGUI2048 extends JFrame {
                         board.placeRandomTile(moves);
                     }
                 }
+
                 scoreLabel.setText("Current Score: " + board.getScore());
                 gameBoard.repaint();
                 gamePanel.repaint();
                 panel.repaint();
+            }
 
-                // Checks to see whether the game is over
-                if (board.isGameOver() == HasWon.LOST) {
-                    panel.add(gameOverPanel);
-                    gameOverPanel.add(GAMEOVER);
-                    gameOverPanel.add(new JLabel("Final Score:  " + board.getScore()));
-                    gameOverPanel.repaint();
-                    panel.add(gameOverPanel);
-                }
-                if (board.isGameOver() == HasWon.WON) {
-                    panel.add(gameOverPanel);
-                    gameOverPanel.add(new JLabel("Congratulations, you won!"));
-                    gameOverPanel.add(new JLabel("Would you like to continue?"));
-                    JButton continueGame = new JButton("Yes");
-                    continueGame.setActionCommand("continue");
-                    continueGame.addActionListener(new ContinueHandler());
-                    gameOverPanel.add(continueGame);
-                    JButton endGame = new JButton("No");
-                    endGame.setActionCommand("endGame");
-                    endGame.addActionListener(new ContinueHandler());
-                    gameOverPanel.add(endGame);
-                    gameOverPanel.repaint();
-                    panel.add(gameOverPanel);
-                }
+            // Checks to see whether the game is over
+            if (board.isGameOver() == HasWon.LOST) {
+                panel.add(gameOverPanel);
+                gameOverPanel.add(GAMEOVER);
+                gameOverPanel.add(new JLabel("Final Score:  " + board.getScore()));
+                gameOverPanel.repaint();
+                panel.add(gameOverPanel);
+            }
+            if (board.isGameOver() == HasWon.WON && hasPlayerWon == false) {
+                hasPlayerWon = true;
+                waitForDecision = true;
+                panel.add(gameOverPanel);
+                gameOverPanel.add(new JLabel("<html>Congratulations, you won!<br>Current score: " + board.getScore() + "<br>Would you like to continue?</html>"));
+                JButton continueGame = new JButton("Yes");
+                continueGame.setActionCommand("continue");
+                continueGame.addActionListener(new ContinueHandler());
+                gameOverPanel.add(continueGame);
+                JButton endGame = new JButton("No");
+                endGame.setActionCommand("endGame");
+                endGame.addActionListener(new ContinueHandler());
+                gameOverPanel.add(endGame);
+                gameOverPanel.repaint();
+                panel.add(gameOverPanel);
             }
         }
     }
@@ -360,7 +368,7 @@ public class ViewGUI2048 extends JFrame {
                 gameOverPanel = new JPanel();
                 panel.repaint();
                 gamePanel.repaint();
-
+                waitForDecision = false;
             } else {
                 musicRunner.stop();
                 musicRunner.close();
@@ -395,6 +403,10 @@ public class ViewGUI2048 extends JFrame {
             musicRunner.start();
             panel.add(gamePanel);
             gamePanel.add(gameBoard, BorderLayout.CENTER);
+
+            // Used to ensure that the win conditions work
+            // board.setTile(0, 1, 1024);
+            // board.setTile(0, 0, 1024);
 
             // Set up the button to handle the up shifting
             JButton upButton = new JButton("↑");

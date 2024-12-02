@@ -1,7 +1,7 @@
 For the purposes of the final project for CSC 335, this Github repository implements
 our own version of the popular 2048 game. Within this game, users can select between
 three possible board sizes (four by four, six by six, or eight by eight), and they 
-can then interact with the game via our GUI, shifting the Tiles on the board in order 
+can then interact with the game via our GUI, shifting the tiles on the board in order 
 to combine them and try to reach the 2048 tile. If the player manages to do this, the
 game will inform them that they've won, and they'll have the option to end the game there
 or continue on to reach even higher scores. If, before obtaining the 2048 tile, the player
@@ -18,13 +18,13 @@ through four main colors as their values are doubled within the gameplay. To kee
 moving, and to add to the challenge, random tiles are added to the board after every move, 
 with these tiles having a value of either two or four. The player has to make sure to prevent
 these from piling up in order to avoid a lose condition! Background music also plays while
-the 2048 game is running, further adding to the fun elements of the game. 
+the 2048 game is running, further setting the tone for the game as a whole.
 
 To actually run the game, the user simply needs the run the "ViewGUI2048.java" file within
 the repository, which contains the main method required to actually play the game. The Board
 and Tile classes then represent the foundational back-end of the 2048 game, implementing the 
 tiles on the board and the board itself (respectively), while HasWon.java, BoardSize.java, and
-TileColor.java all represent enumerated types that are actually used within the back-end code. As far as testing goes, this repository also includes two JUnit test files for ensuring that the back-end code is functioning as expected: TileTest.java and BoardTest.java. These files can
+TileColor.java all represent essential enumerated types that are used within the back-end code. As far as testing goes, this repository also includes two JUnit test files for ensuring that the back-end code is functioning as expected: TileTest.java and BoardTest.java. These files can
 be run in an IDE as JUnit tests, and they offer over 90% coverage of the functionalities of the 
 Tile and Board classes, respectively, covering both average-use cases and a range of edge cases
 that may come up during gameplay. 
