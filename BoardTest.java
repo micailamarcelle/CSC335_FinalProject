@@ -451,6 +451,28 @@ public class BoardTest {
     }
 
     @Test
+    public void testIsGameOverSecondAdditionalCase() {
+        Board board = new Board(BoardSize.FOUR);
+        board.setTile(0, 0, 2);
+        board.setTile(0, 1, 4);
+        board.setTile(0, 2, 32);
+        board.setTile(0, 3, 2);
+        board.setTile(1, 0, 16);
+        board.setTile(1, 1, 128);
+        board.setTile(1, 2, 16);
+        board.setTile(1, 3, 8);
+        board.setTile(2, 0, 4);
+        board.setTile(2, 1, 2);
+        board.setTile(2, 2, 32);
+        board.setTile(2, 3, 2);
+        board.setTile(3, 0, 32);
+        board.setTile(3, 1, 4);
+        board.setTile(3, 2, 8);
+        board.setTile(3, 3, 4);
+        assertEquals(board.isGameOver(), HasWon.LOST);
+    }
+
+    @Test
     public void testIsGameOverWinFullBoardNoMovesSize4() {
         // Creates the board and fills it with alternating 2's and 4's
         Board board = new Board(BoardSize.FOUR);

@@ -42,6 +42,7 @@ public class ViewGUI2048 extends JFrame {
 
     // Flag used to tell whether the game should wait before allowing further player moves
     private static boolean waitForDecision = false;
+
     /**
      * This is the class constructor.
      */
@@ -56,7 +57,7 @@ public class ViewGUI2048 extends JFrame {
      * window.
      */
     private void setUp() {
-        this.setSize(1000, 800);
+        this.setSize(1200, 800);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         panel = new JPanel();
         scoreLabel = new JLabel("");
@@ -333,7 +334,8 @@ public class ViewGUI2048 extends JFrame {
             }
 
             // Checks to see whether the game is over
-            if (board.isGameOver() == HasWon.LOST) {
+            if (board.isGameOver() == HasWon.LOST && waitForDecision == false) {
+                waitForDecision = true;
                 panel.add(gameOverPanel);
                 gameOverPanel.add(GAMEOVER);
                 gameOverPanel.add(new JLabel("Final Score:  " + board.getScore()));
