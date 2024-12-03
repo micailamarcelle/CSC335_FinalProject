@@ -381,8 +381,7 @@ public class ViewGUI2048 extends JFrame {
     /**
      * This method gets rid of the grid choosing buttons to make way for the rest
      * of the game to run. It removes the game panel, makes a new one, and repaints
-     * the
-     * original panel.
+     * the original panel.
      */
     private void clear() {
         panel.remove(gamePanel);
