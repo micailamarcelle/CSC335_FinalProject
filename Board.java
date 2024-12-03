@@ -1065,6 +1065,12 @@ public class Board {
         no empty tiles when this method is called, then the method will not do anything. 
         The number of shifts/combinations that took place from the previous move is passed in as
         an argument.
+
+        @pre numShiftCombos >= 0
+        @post adds in a random tile with a value of 2 or 4 to the board, if necessary based on the
+            given number of moves
+        @param numShiftCombos -- int representing the number of shifts/combinations made in the most
+            recent move
      */
     public void placeRandomTile(int numShiftCombos) {
         if (countNumEmpty() > 0 && numShiftCombos > 0) { 
