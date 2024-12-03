@@ -20,7 +20,7 @@ import java.io.*;
 
 /*
  * For game over:
- * If they won, put two buttons asking if they want to continue. If htey say yes,
+ * If they won, put two buttons asking if they want to continue. If they say yes,
  * just get rid of the extra stuff and continue the game as normal. If they say no,
  * close the program. 
  * If they lost, just put a message saying the game is over and what their final score was. 
