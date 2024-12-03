@@ -426,6 +426,30 @@ public class BoardTest {
         assertEquals(boardEight.isGameOver(), HasWon.WON);
     }
 
+    // Note that this test represents a particular example that we found to be buggy 
+    // previously, so this JUnit helps to ensure that it works
+    @Test
+    public void testIsGameOverAdditionalCase() {
+        Board board = new Board(BoardSize.FOUR);
+        board.setTile(0, 0, 4);
+        board.setTile(0, 1, 2);
+        board.setTile(0, 2, 4);
+        board.setTile(0, 3, 8);
+        board.setTile(1, 0, 64);
+        board.setTile(1, 1, 32);
+        board.setTile(1, 2, 128);
+        board.setTile(1, 3, 2);
+        board.setTile(2, 0, 4);
+        board.setTile(2, 1, 16);
+        board.setTile(2, 2, 8);
+        board.setTile(2, 3, 16);
+        board.setTile(3, 0, 2);
+        board.setTile(3, 1, 8);
+        board.setTile(3, 2, 2);
+        board.setTile(3, 3, 4);
+        assertEquals(board.isGameOver(), HasWon.LOST);
+    }
+
     @Test
     public void testIsGameOverWinFullBoardNoMovesSize4() {
         // Creates the board and fills it with alternating 2's and 4's
