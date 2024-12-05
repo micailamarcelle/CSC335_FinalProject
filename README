@@ -13,7 +13,8 @@ up, down, left, and right. A shift will move all tiles on the board as far as th
 the chosen direction, and adjacent tiles with the same value that "collide" during a shift 
 will be merged together. Note, though, that any given tile can only merge once within a 
 particular shift. Each time two tiles combine, the player's score will go up by the new value
-of the merged tile, which is equal to the sum of the values of the two tiles that were combined. Tiles will also change color as they combine with one another, with tiles cycling
+of the merged tile, which is equal to the sum of the values of the two tiles that were combined. 
+Tiles will also change color as they combine with one another, with tiles cycling
 through four main colors as their values are doubled within the gameplay. To keep the game
 moving, and to add to the challenge, random tiles are added to the board after every move, 
 with these tiles having a value of either two or four. The player has to make sure to prevent
@@ -24,7 +25,9 @@ To actually run the game, the user simply needs the run the "ViewGUI2048.java" f
 the repository, which contains the main method required to actually play the game. The Board
 and Tile classes then represent the foundational back-end of the 2048 game, implementing the 
 tiles on the board and the board itself (respectively), while HasWon.java, BoardSize.java, and
-TileColor.java all represent essential enumerated types that are used within the back-end code. As far as testing goes, this repository also includes two JUnit test files for ensuring that the back-end code is functioning as expected: TileTest.java and BoardTest.java. These files can
+TileColor.java all represent essential enumerated types that are used within the back-end code. 
+As far as testing goes, this repository also includes two JUnit test files for ensuring that the 
+back-end code is functioning as expected: TileTest.java and BoardTest.java. These files can
 be run in an IDE as JUnit tests, and they offer over 90% coverage of the functionalities of the 
 Tile and Board classes, respectively, covering both average-use cases and a range of edge cases
 that may come up during gameplay. 
